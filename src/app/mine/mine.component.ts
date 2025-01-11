@@ -35,7 +35,19 @@ export class MineComponent {
   ngOnInit(): void {
     this.fetchDeviceInformation();
     this.calculateElapsedTime();
-    setInterval(() => this.calculateElapsedTime(), 1000 * 60); // Update elapsed time every minute
+    setInterval(() => this.calculateElapsedTime(), 1000 * 60);
+    const savedMiningState = localStorage.getItem('miningState');
+    if (savedMiningState) {
+      const state = JSON.parse(savedMiningState);
+      if (state.isMining) {
+        this.isMining = true;
+        this.bandwidth.status = 'Active';
+        this.bandwidth.statusColor = 'green';
+        this.buttonLabel = 'Stop Mining';
+        this.miningStartTime = state.miningStartTime;
+        this.startSpeedCheck();
+      }
+    } // Update elapsed time every minute
   }
 
   fetchDeviceInformation(): void {
@@ -128,19 +140,32 @@ export class MineComponent {
 
     this.isMining = true;
     this.bandwidth.status = 'Active';
-    this.bandwidth.statusColor = 'green'; // Set the color to green when active
+    this.bandwidth.statusColor = 'green';
     this.buttonLabel = 'Stop Mining';
     this.miningStartTime = new Date().getTime();
+
+    // Save mining state
+    localStorage.setItem(
+      'miningState',
+      JSON.stringify({
+        isMining: true,
+        miningStartTime: this.miningStartTime,
+      })
+    );
+
     this.startSpeedCheck();
   }
 
   stopMining(): void {
     this.isMining = false;
     this.bandwidth.status = 'Inactive';
-    this.bandwidth.statusColor = 'red'; // Set the color to red when inactive
+    this.bandwidth.statusColor = 'red';
     this.buttonLabel = 'Start Mining';
     clearTimeout(this.speedCheckTimer);
-    this.updatePowerDots(); // Update the dots when mining is stopped
+    this.updatePowerDots();
+
+    // Clear mining state
+    localStorage.removeItem('miningState');
   }
 
   handleClaim(): void {
