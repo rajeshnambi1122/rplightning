@@ -1,3 +1,207 @@
-<div class="center-text">
-  <p style="color: white">mine works!</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mining Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/a076d05399.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      /* Same styles as before */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Roboto", sans-serif;
+        background-color: #010a2d;
+        color: #333;
+      }
+
+      .card {
+        background: #e0e7ff;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 10px;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        text-align: center;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      }
+
+      h3 {
+        color: #0056b3;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      p {
+        font-size: 16px;
+        margin: 10px 0;
+      }
+
+      .value {
+        font-weight: 700;
+        color: #333;
+        font-size: 16px;
+      }
+
+      .status.working {
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      .status.inactive {
+        color: #dc3545;
+        font-weight: bold;
+      }
+
+      .button {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 15px 20px;
+        font-size: 18px;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        width: 100%;
+        max-width: 400px;
+        margin: 10px 0;
+      }
+
+      .button.disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .button:hover:not(.disabled) {
+        background-color: #0056b3;
+        transform: translateY(-3px);
+      }
+
+      .power-dots {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin: 0 5px;
+      }
+
+      .dot.green {
+        background-color: #28a745;
+      }
+
+      .dot.red {
+        background-color: #dc3545;
+      }
+
+      .dot.default {
+        background-color: #ccc;
+      }
+
+      .cooldown {
+        color: red;
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
+        h3 {
+          font-size: 18px;
+        }
+
+        .card {
+          padding: 15px;
+        }
+
+        .button {
+          font-size: 16px;
+          padding: 12px 16px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="card profile">
+        <h3>My Profile</h3>
+        <p>
+          <i class="fas fa-wallet"></i> Balance
+          <span class="value">{{ profile.balance.toFixed(2) }}</span>
+        </p>
+        <p>
+          <i class="fas fa-bolt"></i> Power
+          <span class="value">{{ profile.power.toFixed(2) }}</span>
+        </p>
+        <div class="power-dots">
+          <div *ngFor="let dot of powerDots" [ngClass]="dot"></div>
+        </div>
+      </div>
+      <div class="card information">
+        <h3>Information</h3>
+        <p>
+          <i class="fas fa-mobile-alt"></i> Device
+          <span class="value">{{ deviceType }}</span>
+        </p>
+        <p>
+          <i class="fas fa-map-marker-alt"></i> IP
+          <span class="value">{{ ip }}</span>
+        </p>
+      </div>
+      <div class="card bandwidth">
+        <h3>Bandwidth Sharing</h3>
+        <p>
+          <i class="fas fa-signal"></i> Status
+          <span [class.working]="isMining" [class.inactive]="!isMining">
+            {{ bandwidth.status }}
+          </span>
+        </p>
+        <p>
+          <i class="fas fa-coins"></i> Shares
+          <span class="value">{{ bandwidth.shares.toFixed(2) }} MB</span>
+        </p>
+        <p>
+          <i class="fas fa-gem"></i> Earned
+          <span class="value">{{ bandwidth.earned }} Tokens</span>
+        </p>
+      </div>
+
+      <button
+        class="button"
+        [class.disabled]="isClaiming || isMining || elapsedHours < 6"
+        (click)="handleClaim()"
+        *ngIf="elapsedHours >= 6 && !isMining"
+      >
+        Claim Tokens
+      </button>
+
+      <button
+        class="button"
+        [class.disabled]="isClaiming"
+        (click)="handleMiningToggle()"
+      >
+        {{ isMining ? "Stop Mining" : "Start Mining" }}
+      </button>
+    </div>
+  </body>
+</html>
