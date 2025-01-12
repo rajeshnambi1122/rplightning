@@ -36,18 +36,32 @@ export class MineComponent {
     this.fetchDeviceInformation();
     this.calculateElapsedTime();
     setInterval(() => this.calculateElapsedTime(), 1000 * 60);
+
+    // Check saved mining state
     const savedMiningState = localStorage.getItem('miningState');
     if (savedMiningState) {
       const state = JSON.parse(savedMiningState);
       if (state.isMining) {
-        this.isMining = true;
-        this.bandwidth.status = 'Active';
-        this.bandwidth.statusColor = 'green';
-        this.buttonLabel = 'Stop Mining';
-        this.miningStartTime = state.miningStartTime;
-        this.startSpeedCheck();
+        // Check if we're within the 6-hour mining window
+        const now = new Date().getTime();
+        const elapsedHours = Math.floor(
+          (now - state.miningStartTime) / (1000 * 60 * 60)
+        );
+
+        if (elapsedHours < 6) {
+          // Only restore mining state if within 6-hour window
+          this.isMining = true;
+          this.bandwidth.status = 'Active';
+          this.bandwidth.statusColor = 'green';
+          this.buttonLabel = 'Stop Mining';
+          this.miningStartTime = state.miningStartTime;
+          this.startSpeedCheck();
+        } else {
+          // Clear mining state if beyond 6 hours
+          localStorage.removeItem('miningState');
+        }
       }
-    } // Update elapsed time every minute
+    }
   }
 
   fetchDeviceInformation(): void {
