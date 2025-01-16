@@ -186,22 +186,63 @@
         </p>
       </div>
 
-      <button
-        class="button"
-        [class.disabled]="isClaiming || isMining || elapsedHours < 6"
-        (click)="handleClaim()"
-        *ngIf="elapsedHours >= 6 && !isMining"
+      <div
+        style="
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+          justify-content: center;
+        "
       >
-        Claim Tokens
-      </button>
+        <button
+          class="button"
+          [class.disabled]="isClaiming || isMining || elapsedHours < 6"
+          (click)="handleClaim()"
+          *ngIf="elapsedHours >= 6 && !isMining"
+          style="flex: 1"
+        >
+          Claim Tokens
+        </button>
 
-      <button
-        class="button"
-        [class.disabled]="isClaiming"
-        (click)="handleMiningToggle()"
-      >
-        {{ isMining ? "Stop Mining" : "Start Mining" }}
-      </button>
+        <button
+          class="button"
+          [class.disabled]="isClaiming"
+          (click)="handleMiningToggle()"
+          style="flex: 1"
+        >
+          {{ isMining ? "Stop Mining" : "Start Mining" }}
+        </button>
+
+        <!-- TON Connect button moved here -->
+        <div
+          id="ton-connect-button"
+          style="min-height: 48px; flex: 1; min-width: 200px"
+        ></div>
+      </div>
+
+      <div class="premium-section">
+        <!-- Add specific styling to ensure the button container is visible -->
+        <div
+          id="ton-connect-button"
+          style="min-height: 48px; display: block"
+        ></div>
+
+        <div *ngIf="walletAddress">
+          <div *ngIf="!isPremiumUser">
+            <h3>Upgrade to Premium</h3>
+            <p>Get 24 tokens per day for only 0.5 TON</p>
+            <button (click)="upgradeToPremium()" [disabled]="!walletAddress">
+              Upgrade Now
+            </button>
+          </div>
+
+          <div *ngIf="isPremiumUser">
+            <h3>Premium Status Active</h3>
+            <p>Expires: {{ profile.premiumExpiry | date }}</p>
+            <p>Maximum daily tokens: 24</p>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

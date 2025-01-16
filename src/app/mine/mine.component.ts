@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { TonConnect } from '@tonconnect/sdk';
+import { TonConnectUI, SendTransactionRequest } from '@tonconnect/ui';
+import { Address, toNano } from 'ton-core';
 
 @Component({
   selector: 'app-mine',
@@ -7,7 +10,18 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./mine.component.css'],
 })
 export class MineComponent {
-  profile = { balance: 0, power: 12200 }; // Initial balance is set to 0
+  // Add premium user properties
+  isPremiumUser = false;
+  readonly PREMIUM_MAX_TOKENS = 24; // Premium users can earn 24 tokens per day
+  readonly REGULAR_MAX_TOKENS = 12; // Regular users stay at 12 tokens per day
+
+  // Update profile to include premium status
+  profile = {
+    balance: 0,
+    power: 12200,
+    premiumExpiry: null as number | null,
+  };
+
   bandwidth = {
     status: 'Inactive',
     shares: 0,
@@ -30,9 +44,43 @@ export class MineComponent {
   deviceType: string = 'Unknown';
   ip: string = 'Fetching...';
 
-  constructor(private http: HttpClient) {}
+  // Add TON Connect properties
+  private tonConnect!: TonConnectUI;
+  walletAddress: string | null = null;
+
+  constructor(private http: HttpClient) {
+    // Wait for DOM to be ready before initializing TonConnect
+    setTimeout(() => {
+      this.tonConnect = new TonConnectUI({
+        manifestUrl: 'https://your-app-url.com/tonconnect-manifest.json',
+        buttonRootId: 'ton-connect-button',
+      });
+
+      // Listen for wallet connection changes
+      this.tonConnect.onStatusChange((wallet) => {
+        if (wallet) {
+          this.walletAddress = wallet.account.address;
+        } else {
+          this.walletAddress = null;
+        }
+      });
+    }, 0);
+  }
 
   ngOnInit(): void {
+    // Add premium status check to existing initialization
+    const premiumStatus = localStorage.getItem('premiumStatus');
+    if (premiumStatus) {
+      const status = JSON.parse(premiumStatus);
+      if (status.expiry > new Date().getTime()) {
+        this.isPremiumUser = true;
+        this.profile.premiumExpiry = status.expiry;
+      } else {
+        // Premium expired
+        localStorage.removeItem('premiumStatus');
+      }
+    }
+
     this.fetchDeviceInformation();
     this.calculateElapsedTime();
     setInterval(() => this.calculateElapsedTime(), 1000 * 60);
@@ -62,6 +110,8 @@ export class MineComponent {
         }
       }
     }
+
+    this.checkPremiumStatus();
   }
 
   fetchDeviceInformation(): void {
@@ -97,20 +147,6 @@ export class MineComponent {
     }
   }
 
-  // updatePowerDots(): void {
-  //   const dotsToUpdate = Math.min(this.elapsedHours, 6); // Only 6 dots max
-  //   this.powerDots = ['dot', 'dot', 'dot', 'dot', 'dot', 'dot']; // Reset to default
-  //   for (let i = 0; i < dotsToUpdate; i++) {
-  //     this.powerDots[i] = `dot red`; // Red color for elapsed hours
-  //   }
-  //   for (let i = dotsToUpdate; i < 6; i++) {
-  //     this.powerDots[i] = `dot green`; // Green color for remaining dots
-  //   }
-
-  //   if (this.elapsedHours >= 6) {
-  //     this.powerStatusColor = 'red'; // Show cooldown when 6 hours are completed
-  //   }
-  // }
   updatePowerDots(): void {
     const dotsToUpdate = Math.min(this.elapsedHours, 6); // Only 6 dots max
     const initialPower = 12200; // Initial power value
@@ -273,335 +309,145 @@ export class MineComponent {
       if (this.accumulatedShares > 60) this.accumulatedShares = 60; // Cap shares
       this.bandwidth.shares = this.accumulatedShares;
       this.bandwidth.earned = Math.floor(this.accumulatedShares / 5);
+
+      // Apply premium/regular token caps
+      const maxTokens = this.isPremiumUser
+        ? this.PREMIUM_MAX_TOKENS
+        : this.REGULAR_MAX_TOKENS;
+      if (this.bandwidth.earned > maxTokens) {
+        this.bandwidth.earned = maxTokens;
+      }
+
       if (this.bandwidth.earned > 0) this.bandwidth.status = 'Active';
     } catch (error) {
       console.error('Error in speed check:', error);
     }
   }
 
-  // profile = { balance: 0, power: 12200 }; // Initial balance is set to 0
-  // bandwidth = {
-  //   status: 'Inactive',
-  //   shares: 0,
-  //   earned: 0,
-  //   statusColor: 'red'  // Add this line to define the statusColor property
-  // };
-  // isMining = false;
-  // isClaiming = false;
-  // buttonLabel = 'Start Mining';
-  // miningStartTime: number | null = null;
-  // elapsedHours = 0;
-  // accumulatedShares = 0;
-  // speedCheckTimer: any;
-  // results: any[] = []; // For storing network speed results
-  // claimTimer: any; // For managing the 3-hour cooldown after claiming
-  // miningCooldown = false; // To handle 3-hour cooldown
-  // powerStatusColor = 'red'; // Default to red for low power
+  // Add method to handle premium upgrade
+  async upgradeToPremium(): Promise<void> {
+    if (!this.walletAddress) {
+      alert('Please connect your wallet first');
+      return;
+    }
 
-  // // New properties for Information card
-  // deviceType: string = 'Unknown';
-  // ip: string = 'Fetching...';
+    try {
+      // Premium subscription cost (0.5 TON)
+      const amount = toNano('0.5');
 
-  // constructor(private http: HttpClient) { }
+      // Your dApp's wallet address where payments will be received
+      const receiverAddress =
+        'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI'; // Replace with your wallet address
 
-  // ngOnInit(): void {
-  //   this.fetchDeviceInformation();
-  //   this.calculateElapsedTime();
-  //   setInterval(() => this.calculateElapsedTime(), 1000 * 60); // Update elapsed time every minute
-  // }
+      const transaction: SendTransactionRequest = {
+        validUntil: Math.floor(Date.now() / 1000) + 600, // 10 minutes expiration
+        messages: [
+          {
+            address: receiverAddress,
+            amount: amount.toString(),
+            payload: 'te6ccgEBAQEABgAACAVERkZG', // Base64 encoded empty cell
+          },
+        ],
+      };
 
-  // fetchDeviceInformation(): void {
-  //   this.http.get<{ ip: string }>('https://api.ipify.org?format=json').subscribe(
-  //     (response) => {
-  //       this.ip = response.ip;
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching IP:', error);
-  //       this.ip = 'Error';
-  //     }
-  //   );
+      // Send transaction
+      const result = await this.tonConnect.sendTransaction(transaction);
 
-  //   const userAgent = navigator.userAgent;
-  //   if (/mobile/i.test(userAgent)) {
-  //     this.deviceType = 'Mobile';
-  //   } else if (/tablet/i.test(userAgent)) {
-  //     this.deviceType = 'Tablet';
-  //   } else {
-  //     this.deviceType = 'Desktop';
-  //   }
-  // }
+      if (result) {
+        // Show loading state
+        this.isClaiming = true; // Reuse existing loading state
 
-  // calculateElapsedTime(): void {
-  //   if (this.miningStartTime) {
-  //     const now = new Date().getTime();
-  //     this.elapsedHours = Math.floor((now - this.miningStartTime) / (1000 * 60 * 60));
-  //   }
-  // }
+        try {
+          // Wait for transaction confirmation
+          await this.checkTransactionStatus(result.boc);
 
-  // handleMiningToggle(): void {
-  //   if (this.isMining) {
-  //     this.stopMining();
-  //   } else {
-  //     this.startMining();
-  //   }
-  // }
+          // Update premium status
+          this.isPremiumUser = true;
+          this.profile.premiumExpiry =
+            new Date().getTime() + 30 * 24 * 60 * 60 * 1000; // 30 days
 
-  // startMining(): void {
-  //   if (this.miningCooldown) {
-  //     alert('Mining is on cooldown. Please try again after 3 hours.');
-  //     return;
-  //   }
+          // Save premium status
+          localStorage.setItem(
+            'premiumStatus',
+            JSON.stringify({
+              isPremium: true,
+              expiry: this.profile.premiumExpiry,
+            })
+          );
 
-  //   this.isMining = true;
-  //   this.bandwidth.status = 'Active';
-  //   this.bandwidth.statusColor = 'green'; // Set the color to green when active
-  //   this.buttonLabel = 'Stop Mining';
-  //   this.miningStartTime = new Date().getTime();
-  //   this.startSpeedCheck();
-  // }
+          alert(
+            'Premium upgrade successful! You can now earn up to 24 tokens per day.'
+          );
+        } catch (error) {
+          console.error('Transaction verification failed:', error);
+          alert(
+            'Could not verify payment. Please contact support if funds were deducted.'
+          );
+        } finally {
+          this.isClaiming = false;
+        }
+      }
+    } catch (error) {
+      console.error('Premium upgrade payment failed:', error);
+      alert('Payment failed. Please try again.');
+    }
+  }
 
-  // stopMining(): void {
-  //   this.isMining = false;
-  //   this.bandwidth.status = 'Inactive';
-  //   this.bandwidth.statusColor = 'red'; // Set the color to red when inactive
-  //   this.buttonLabel = 'Start Mining';
-  //   clearTimeout(this.speedCheckTimer);
-  // }
+  private async checkTransactionStatus(transactionHash: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      let attempts = 0;
+      const maxAttempts = 10;
 
-  // handleClaim(): void {
-  //   if (this.elapsedHours >= 6) {
-  //     this.isClaiming = true;
-  //     this.profile.balance = this.bandwidth.earned; // Add the earned tokens to the balance
-  //     setTimeout(() => {
-  //       this.isClaiming = false;
-  //       this.bandwidth.shares = 0;
-  //       this.bandwidth.earned = 0;
-  //       this.miningStartTime = null;
-  //       this.elapsedHours = 0;
-  //       alert('Tokens claimed successfully!');
-  //       this.startMiningCooldown();
-  //     }, 2000); // Simulate claim API delay
-  //   }
-  // }
+      const checkInterval = setInterval(async () => {
+        try {
+          // Query your backend to verify the transaction
+          const response = await this.http
+            .get<{ status: string }>(
+              `https://your-backend.com/api/verify-transaction/${transactionHash}`
+            )
+            .toPromise();
 
-  // startMiningCooldown(): void {
-  //   this.miningCooldown = true;
-  //   setTimeout(() => {
-  //     this.miningCooldown = false;
-  //     this.powerStatusColor = 'green'; // Restore power status color after 3 hours
-  //     this.bandwidth.status = 'Inactive';
-  //     this.bandwidth.statusColor = 'red'; // Reset to inactive color
-  //   }, 1000 * 60 * 60 * 3); // 3 hours cooldown
-  // }
+          if (response?.status === 'completed') {
+            clearInterval(checkInterval);
+            resolve();
+          }
 
-  // startSpeedCheck(): void {
-  //   this.speedCheckTimer = setTimeout(() => {
-  //     this.measureSpeedInParallel();
-  //     this.startSpeedCheck(); // Recursive call to continue the timer
-  //   }, 6000); // 6 seconds
-  // }
+          attempts++;
+          if (attempts >= maxAttempts) {
+            clearInterval(checkInterval);
+            reject(new Error('Transaction verification timeout'));
+          }
+        } catch (error) {
+          clearInterval(checkInterval);
+          reject(error);
+        }
+      }, 3000); // Check every 3 seconds
+    });
+  }
 
-  // private async measureSpeed(): Promise<any> {
-  //   const startTime = new Date().getTime();
-  //   const imageUrl = 'assets/download.jpeg'; // Path to your image in the assets folder
+  // Add this method to check premium status on init
+  private checkPremiumStatus(): void {
+    const premiumStatus = localStorage.getItem('premiumStatus');
+    if (premiumStatus) {
+      const status = JSON.parse(premiumStatus);
+      if (status.expiry > new Date().getTime()) {
+        this.isPremiumUser = true;
+        this.profile.premiumExpiry = status.expiry;
+      } else {
+        // Premium expired
+        localStorage.removeItem('premiumStatus');
+        this.isPremiumUser = false;
+        this.profile.premiumExpiry = null;
+      }
+    }
+  }
 
-  //   try {
-  //     const response = await this.http
-  //       .get(imageUrl, { observe: 'response', responseType: 'blob' })
-  //       .toPromise();
-
-  //     const endTime = new Date().getTime();
-  //     const diff = (endTime - startTime) / 1000; // Time in seconds
-
-  //     const contentLength = response.headers.get('content-length');
-  //     if (!contentLength) {
-  //       throw new Error('Content length is not available in the response headers.');
-  //     }
-
-  //     const bits = parseInt(contentLength, 10) * 8; // Convert bytes to bits
-  //     const bps = (bits / diff).toFixed(2);
-  //     const kbps = (Number(bps) / 1024).toFixed(2);
-  //     const mbps = (Number(kbps) / 1024).toFixed(2);
-
-  //     return { bps, kbps, mbps };
-  //   } catch (error) {
-  //     console.error('Error measuring speed:', error);
-  //     return { bps: 0, kbps: 0, mbps: 0 };
-  //   }
-  // }
-
-  // private async measureSpeedInParallel(): Promise<void> {
-  //   const requests = [this.measureSpeed()];
-  //   try {
-  //     const results = await Promise.all(requests);
-  //     this.results = results.map((res, index) => ({
-  //       process: `Process 0${index + 1}`,
-  //       bps: res.bps,
-  //       kbps: res.kbps,
-  //       mbps: res.mbps,
-  //     }));
-  //     console.log('Speed results:', this.results);
-
-  //     // Update shares and earned based on the speed
-  //     const totalMbps = results.reduce((sum, result) => sum + Number(result.mbps), 0);
-  //     this.accumulatedShares += totalMbps;
-  //     if (this.accumulatedShares > 60) this.accumulatedShares = 60; // Cap shares
-  //     this.bandwidth.shares = this.accumulatedShares;
-  //     this.bandwidth.earned = Math.floor(this.accumulatedShares / 5);
-  //     if (this.bandwidth.earned > 12) this.bandwidth.earned = 12; // Cap tokens
-  //   } catch (error) {
-  //     console.error('Error measuring speed in parallel:', error);
-  //   }
-  // }
-
-  // ngOnDestroy(): void {
-  //   clearTimeout(this.speedCheckTimer);
-  //   clearTimeout(this.claimTimer);
-  // }
-
-  // profile = {
-  //   balance: 139.93,
-  //   power: 12200,
-  // };
-
-  // powerDots = ['green', 'green', 'green', 'green', 'green'];
-  // bandwidth = {
-  //   status: 'Active',
-  //   shares: 120,
-  //   earned: 50,
-  // };
-
-  // buttonLabel = 'Start Earning';
-  // isMining = false;
-
-  // handleButtonClick() {
-  //   this.isMining = !this.isMining;
-  //   this.buttonLabel = this.isMining ? 'Stop Earning' : 'Start Earning';
-  // }
-  // completedHours = 0;
-  // totalHours = 6;
-  // miningInterval: any;
-
-  // constructor(private http: HttpClient) { }
-
-  // ngOnInit(): void {
-  //   this.getIpAddress();
-  //   this.getDeviceType();
-  //   this.measureSpeedInParallel();
-  //   this.startSpeedCheck();
-  // }
-  // startMining() {
-  //   let completedDots = 0;
-  //   const interval = setInterval(() => {
-  //     if (completedDots < this.powerDots.length) {
-  //       this.powerDots[completedDots] = 'red';
-  //       this.profile.power -= 12200 / 6;
-  //       completedDots++;
-  //     } else {
-  //       clearInterval(interval);
-  //       this.buttonLabel = 'Claim';
-  //       this.isMining = false;
-  //     }
-  //   }, 60 * 60 * 1000); // Change 1 hour (3600000 ms)
-  // }
-  // stopMining() {
-  //   this.isMining = false;
-  //   clearInterval(this.miningInterval);
-  //   this.buttonLabel = 'Start Earning';
-  // }
-
-  // updatePowerDots() {
-  //   // Change the next dot to red as time passes
-  //   if (this.completedHours < this.totalHours) {
-  //     this.powerDots[this.completedHours] = 'red';
-  //   }
-  // }
-
-  // claimRewards() {
-  //   this.profile.balance += 50;
-  //   this.completedHours = 0;
-  //   this.profile.power = 12200;
-  //   this.powerDots = Array(6).fill('green'); // Reset dots to green
-  //   this.buttonLabel = 'Start Earning';
-  // }
-
-  // private speedCheckTimer: any;
-  // // // isMining = false;
-  // ip: any;
-  // deviceType: string = '';
-  responseData!: any;
-
-  // results: { process: string; bps: string; kbps: string; mbps: string }[] = [];
-  // // downloadSize = 10500000; // bytes
-  // progressMessage: string[] = [];
-  // ngOnDestroy(): void {
-  //   if (this.speedCheckTimer) {
-  //     clearTimeout(this.speedCheckTimer);
-  //   }
-  // }
-
-  // startSpeedCheck(): void {
-  //   this.speedCheckTimer = setTimeout(() => {
-  //     this.measureSpeedInParallel();
-  //     this.startSpeedCheck(); // Recursive call to continue the timer
-  //   }, 6000); // 60 seconds
-  // }
-
-  // private measureSpeed() {
-  //   const startTime = new Date().getTime();
-  //   const imageUrl = 'assets/download.jpeg'; // Path to your image in the assets folder
-
-  //   return this.http.get(imageUrl, { observe: 'response', responseType: 'blob' }).toPromise().then((response) => {
-  //     const endTime = new Date().getTime();
-  //     const diff = (endTime - startTime) / 1000; // Time in seconds
-
-  //     const contentLength = response.headers.get('content-length');
-  //     if (!contentLength) {
-  //       throw new Error('Content length is not available in the response headers.');
-  //     }
-
-  //     const bits = parseInt(contentLength, 10) * 8; // Convert bytes to bits
-
-  //     const bps = (bits / diff).toFixed(2);
-  //     const kbps = (Number(bps) / 1024).toFixed(2);
-  //     const mbps = (Number(kbps) / 1024).toFixed(2);
-
-  //     return { bps, kbps, mbps };
-  //   });
-  // }
-
-  // private async measureSpeedInParallel() {
-  //   const requests = [this.measureSpeed()];
-  //   try {
-  //     const results = await Promise.all(requests);
-  //     this.results = results.map((res, index) => ({
-  //       process: `Process 0${index + 1}`,
-  //       bps: res.bps,
-  //       kbps: res.kbps,
-  //       mbps: res.mbps
-  //     }));
-  //   } catch (error) {
-  //     console.error('Error measuring speed:', error);
-  //   }
-  // }
-  // getIpAddress() {
-  //   this.http.get("https://api.ipify.org?format=json").subscribe(res => {
-  //     console.log("getIpAddress --->", res)
-  //     // this.ip = res.ip
-  //     this.responseData = res;
-  //     this.ip = this.responseData.ip
-  //   })
-  // }
-  // getDeviceType() {
-  //   const userAgent = navigator.userAgent;
-
-  //   if (/Mobi|Android/i.test(userAgent)) {
-  //     this.deviceType = 'Mobile';
-  //   } else if (/iPad|Tablet/i.test(userAgent)) {
-  //     this.deviceType = 'Tablet';
-  //   } else {
-  //     this.deviceType = 'Desktop';
-  //   }
-  //   console.log("this.deviceType --->", this.deviceType)
-  // }
+  async connectWallet(): Promise<void> {
+    try {
+      await this.tonConnect.connectWallet();
+    } catch (error) {
+      console.error('Failed to connect wallet:', error);
+      alert('Failed to connect wallet. Please try again.');
+    }
+  }
 }
