@@ -1,7 +1,8 @@
 {
-  "url": "https://your-app-url.com",
-  "name": "Mining dApp",
-  "iconUrl": "https://your-app-url.com/icon.png",
-  "termsOfUseUrl": "https://your-app-url.com/terms",
-  "privacyPolicyUrl": "https://your-app-url.com/privacy"
+  "url": "https://rajeshnambi1122.github.io/Lightning",
+  "name": "TON Mining",
+  "iconUrl": "https://rajeshnambi1122.github.io/Lightning/favicon.ico",
+  "termsOfUseUrl": "https://rajeshnambi1122.github.io/Lightning/terms",
+  "privacyPolicyUrl": "https://rajeshnambi1122.github.io/Lightning/privacy",
+  "manifestVersion": 1
 }
