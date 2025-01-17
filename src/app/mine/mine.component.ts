@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TonConnect } from '@tonconnect/sdk';
 import { TonConnectUI, SendTransactionRequest } from '@tonconnect/ui';
@@ -9,9 +9,9 @@ import { Address, toNano } from 'ton-core';
   templateUrl: './mine.component.html',
   styleUrls: ['./mine.component.css'],
 })
-export class MineComponent {
+export class MineComponent implements OnInit, OnDestroy {
   // Add premium user properties
-  isPremiumUser = false;
+  isPremiumUser: boolean = false;
   readonly PREMIUM_MAX_TOKENS = 24; // Premium users can earn 24 tokens per day
   readonly REGULAR_MAX_TOKENS = 12; // Regular users stay at 12 tokens per day
 
@@ -20,6 +20,7 @@ export class MineComponent {
     balance: 0,
     power: 12200,
     premiumExpiry: null as number | null,
+    lastMiningTime: null as number | null,
   };
 
   bandwidth = {
@@ -28,11 +29,10 @@ export class MineComponent {
     earned: 0,
     statusColor: 'red', // Add this line to define the statusColor property
   };
-  isMining = false;
-  isClaiming = false;
+  isMining: boolean = false;
+  isClaiming: boolean = false;
   buttonLabel = 'Start Mining';
-  miningStartTime: number | null = null;
-  elapsedHours = 0;
+  elapsedSeconds: number = 0; // Changed from elapsedHours
   accumulatedShares = 0;
   speedCheckTimer: any;
   results: any[] = []; // For storing network speed results
@@ -47,28 +47,47 @@ export class MineComponent {
   // Add TON Connect properties
   private tonConnect!: TonConnectUI;
   walletAddress: string | null = null;
+  tokenBalance: number = 0; // Add token balance
+
+  private timerInterval: any; // Add this to track the interval
 
   constructor(private http: HttpClient) {
-    // Wait for DOM to be ready before initializing TonConnect
-    setTimeout(() => {
-      this.tonConnect = new TonConnectUI({
-        manifestUrl:
-          'https://rajeshnambi1122.github.io/rplightning/assets/tonconnect-manifest.json',
-        buttonRootId: 'ton-connect-button',
-      });
+    // Initialize profile balance from localStorage
+    const savedBalance = localStorage.getItem('profileBalance');
+    this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
 
-      // Listen for wallet connection changes
-      this.tonConnect.onStatusChange((wallet) => {
-        if (wallet) {
-          this.walletAddress = wallet.account.address;
-        } else {
-          this.walletAddress = null;
+    window.tonConnectUI.onStatusChange((wallet) => {
+      if (wallet) {
+        this.walletAddress = wallet.account.address;
+        // Check premium status
+        const premiumStatus = localStorage.getItem('premiumStatus');
+        if (premiumStatus) {
+          const status = JSON.parse(premiumStatus);
+          if (status.expiry > new Date().getTime()) {
+            this.isPremiumUser = true;
+            this.profile.premiumExpiry = status.expiry;
+          }
         }
-      });
-    }, 0);
+      } else {
+        this.walletAddress = null;
+        this.isPremiumUser = false;
+      }
+    });
   }
 
   ngOnInit(): void {
+    // Add wallet status subscription
+    window.tonConnectUI.onStatusChange((wallet) => {
+      if (wallet) {
+        this.walletAddress = wallet.account.address;
+        // Check premium status
+        this.checkPremiumStatus();
+      } else {
+        this.walletAddress = null;
+        this.isPremiumUser = false;
+      }
+    });
+
     // Add premium status check to existing initialization
     const premiumStatus = localStorage.getItem('premiumStatus');
     if (premiumStatus) {
@@ -93,7 +112,7 @@ export class MineComponent {
 
     this.fetchDeviceInformation();
     this.calculateElapsedTime();
-    setInterval(() => this.calculateElapsedTime(), 1000 * 60);
+    this.startTimer();
 
     // Check saved mining state
     const savedMiningState = localStorage.getItem('miningState');
@@ -112,7 +131,7 @@ export class MineComponent {
           this.bandwidth.status = 'Active';
           this.bandwidth.statusColor = 'green';
           this.buttonLabel = 'Stop Mining';
-          this.miningStartTime = state.miningStartTime;
+          this.profile.lastMiningTime = state.miningStartTime;
           this.startSpeedCheck();
         } else {
           // Clear mining state if beyond 6 hours
@@ -148,20 +167,20 @@ export class MineComponent {
   }
 
   calculateElapsedTime(): void {
-    if (this.miningStartTime) {
+    if (this.profile.lastMiningTime) {
       const now = new Date().getTime();
-      this.elapsedHours = Math.floor(
-        (now - this.miningStartTime) / (1000 * 60 * 60)
+      this.elapsedSeconds = Math.floor(
+        (now - this.profile.lastMiningTime) / 1000 // Changed from hours
       );
       this.updatePowerDots(); // Update power dots based on elapsed hours
     }
   }
 
   updatePowerDots(): void {
-    const dotsToUpdate = Math.min(this.elapsedHours, 6); // Only 6 dots max
+    const dotsToUpdate = Math.min(this.elapsedSeconds, 6); // Only 6 dots max
     const initialPower = 12200; // Initial power value
     const reductionPerHour = 2033; // Power reduction per hour
-    let reducedPower = initialPower - this.elapsedHours * reductionPerHour;
+    let reducedPower = initialPower - this.elapsedSeconds * reductionPerHour;
 
     if (reducedPower < 0) {
       reducedPower = 0; // Ensure power does not go below 0
@@ -180,15 +199,84 @@ export class MineComponent {
       this.powerDots[i] = `dot green`; // Green color for remaining dots
     }
 
-    if (this.elapsedHours >= 6) {
+    if (this.elapsedSeconds >= 6) {
       this.powerStatusColor = 'red'; // Show cooldown when 6 hours are completed
     }
   }
-  handleMiningToggle(): void {
-    if (this.isMining) {
-      this.stopMining();
+
+  async handleMiningToggle(): Promise<void> {
+    if (!this.isMining) {
+      // Start mining
+      this.isMining = true;
+      this.bandwidth.status = 'Active';
+      this.bandwidth.statusColor = 'green';
+      this.profile.lastMiningTime = new Date().getTime();
+      this.elapsedSeconds = 0;
+      
+      // Save mining state
+      localStorage.setItem(
+        'miningState',
+        JSON.stringify({
+          isMining: true,
+          miningStartTime: this.profile.lastMiningTime,
+        })
+      );
+
+      this.startSpeedCheck();
     } else {
-      this.startMining();
+      // Stop mining
+      this.isMining = false;
+      this.bandwidth.status = 'Cooling Down...';
+      this.bandwidth.statusColor = 'orange';
+      
+      // Start 3-second cooldown
+      setTimeout(() => {
+        this.bandwidth.status = 'Inactive';
+        this.bandwidth.statusColor = 'red';
+      }, 3000);
+      
+      // Clear mining state but keep progress
+      localStorage.removeItem('miningState');
+      clearTimeout(this.speedCheckTimer);
+    }
+  }
+
+  async handleClaim(): Promise<void> {
+    if (this.isClaiming) return;
+
+    try {
+      this.isClaiming = true;
+      // Add 3 second cooldown period
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      const tokensEarned = this.isPremiumUser ? 24 : 12;
+      
+      // Update profile balance
+      this.profile.balance += tokensEarned;
+      localStorage.setItem('profileBalance', this.profile.balance.toString());
+      
+      // Reset bandwidth sharing stats
+      this.bandwidth.shares = 0;
+      this.bandwidth.earned = 0;
+      this.accumulatedShares = 0;
+      
+      // Save reset progress to localStorage
+      localStorage.setItem('miningProgress', JSON.stringify({
+        shares: 0,
+        earned: 0,
+        accumulatedShares: 0
+      }));
+      
+      alert(`Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`);
+      
+      // Reset mining timer
+      this.profile.lastMiningTime = new Date().getTime();
+      this.elapsedSeconds = 0;
+    } catch (error) {
+      console.error('Failed to claim tokens:', error);
+      alert('Failed to claim tokens. Please try again.');
+    } finally {
+      this.isClaiming = false;
     }
   }
 
@@ -202,14 +290,14 @@ export class MineComponent {
     this.bandwidth.status = 'Active';
     this.bandwidth.statusColor = 'green';
     this.buttonLabel = 'Stop Mining';
-    this.miningStartTime = new Date().getTime();
+    this.profile.lastMiningTime = new Date().getTime();
 
     // Save mining state
     localStorage.setItem(
       'miningState',
       JSON.stringify({
         isMining: true,
-        miningStartTime: this.miningStartTime,
+        miningStartTime: this.profile.lastMiningTime,
       })
     );
 
@@ -226,30 +314,6 @@ export class MineComponent {
 
     // Clear mining state but keep progress
     localStorage.removeItem('miningState');
-  }
-
-  handleClaim(): void {
-    if (this.elapsedHours >= 6) {
-      this.isClaiming = true;
-      const tokensToAdd = this.bandwidth.earned;
-      
-      // Update balance
-      this.profile.balance += tokensToAdd;
-      
-      // Reset mining stats and clear localStorage
-      setTimeout(() => {
-        this.isClaiming = false;
-        this.bandwidth.shares = 0;
-        this.bandwidth.earned = 0;
-        this.miningStartTime = null;
-        this.elapsedHours = 0;
-        this.accumulatedShares = 0;
-        localStorage.removeItem('miningProgress'); // Clear progress after claiming
-        this.stopMining();
-        alert(`Successfully claimed ${tokensToAdd} tokens! Your new balance is ${this.profile.balance} tokens.`);
-        this.startMiningCooldown();
-      }, 2000);
-    }
   }
 
   startMiningCooldown(): void {
@@ -356,26 +420,24 @@ export class MineComponent {
     }
 
     try {
-      // Premium subscription cost (0.5 TON)
       const amount = toNano('0.5');
-
-      // Your dApp's wallet address where payments will be received
-      const receiverAddress =
-        'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI'; // Replace with your wallet address
-
+      const receiverAddress = 'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI';
+      
+      // Get the global tonConnect instance
+      const tonConnect = (window as any).tonConnect;
+      
       const transaction: SendTransactionRequest = {
-        validUntil: Math.floor(Date.now() / 1000) + 600, // 10 minutes expiration
+        validUntil: Math.floor(Date.now() / 1000) + 600,
         messages: [
           {
             address: receiverAddress,
             amount: amount.toString(),
-            payload: 'te6ccgEBAQEABgAACAVERkZG', // Base64 encoded empty cell
+            payload: 'te6ccgEBAQEABgAACAVERkZG',
           },
         ],
       };
 
-      // Send transaction
-      const result = await this.tonConnect.sendTransaction(transaction);
+      const result = await tonConnect.sendTransaction(transaction);
 
       if (result) {
         // Show loading state
@@ -468,10 +530,34 @@ export class MineComponent {
 
   async connectWallet(): Promise<void> {
     try {
-      await this.tonConnect.connectWallet();
+      // The button will handle the connection automatically
+      // No need for additional connection logic here
     } catch (error) {
       console.error('Failed to connect wallet:', error);
       alert('Failed to connect wallet. Please try again.');
+    }
+  }
+
+  private startTimer() {
+    // Clear any existing interval
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+    }
+
+    this.timerInterval = setInterval(() => {
+      if (this.isMining && this.profile.lastMiningTime) {
+        const now = new Date().getTime();
+        this.elapsedSeconds = Math.floor(
+          (now - this.profile.lastMiningTime) / 1000
+        );
+      }
+    }, 1000);
+  }
+
+  // Clean up when component is destroyed
+  ngOnDestroy() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
     }
   }
 }

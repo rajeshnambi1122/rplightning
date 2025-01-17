@@ -1,2 +1,26 @@
+<div id="ton-connect-button" style="position: fixed; top: 16px; right: 48px; z-index: 1000; min-height: 48px;">
+  <style>
+    /* Fix TON Connect dropdown positioning */
+    .ton-connect-ui__dropdown {
+      right: 0 !important;
+      left: auto !important;
+      transform-origin: top right !important;
+      max-width: 320px !important;
+    }
+    
+    .ton-connect-ui__button {
+      margin-right: 16px !important;
+    }
+
+    .ton-connect-ui__options-list {
+      width: 100% !important;
+      max-width: 300px !important;
+    }
+
+    .ton-connect-ui__option {
+      padding-right: 16px !important;
+    }
+  </style>
+</div>
 <router-outlet></router-outlet>
 <app-bottom-navbar></app-bottom-navbar>

@@ -186,32 +186,37 @@
         </p>
       </div>
 
-      <div
-        style="
-          display: flex;
-          gap: 10px;
-          flex-wrap: wrap;
-          justify-content: center;
-        "
-      >
-        <button
-          class="button"
-          [class.disabled]="isClaiming || isMining || elapsedHours < 6"
-          (click)="handleClaim()"
-          *ngIf="elapsedHours >= 6 && !isMining"
-          style="flex: 1"
-        >
-          Claim Tokens
-        </button>
+      <div class="mining-section">
+        <h2>Mining Status</h2>
+        <div class="stats">
+          <p>
+            <i class="fas fa-clock"></i> Time Elapsed
+            <span class="value">{{ elapsedSeconds }} seconds</span>
+          </p>
+          <p>
+            <i class="fas fa-signal"></i> Status
+            <span class="value" [style.color]="bandwidth.statusColor">{{ bandwidth.status }}</span>
+          </p>
+        </div>
+        
+        <div class="button-container">
+          <button
+            class="button"
+            [class.disabled]="isClaiming || isMining || elapsedSeconds < 6"
+            (click)="handleClaim()"
+            *ngIf="elapsedSeconds >= 6 && !isMining"
+          >
+            Claim Tokens
+          </button>
 
-        <button
-          class="button"
-          [class.disabled]="isClaiming"
-          (click)="handleMiningToggle()"
-          style="flex: 1"
-        >
-          {{ isMining ? "Stop Mining" : "Start Mining" }}
-        </button>
+          <button
+            class="button"
+            [class.disabled]="isClaiming"
+            (click)="handleMiningToggle()"
+          >
+            {{ isMining ? "Stop Mining" : "Start Mining" }}
+          </button>
+        </div>
       </div>
 
       <div class="premium-section">
