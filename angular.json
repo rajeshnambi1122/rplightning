@@ -25,9 +25,9 @@
               "src/favicon.ico",
               "src/assets",
               {
-                "glob": "tonconnect-manifest.json",
-                "input": "src",
-                "output": "/"
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets/"
               }
             ],
             "styles": ["src/styles.css"],
