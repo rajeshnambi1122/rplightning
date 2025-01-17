@@ -82,6 +82,15 @@ export class MineComponent {
       }
     }
 
+    // Restore mining progress from localStorage
+    const savedProgress = localStorage.getItem('miningProgress');
+    if (savedProgress) {
+      const progress = JSON.parse(savedProgress);
+      this.bandwidth.shares = progress.shares;
+      this.bandwidth.earned = progress.earned;
+      this.accumulatedShares = progress.accumulatedShares;
+    }
+
     this.fetchDeviceInformation();
     this.calculateElapsedTime();
     setInterval(() => this.calculateElapsedTime(), 1000 * 60);
@@ -215,23 +224,31 @@ export class MineComponent {
     clearTimeout(this.speedCheckTimer);
     this.updatePowerDots();
 
-    // Clear mining state
+    // Clear mining state but keep progress
     localStorage.removeItem('miningState');
   }
 
   handleClaim(): void {
     if (this.elapsedHours >= 6) {
       this.isClaiming = true;
-      this.profile.balance = this.bandwidth.earned; // Add the earned tokens to the balance
+      const tokensToAdd = this.bandwidth.earned;
+      
+      // Update balance
+      this.profile.balance += tokensToAdd;
+      
+      // Reset mining stats and clear localStorage
       setTimeout(() => {
         this.isClaiming = false;
         this.bandwidth.shares = 0;
         this.bandwidth.earned = 0;
         this.miningStartTime = null;
         this.elapsedHours = 0;
-        alert('Tokens claimed successfully!');
+        this.accumulatedShares = 0;
+        localStorage.removeItem('miningProgress'); // Clear progress after claiming
+        this.stopMining();
+        alert(`Successfully claimed ${tokensToAdd} tokens! Your new balance is ${this.profile.balance} tokens.`);
         this.startMiningCooldown();
-      }, 2000); // Simulate claim API delay
+      }, 2000);
     }
   }
 
@@ -299,7 +316,6 @@ export class MineComponent {
         kbps: res.kbps,
         mbps: res.mbps,
       }));
-      // console.log('Speed results:', this.results);
 
       // Update shares and earned based on the speed
       const totalMbps = results.reduce(
@@ -320,6 +336,13 @@ export class MineComponent {
       }
 
       if (this.bandwidth.earned > 0) this.bandwidth.status = 'Active';
+
+      // Save progress to localStorage
+      localStorage.setItem('miningProgress', JSON.stringify({
+        shares: this.bandwidth.shares,
+        earned: this.bandwidth.earned,
+        accumulatedShares: this.accumulatedShares
+      }));
     } catch (error) {
       console.error('Error in speed check:', error);
     }
