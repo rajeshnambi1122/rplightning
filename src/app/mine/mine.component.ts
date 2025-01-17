@@ -52,8 +52,7 @@ export class MineComponent {
     // Wait for DOM to be ready before initializing TonConnect
     setTimeout(() => {
       this.tonConnect = new TonConnectUI({
-        manifestUrl:
-          'https://rajeshnambi1122.github.io/rplightning/tonconnect-manifest.json',
+        manifestUrl: window.location.origin + '/tonconnect-manifest.json',
         buttonRootId: 'ton-connect-button',
       });
 
