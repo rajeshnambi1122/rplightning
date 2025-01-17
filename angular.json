@@ -75,7 +75,11 @@
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              "src/tonconnect-manifest.json"
+            ],
             "styles": ["src/styles.css"],
             "scripts": []
           }
