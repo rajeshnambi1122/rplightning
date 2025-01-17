@@ -178,24 +178,32 @@ button.claim-button {
 } */
 
 .premium-section {
+  background: #e0e7ff;
+  border-radius: 12px;
   padding: 20px;
-  border-radius: 8px;
-  background: #f5f5f5;
-  margin: 20px 0;
+  margin: 60px 10px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .premium-section h3 {
-  color: #333;
-  margin-bottom: 10px;
+  margin-top: 0;
 }
 
 .premium-section button {
-  background: #0088cc;
+  background: #0056b3;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
+  border-radius: 6px;
+  padding: 12px 24px;
   cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.premium-section button:hover:not(:disabled) {
+  background: #003d82;
 }
 
 .premium-section button:disabled {
