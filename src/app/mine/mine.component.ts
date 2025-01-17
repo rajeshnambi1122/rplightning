@@ -246,6 +246,11 @@ export class MineComponent implements OnInit, OnDestroy {
 
     try {
       this.isClaiming = true;
+      
+      // Show cooling down status
+      this.bandwidth.status = 'Cooling Down...';
+      this.bandwidth.statusColor = 'orange';
+      
       // Add 3 second cooldown period
       await new Promise(resolve => setTimeout(resolve, 3000));
       
@@ -260,7 +265,7 @@ export class MineComponent implements OnInit, OnDestroy {
       this.bandwidth.earned = 0;
       this.accumulatedShares = 0;
       
-      // Update status after claiming
+      // Update status after claiming and cooldown
       this.bandwidth.status = 'Inactive';
       this.bandwidth.statusColor = 'red';
       
