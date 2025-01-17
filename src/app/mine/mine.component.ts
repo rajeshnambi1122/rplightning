@@ -260,6 +260,10 @@ export class MineComponent implements OnInit, OnDestroy {
       this.bandwidth.earned = 0;
       this.accumulatedShares = 0;
       
+      // Update status after claiming
+      this.bandwidth.status = 'Inactive';
+      this.bandwidth.statusColor = 'red';
+      
       // Save reset progress to localStorage
       localStorage.setItem('miningProgress', JSON.stringify({
         shares: 0,
@@ -331,7 +335,7 @@ export class MineComponent implements OnInit, OnDestroy {
     this.speedCheckTimer = setTimeout(() => {
       this.measureSpeedInParallel();
       this.startSpeedCheck(); // Recursive call to continue the timer
-    }, 6000); // 6 seconds
+    }, 1000); // Changed to 1 second interval
   }
 
   private async measureSpeed(): Promise<any> {
@@ -381,15 +385,22 @@ export class MineComponent implements OnInit, OnDestroy {
         mbps: res.mbps,
       }));
 
-      // Update shares and earned based on the speed
-      const totalMbps = results.reduce(
-        (sum, result) => sum + Number(result.mbps),
-        0
-      );
-      this.accumulatedShares += totalMbps;
-      if (this.accumulatedShares > 60) this.accumulatedShares = 60; // Cap shares
-      this.bandwidth.shares = this.accumulatedShares;
-      this.bandwidth.earned = Math.floor(this.accumulatedShares / 5);
+      // Update shares and earned based on time (1 token per second)
+      this.accumulatedShares += 1; // Increment by 1 each second
+      if (this.accumulatedShares >= 6) {
+        this.accumulatedShares = 6; // Cap at 6 shares
+        this.bandwidth.shares = this.accumulatedShares;
+        this.bandwidth.earned = this.accumulatedShares;
+        
+        // Stop mining when we reach 6 shares/seconds
+        this.stopMining();
+        this.bandwidth.status = 'Ready to Claim';
+        this.bandwidth.statusColor = 'green';
+        this.buttonLabel = 'Claim Tokens';
+      } else {
+        this.bandwidth.shares = this.accumulatedShares;
+        this.bandwidth.earned = this.accumulatedShares;
+      }
 
       // Apply premium/regular token caps
       const maxTokens = this.isPremiumUser
@@ -398,8 +409,6 @@ export class MineComponent implements OnInit, OnDestroy {
       if (this.bandwidth.earned > maxTokens) {
         this.bandwidth.earned = maxTokens;
       }
-
-      if (this.bandwidth.earned > 0) this.bandwidth.status = 'Active';
 
       // Save progress to localStorage
       localStorage.setItem('miningProgress', JSON.stringify({

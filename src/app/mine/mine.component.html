@@ -202,9 +202,9 @@
         <div class="button-container">
           <button
             class="button"
-            [class.disabled]="isClaiming || isMining || elapsedSeconds < 6"
+            [class.disabled]="isClaiming"
             (click)="handleClaim()"
-            *ngIf="elapsedSeconds >= 6 && !isMining"
+            *ngIf="accumulatedShares >= 6 && !isMining"
           >
             Claim Tokens
           </button>
@@ -213,6 +213,7 @@
             class="button"
             [class.disabled]="isClaiming"
             (click)="handleMiningToggle()"
+            *ngIf="accumulatedShares < 6"
           >
             {{ isMining ? "Stop Mining" : "Start Mining" }}
           </button>
