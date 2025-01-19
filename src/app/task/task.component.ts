@@ -17,7 +17,7 @@ export class TaskComponent {
   }
   cardData = [
     { 
-      img: "https://www.youtube.com/img/desktop/yt_1200.png", 
+      img: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAAkFBMVEX/////AAD/5+f/oKD/tLT/8vL/+Pj/5OT/2tr/+/v/0dH/pKT/7Oz/nZ3/mpr/NTX/rq7/kZH/jY3/3t7/w8P/Fhb/uLj/Kyv/Z2f/1NT/9PT/qan/lZX/vb3/fn7/bm7/WFj/Q0P/JCT/T0//eHj/SUn/iIj/DQ3/ysr/Li7/cnL/OTn/YmL/RET/XFz/goJdMJwSAAADYUlEQVR4nO3ca1faQBSF4SSEXLkEBRTCXVQUW///v2sUV1e1tZwZGafHvs/3rOXehmFykhAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgf5DnybSTnmeTYjiOq7psdbu93mw2GJw1BrPZrNfttsq6quL5bpKdp1E7SXLff/RpTLNh3FssV+v+xSg0c7u5219dbs+qedHxHcNaMl7eGeZ+z2jVinzHsdEy/ccfca/ubEjXp23gSew7lJnz0zfQKH3HMtHZOOkgHPsOZmDlpoIw1LMmDF1VEC59RxO7dtZBmPrOJpS6qyDs+g4nVDnsYOU7nNDCYQeh73BCe5cd6FgQcpcVhEPf8UQipx20fMcTKZx2sPUdTyR22sHKdzyRrtMO+r7jiWxFWS4sO9gkvvNJXIqypC27DkZt3/kkZFcLUdCWnTBvqdgg9IUdBEF2ZdFB5jufQC77pB9mpHPzYUvhOZ9EIov1MifOe6YdaNgotmXz5J+z8mhp1oGGyWrn1qyDZmNpNHOp/UUTE05QXt0ziWW9PdNwwSAcq7++b5QMxB30POUykdl00Jw+sq1VGM68pDJj2UEQ7NaiAwceMpma2HYQBLXkwLNPT2ROOD74433k5PH4gTefHcjCRzpoloWHYwc+fm4cKx/roPh27MCvfh50BF8OGjqwXxOTG8mBGtZE6+/GSnaxpeG70bKDydGF4IWGPZLVXrlzL2xAx15ZeIvl1w6MhggarpnMr53nRjNmDdfOU8MZiulQUcMMxWyW1ja+Ub/zG0/EaKZamjagY6ZqMFsf2jzLq2G2Hsg+31GQfrdo4N0LjX+LbCCUiTbGvxtNfeeTkK1ytk90b1S81WB5M1Vo7zueCM9giC+eLS18xxPpOO1AyfP7TjvQsE1srF12oGJ7EASCAbk93+GEXH4xPPgOJ+TyQVUlS6LDV3kUvczj7mldHbuDZ4aP18ipuGA6mMpmCMaUbA4O3LzgqOn1xkbbbkDyNxtVZ8Gz8Ylf6RmoeFj7rWJwfZqPxO1+O1e0Gr7Vzobj8mZ7efX0KxAGT+CNNv399cP9ohfPi0jF6EgkT5J2lB5+D2Qex1VV12VZthplWddVVcXj4a44/BDINMm/TnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPB3PwCJ/DIIowIlpwAAAABJRU5ErkJggg==", 
       name: "YouTube", 
       button: "Start", 
       link: "https://example.com",  // The link to open on "Start" click
