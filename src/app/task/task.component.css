@@ -1,11 +1,422 @@
-* {
-  margin: 0;
-  padding: 0;
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  background-color: #0a1b44;
+  /* Background color */
+  color: white;
+  min-height: 100vh;
+
+  .tasks-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .tasks-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    color: #a6b1e1;
+    text-align: center;
+  }
+
+  .custom-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    .tab {
+      padding: 8px 16px;
+      font-size: 1rem;
+      color: #a6b1e1;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+
+      &.active {
+        color: #fff;
+        font-weight: bold;
+        border-bottom: 2px solid #fff;
+        /* Highlight active tab */
+      }
+    }
+  }
+
+  .tab-content {
+    width: 100%;
+    max-width: 600px;
+
+    .tasks-tab {
+      text-align: center;
+      color: #ccc;
+      font-size: 1rem;
+    }
+
+    .rewards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .rewards-title {
+        font-size: 9px;
+        height: 10px;
+        /* font-weight: bold; */
+        text-align: justify;
+      }
+
+      .reward-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        background-color: #122757;
+        /* Card background color */
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s;
+
+        &:hover {
+          transform: translateY(-4px);
+          /* Lift effect */
+        }
+
+        .reward-info {
+          display: flex;
+          /* Flexbox for title and image */
+          align-items: center;
+          gap: 16px;
+          /* Spacing between text and image */
+
+          h2 {
+            font-size: 1.2rem;
+            margin: 0;
+            color: #fff;
+          }
+
+          .availability {
+            font-size: 0.9rem;
+            color: #a6b1e1;
+
+            .status {
+              color: #00ff00;
+              /* Green for NOW ✔ */
+              font-weight: bold;
+            }
+          }
+        }
+
+        .reward-image {
+          width: 60px;
+          height: 60px;
+          object-fit: contain;
+        }
+
+        button {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 8px;
+          font-size: 0.9rem;
+          cursor: pointer;
+          transition: transform 0.3s;
+
+          &.claim-button {
+            background-color: #00ff00;
+            color: black;
+          }
+
+          &.play-button {
+            background-color: #1eb1fc;
+            color: white;
+          }
+
+          &.coming-soon-button {
+            background-color: #888;
+            color: white;
+            cursor: not-allowed;
+          }
+
+          &:hover:not(.coming-soon-button) {
+            transform: scale(1.05);
+            /* Slight hover effect */
+          }
+        }
+      }
+
+    }
+  }
+
+  
+  .reward-dialog-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed; /* Ensure fixed positioning to center */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* This ensures it's centered */
+    text-align: center;
+    max-width: 100%;
+    width: 90%; /* Make it responsive */
+    padding: 16px;
+    overflow-y: auto; /* Allow vertical scrolling if the content overflows */
+    box-sizing: border-box; /* Ensure padding doesn't overflow */
+  }
+  
+  @media (max-width: 500px) {
+    .reward-dialog-container {
+      width: 90%; /* Adjust width to fit smaller screens */
+      height: auto;
+      max-width: 100%;
+    }
+  }
+  
+  .reward-dialog-container {
+    min-height: 200px;  /* Set minimum height for small screens */
+    height: auto;  /* Allow the height to adjust dynamically */
+  }
+  cdk-overlay-pane {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .go-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .go-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  @media (max-width: 768px) {
+    .reward-card {
+      flex-direction: column;
+      /* Stack vertically */
+      text-align: center;
+      /* Center-align the text and image */
+      gap: 16px;
+      /* Spacing between elements */
+
+      .reward-info {
+        flex-direction: column;
+        /* Stack title and image */
+        align-items: center;
+      }
+
+      .reward-image {
+        margin-bottom: 8px;
+      }
+
+      button {
+        width: 100%;
+        margin-top: 12px;
+      }
+    }
+  }
+
+
+  @media (max-width: 480px) {
+    .tasks-title {
+      font-size: 1.5rem;
+    }
+
+    .tasks-subtitle {
+      font-size: 1rem;
+    }
+
+    .custom-tabs {
+      .tab {
+        font-size: 0.8rem;
+      }
+    }
+
+    .tab-content {
+      .rewards-container {
+        .reward-card {
+          padding: 12px;
+
+          .reward-image {
+            width: 50px;
+            height: 50px;
+          }
+
+          button {
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+  }
 }
-.center-text {
+
+
+/* Task */
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 16px;
+  width: 100%;
+  max-width: 320px;
+  margin: 8px;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.text {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.start-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-button:hover {
+  background-color: #0056b3;
+}
+
+.claim-button {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.claim-button:disabled {
+  background-color: #6c757d; /* Gray color when disabled */
+  cursor: not-allowed;
+}
+
+/* .card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  gap: 16px; 
+}
+
+.card-content {
+  display: flex;
+  align-items: baseline; 
+  justify-content: space-between;
+  width: 100%; 
+}
+
+.text {
+  flex-grow: 1; 
+  text-align: center; 
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  margin-bottom: 70px; /* To ensure content isn't hidden behind the bottom navbar */
 }
+
+.image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  display: block; 
+}
+
+.start-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex; 
+  align-items: center; 
+}
+
+.start-button:hover {
+  background-color: #0056b3; 
+}
+
+
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column; 
+    align-items: flex-start; 
+  }
+
+  .text {
+    text-align: center; 
+  }
+
+  .image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .start-button {
+    width: 25%; 
+    margin-top: 12px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .text {
+    font-size: 1rem; 
+  }
+}
+.rewards-title1 {
+  font-size: 9px;
+  height: 10px;
+  text-align: justify;
+} */

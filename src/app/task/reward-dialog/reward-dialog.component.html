@@ -1,0 +1,16 @@
+<!-- <mat-dialog-title>Reward for Day {{ data.currentDay }}</mat-dialog-title>
+
+<mat-dialog-content>
+  <p>Your reward for today is <strong>{{ data.amount }}$</strong>.</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onClaim()">Claim</button>
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions> -->
+
+<div class="dialog-container">
+    <h1>Day {{ data.currentDay }} - Reward</h1>
+    <p>Amount: ${{ data.rewardAmount }}</p>
+    <button (click)="onClaim()">Claim</button>
+  </div>

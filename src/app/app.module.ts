@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -14,6 +14,8 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
 import { FriendsComponent } from './friends/friends.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { AboutComponent } from './about/about.component';
+import{RewardDialogComponent} from './task/reward-dialog/reward-dialog.component'
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { AboutComponent } from './about/about.component';
     FriendsComponent,
     WalletComponent,
     AboutComponent,
+    RewardDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -33,8 +36,11 @@ import { AboutComponent } from './about/about.component';
     MatIconModule,
     MatBottomSheetModule,
     HttpClientModule,
+    MatTabsModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}
