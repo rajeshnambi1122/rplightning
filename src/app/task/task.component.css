@@ -149,39 +149,69 @@
   }
 
   
-  .reward-dialog-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed; /* Ensure fixed positioning to center */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* This ensures it's centered */
-    text-align: center;
-    max-width: 100%;
-    width: 90%; /* Make it responsive */
-    padding: 16px;
-    overflow-y: auto; /* Allow vertical scrolling if the content overflows */
-    box-sizing: border-box; /* Ensure padding doesn't overflow */
-  }
+  /* Dialog Container */
+.reward-dialog-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Grid Layout for the Small Boxes */
+.reward-grid {
+  display: grid;
+  /* grid-template-columns: repeat(2, 1fr);  */
+  gap: 8px; /* Small gap between the boxes */
+  width: 100%; /* Full width */
+  max-width: 300px; /* Limit the maximum width */
+}
+
+/* Styling for Each Small Box */
+.reward-card {
+  background-color: #ffffff;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  padding: 8px; /* Smaller padding for compact design */
+  font-size: 0.8rem; /* Smaller text size */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.reward-card.active {
+  border-color: #4caf50; /* Highlight the active box */
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.5);
+}
+
+.reward-card.done {
+  background-color: #f0f8ff; /* Light blue for completed rewards */
+}
+
+.reward-card h2 {
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.reward-card p {
+  font-size: 0.8rem;
+  margin: 4px 0;
+}
+
+.reward-card .locked {
+  color: gray;
+  font-size: 0.7rem;
+}
+
+/* Responsive Styling */
+@media (max-width: 480px) {
   
-  @media (max-width: 500px) {
-    .reward-dialog-container {
-      width: 90%; /* Adjust width to fit smaller screens */
-      height: auto;
-      max-width: 100%;
-    }
+
+  .reward-card {
+    padding: 6px; /* Even smaller padding for narrow devices */
   }
-  
-  .reward-dialog-container {
-    min-height: 200px;  /* Set minimum height for small screens */
-    height: auto;  /* Allow the height to adjust dynamically */
-  }
-  cdk-overlay-pane {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-  }
+}
+
 
   .go-button {
     background-color: #4caf50;
@@ -274,27 +304,28 @@
   align-items: center;
   background-color: #f8f9fa;
   border-radius: 12px;
-  padding: 16px;
+  padding: 6px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   gap: 16px;
   width: 100%;
   max-width: 320px;
-  margin: 8px;
+  margin: 0px;
 }
 
 .card-content {
   display: flex;
-  align-items: center;
+  align-items: inherit;
   justify-content: space-between;
   width: 100%;
 }
 
 .text {
-  flex-grow: 1;
+  /* flex-grow: 1; */
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: bold;
   color: #333;
+  text-shadow: 0 0 black;
 }
 
 .image {
@@ -420,3 +451,101 @@
   height: 10px;
   text-align: justify;
 } */
+
+
+
+
+/* Reward dialog container styling */
+.custom-reward-dialog {
+  background-color: #2e3b4e; /* Custom background color */
+  color: white; /* Set text color to white for contrast */
+  border-radius: 12px; /* Rounded corners for the dialog */
+  padding: 20px; /* Padding for a spacious look */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Dialog header styling */
+.custom-reward-dialog h2 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Reward card styling inside the dialog */
+.reward-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 days layout */
+  gap: 16px;
+  padding: 16px;
+}
+
+/* Each reward card style */
+.reward-card {
+  background-color: #ffffff; /* White background for each card */
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for cards */
+  text-align: center;
+  transition: all 0.3s ease-in-out; /* Smooth transition for hover effect */
+  font-family: 'Roboto', sans-serif;
+}
+
+.reward-card:hover {
+  transform: translateY(-5px); /* Slight hover effect */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Increased shadow on hover */
+}
+
+/* Reward amount and locked state styling */
+.reward-card.done {
+  background-color: #e0f7fa; /* Light blue for done rewards */
+}
+
+.reward-card.locked {
+  background-color: #f0f0f0; /* Light gray background for locked cards */
+}
+
+.reward-card p {
+  font-size: 1rem;
+  color: #333; /* Darker color for the reward amount */
+}
+
+/* Styling for the claim button */
+.reward-card button {
+  background-color: #4caf50; /* Green background for claim button */
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.reward-card button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+/* Locked icon and text styling */
+.locked-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.7; /* Slight opacity for locked icons */
+}
+
+.locked span {
+  color: #bdbdbd; /* Gray text for locked days */
+  margin-left: 8px;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .reward-grid {
+    grid-template-columns: repeat(2, 1fr); /* Two columns on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .reward-grid {
+    grid-template-columns: 1fr; /* One column on very small screens */
+  }
+}

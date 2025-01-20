@@ -24,9 +24,9 @@
   <div class="tab-content">
     <!-- Tasks Tab Content -->
     <div *ngIf="selectedTab === 'tasks'" class="tasks-tab">
-      <h1 class="rewards-title1">
+      <!-- <h1 class="rewards-title1">
         Task <span>⭐</span>
-      </h1>
+      </h1> -->
       <!-- <div class="card">
         <div class="card-content">
           <img class="image" src="your-image-url.jpg" alt="image">
@@ -69,10 +69,21 @@
 
     <!-- Rewards Tab Content -->
     <div *ngIf="selectedTab === 'rewards'" class="rewards-container">
-      <h1 class="rewards-title">
+      <!-- <h1 class="rewards-title">
         REWARDS <span>🏆⭐</span>
-      </h1>
+      </h1> -->
 
+      <!-- <div class="reward-card">
+        <div class="reward-info">
+          <h2>DAILY REWARD</h2>
+          <p class="availability">
+            <span *ngIf="isDayAvailable">Available In <span class="status">NOW ✔</span></span>
+            <span *ngIf="!isDayAvailable">Available In {{ remainingTime }}</span>
+          </p>
+        </div>
+        <img class="reward-image" src="assets/rewards.jpg" alt="Daily Reward" />
+        <button class="go-button" (click)="openRewardDialog()" [disabled]="!isDayAvailable">GO</button>
+      </div> -->
       <div class="reward-card">
         <div class="reward-info">
           <h2>DAILY REWARD</h2>
@@ -84,6 +95,9 @@
         <img class="reward-image" src="assets/rewards.jpg" alt="Daily Reward" />
         <button class="go-button" (click)="openRewardDialog()" [disabled]="!isDayAvailable">GO</button>
       </div>
+      
+      
+      
       <div class="reward-card">
         <div class="reward-info">
           <h2>WHEEL OF FORTUNE</h2>

@@ -1,48 +1,132 @@
-/* reward-dialog.component.css */
-.dialog-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+/* .reward-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+  gap: 16px;
   padding: 16px;
 }
 
-.dialog-container h1 {
-  font-size: 1.5rem;
+.reward-card {
+  background-color: #ffffff;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.reward-card.active {
+  border-color: #4caf50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.6);
+}
+
+.reward-card.done {
+  background-color: #f0f8ff;
+}
+
+.reward-card h2 {
+  font-size: 1rem;
   margin-bottom: 8px;
 }
 
-.dialog-container p {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
+.reward-card p {
+  font-size: 0.9rem;
+  margin: 8px 0;
 }
 
-.dialog-container button {
-  padding: 10px 20px;
-  border-radius: 8px;
+.reward-card button {
+  padding: 8px 16px;
+  border-radius: 4px;
   background-color: #4caf50;
   color: white;
   cursor: pointer;
   border: none;
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
-.dialog-container button:hover {
+.reward-card button:hover {
   background-color: #45a049;
+} */
+.reward-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.reward-card {
+  background-color: #ffffff;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.reward-card.active {
+  border-color: #4caf50;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.6);
+}
+
+.reward-card.done {
+  background-color: #f0f8ff;
+}
+
+.reward-card h2 {
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.reward-card button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+.reward-card button:hover {
+  background-color: #45a049;
+}
+.reward-card .locked {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px; /* Set a consistent height for the locked section */
+}
+
+.locked-icon {
+  width: 24px; /* Adjust the size of the locked icon */
+  height: 24px;
+  opacity: 0.6; /* Slight transparency for better styling */
 }
 
 @media (max-width: 768px) {
-  .dialog-container h1 {
-    font-size: 1.2rem;
-  }
+  /* .reward-grid {
+    grid-template-columns: repeat(2, 1fr); 
+  } */
 
-  .dialog-container p {
-    font-size: 1rem;
-  }
-
-  .dialog-container button {
-    width: 100%;
+  .reward-card h2 {
     font-size: 0.9rem;
+  }
+
+  .reward-card p {
+    font-size: 0.8rem;
+  }
+
+  .reward-card button {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* .reward-grid {
+    grid-template-columns: 1fr; 
+  } */
+
+  .reward-card {
+    padding: 12px;
   }
 }
