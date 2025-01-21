@@ -9,3 +9,64 @@
   min-height: 100vh;
   margin-bottom: 70px; /* To ensure content isn't hidden behind the bottom navbar */
 }
+
+.wallet-container {
+  padding: 20px;
+  color: white;
+  min-height: 100vh;
+  margin-bottom: 70px;
+}
+
+.wallet-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.wallet-button-container {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+  min-height: 48px;
+}
+
+.wallet-info {
+  margin-top: 32px;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.info-card h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #a6b1e1;
+}
+
+.address {
+  word-break: break-all;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.balance {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.not-connected {
+  text-align: center;
+  color: #a6b1e1;
+  margin-top: 32px;
+}

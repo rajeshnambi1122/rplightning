@@ -56,50 +56,23 @@ export class MineComponent implements OnInit, OnDestroy {
     const savedBalance = localStorage.getItem('profileBalance');
     this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
 
-    window.tonConnectUI.onStatusChange((wallet) => {
-      if (wallet) {
-        this.walletAddress = wallet.account.address;
-        // Check premium status
-        const premiumStatus = localStorage.getItem('premiumStatus');
-        if (premiumStatus) {
-          const status = JSON.parse(premiumStatus);
-          if (status.expiry > new Date().getTime()) {
-            this.isPremiumUser = true;
-            this.profile.premiumExpiry = status.expiry;
-          }
-        }
-      } else {
-        this.walletAddress = null;
-        this.isPremiumUser = false;
-      }
-    });
+    // Move the wallet status subscription to ngOnInit
   }
 
   ngOnInit(): void {
-    // Add wallet status subscription
-    window.tonConnectUI.onStatusChange((wallet) => {
-      if (wallet) {
-        this.walletAddress = wallet.account.address;
-        // Check premium status
-        this.checkPremiumStatus();
-      } else {
-        this.walletAddress = null;
-        this.isPremiumUser = false;
-      }
-    });
+    // Set initial state
+    this.walletAddress = window.walletState.address;
+    this.isPremiumUser = window.walletState.isPremium;
+    this.profile.premiumExpiry = window.walletState.premiumExpiry;
 
-    // Add premium status check to existing initialization
-    const premiumStatus = localStorage.getItem('premiumStatus');
-    if (premiumStatus) {
-      const status = JSON.parse(premiumStatus);
-      if (status.expiry > new Date().getTime()) {
-        this.isPremiumUser = true;
-        this.profile.premiumExpiry = status.expiry;
-      } else {
-        // Premium expired
-        localStorage.removeItem('premiumStatus');
+    // Set up interval to check wallet state
+    setInterval(() => {
+      if (this.walletAddress !== window.walletState.address) {
+        this.walletAddress = window.walletState.address;
+        this.isPremiumUser = window.walletState.isPremium;
+        this.profile.premiumExpiry = window.walletState.premiumExpiry;
       }
-    }
+    }, 1000);
 
     // Restore mining progress from localStorage
     const savedProgress = localStorage.getItem('miningProgress');
@@ -212,7 +185,7 @@ export class MineComponent implements OnInit, OnDestroy {
       this.bandwidth.statusColor = 'green';
       this.profile.lastMiningTime = new Date().getTime();
       this.elapsedSeconds = 0;
-      
+
       // Save mining state
       localStorage.setItem(
         'miningState',
@@ -228,13 +201,13 @@ export class MineComponent implements OnInit, OnDestroy {
       this.isMining = false;
       this.bandwidth.status = 'Cooling Down...';
       this.bandwidth.statusColor = 'orange';
-      
+
       // Start 3-second cooldown
       setTimeout(() => {
         this.bandwidth.status = 'Inactive';
         this.bandwidth.statusColor = 'red';
       }, 3000);
-      
+
       // Clear mining state but keep progress
       localStorage.removeItem('miningState');
       clearTimeout(this.speedCheckTimer);
@@ -246,38 +219,43 @@ export class MineComponent implements OnInit, OnDestroy {
 
     try {
       this.isClaiming = true;
-      
+
       // Show cooling down status
       this.bandwidth.status = 'Cooling Down...';
       this.bandwidth.statusColor = 'orange';
-      
+
       // Add 3 second cooldown period
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
       const tokensEarned = this.isPremiumUser ? 24 : 12;
-      
+
       // Update profile balance
       this.profile.balance += tokensEarned;
       localStorage.setItem('profileBalance', this.profile.balance.toString());
-      
+
       // Reset bandwidth sharing stats
       this.bandwidth.shares = 0;
       this.bandwidth.earned = 0;
       this.accumulatedShares = 0;
-      
+
       // Update status after claiming and cooldown
       this.bandwidth.status = 'Inactive';
       this.bandwidth.statusColor = 'red';
-      
+
       // Save reset progress to localStorage
-      localStorage.setItem('miningProgress', JSON.stringify({
-        shares: 0,
-        earned: 0,
-        accumulatedShares: 0
-      }));
-      
-      alert(`Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`);
-      
+      localStorage.setItem(
+        'miningProgress',
+        JSON.stringify({
+          shares: 0,
+          earned: 0,
+          accumulatedShares: 0,
+        })
+      );
+
+      alert(
+        `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
+      );
+
       // Reset mining timer
       this.profile.lastMiningTime = new Date().getTime();
       this.elapsedSeconds = 0;
@@ -396,7 +374,7 @@ export class MineComponent implements OnInit, OnDestroy {
         this.accumulatedShares = 6; // Cap at 6 shares
         this.bandwidth.shares = this.accumulatedShares;
         this.bandwidth.earned = this.accumulatedShares;
-        
+
         // Stop mining when we reach 6 shares/seconds
         this.stopMining();
         this.bandwidth.status = 'Ready to Claim';
@@ -416,11 +394,14 @@ export class MineComponent implements OnInit, OnDestroy {
       }
 
       // Save progress to localStorage
-      localStorage.setItem('miningProgress', JSON.stringify({
-        shares: this.bandwidth.shares,
-        earned: this.bandwidth.earned,
-        accumulatedShares: this.accumulatedShares
-      }));
+      localStorage.setItem(
+        'miningProgress',
+        JSON.stringify({
+          shares: this.bandwidth.shares,
+          earned: this.bandwidth.earned,
+          accumulatedShares: this.accumulatedShares,
+        })
+      );
     } catch (error) {
       console.error('Error in speed check:', error);
     }
@@ -435,35 +416,34 @@ export class MineComponent implements OnInit, OnDestroy {
 
     try {
       const amount = toNano('0.5');
-      const receiverAddress = 'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI';
-      
-      // Get the global tonConnect instance
-      const tonConnect = (window as any).tonConnect;
-      
-      const transaction: SendTransactionRequest = {
-        validUntil: Math.floor(Date.now() / 1000) + 600,
+      const receiverAddress =
+        'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI';
+
+      // Use the global tonConnectUI instance directly
+      const transaction = {
+        validUntil: Math.floor(Date.now() / 1000) + 600, // 10 minutes from now
         messages: [
           {
             address: receiverAddress,
             amount: amount.toString(),
-            payload: 'te6ccgEBAQEABgAACAVERkZG',
           },
         ],
       };
 
-      const result = await tonConnect.sendTransaction(transaction);
-
-      if (result) {
+      try {
         // Show loading state
-        this.isClaiming = true; // Reuse existing loading state
+        this.isClaiming = true;
 
-        try {
-          // Wait for transaction confirmation
-          await this.checkTransactionStatus(result.boc);
+        // Send transaction
+        const result = await window.tonConnectUI.sendTransaction(transaction);
+
+        if (result) {
+          // Wait a few seconds for transaction to process
+          await new Promise((resolve) => setTimeout(resolve, 3000));
 
           // Update premium status
-          this.isPremiumUser = true;
-          this.profile.premiumExpiry =
+          window.walletState.isPremium = true;
+          window.walletState.premiumExpiry =
             new Date().getTime() + 30 * 24 * 60 * 60 * 1000; // 30 days
 
           // Save premium status
@@ -471,58 +451,28 @@ export class MineComponent implements OnInit, OnDestroy {
             'premiumStatus',
             JSON.stringify({
               isPremium: true,
-              expiry: this.profile.premiumExpiry,
+              expiry: window.walletState.premiumExpiry,
             })
           );
+
+          // Update component state
+          this.isPremiumUser = true;
+          this.profile.premiumExpiry = window.walletState.premiumExpiry;
 
           alert(
             'Premium upgrade successful! You can now earn up to 24 tokens per day.'
           );
-        } catch (error) {
-          console.error('Transaction verification failed:', error);
-          alert(
-            'Could not verify payment. Please contact support if funds were deducted.'
-          );
-        } finally {
-          this.isClaiming = false;
         }
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        alert('Transaction failed. Please try again.');
+      } finally {
+        this.isClaiming = false;
       }
     } catch (error) {
-      console.error('Premium upgrade payment failed:', error);
-      alert('Payment failed. Please try again.');
+      console.error('Premium upgrade failed:', error);
+      alert('Premium upgrade failed. Please try again.');
     }
-  }
-
-  private async checkTransactionStatus(transactionHash: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      let attempts = 0;
-      const maxAttempts = 10;
-
-      const checkInterval = setInterval(async () => {
-        try {
-          // Query your backend to verify the transaction
-          const response = await this.http
-            .get<{ status: string }>(
-              `https://your-backend.com/api/verify-transaction/${transactionHash}`
-            )
-            .toPromise();
-
-          if (response?.status === 'completed') {
-            clearInterval(checkInterval);
-            resolve();
-          }
-
-          attempts++;
-          if (attempts >= maxAttempts) {
-            clearInterval(checkInterval);
-            reject(new Error('Transaction verification timeout'));
-          }
-        } catch (error) {
-          clearInterval(checkInterval);
-          reject(error);
-        }
-      }, 3000); // Check every 3 seconds
-    });
   }
 
   // Add this method to check premium status on init

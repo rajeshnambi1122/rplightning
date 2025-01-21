@@ -1,3 +1,48 @@
-<div class="center-text">
-  <p style="color: white">wallet works!</p>
+<div class="wallet-container">
+  <div class="wallet-content">
+    <h1>Wallet</h1>
+
+    <!-- TON Connect Button -->
+    <div id="ton-connect-button" class="wallet-button-container">
+      <style>
+        .ton-connect-ui__dropdown {
+          right: 0 !important;
+          left: auto !important;
+          transform-origin: top right !important;
+          max-width: 320px !important;
+        }
+
+        .ton-connect-ui__button {
+          margin-right: 16px !important;
+        }
+
+        .ton-connect-ui__options-list {
+          width: 100% !important;
+          max-width: 300px !important;
+        }
+
+        .ton-connect-ui__option {
+          padding-right: 16px !important;
+        }
+      </style>
+    </div>
+
+    <!-- Wallet Information (shown when connected) -->
+    <div class="wallet-info" *ngIf="walletAddress">
+      <div class="info-card">
+        <h2>Wallet Address</h2>
+        <p class="address">{{ formatAddress(walletAddress) }}</p>
+      </div>
+
+      <div class="info-card">
+        <h2>Balance</h2>
+        <p class="balance">{{ balance }} TON</p>
+      </div>
+    </div>
+
+    <!-- Not Connected Message -->
+    <div class="not-connected" *ngIf="!walletAddress">
+      <p>Connect your wallet to view your balance and transaction history</p>
+    </div>
+  </div>
 </div>
