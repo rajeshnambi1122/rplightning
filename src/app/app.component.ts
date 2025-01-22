@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TonConnectUI } from '@tonconnect/ui';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 declare global {
   interface Window {
@@ -8,6 +10,7 @@ declare global {
       address: string | null;
       isPremium: boolean;
       premiumExpiry: number | null;
+      tokenBalance: number;
     };
   }
 }
@@ -19,6 +22,16 @@ declare global {
 })
 export class AppComponent implements OnInit {
   title = 'rplightning';
+  currentRoute: string = '';
+  tokenBalance: number = 0;
+
+  constructor(private router: Router) {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.currentRoute = event.url;
+      });
+  }
 
   ngOnInit() {
     // Initialize wallet state
@@ -26,6 +39,7 @@ export class AppComponent implements OnInit {
       address: null,
       isPremium: false,
       premiumExpiry: null,
+      tokenBalance: 0,
     };
 
     // Initialize TonConnect
@@ -39,12 +53,33 @@ export class AppComponent implements OnInit {
       if (wallet) {
         window.walletState.address = wallet.account.address;
         this.checkPremiumStatus();
+        this.loadTokenBalance();
       } else {
         window.walletState.address = null;
         window.walletState.isPremium = false;
         window.walletState.premiumExpiry = null;
+        window.walletState.tokenBalance = 0;
+        this.tokenBalance = 0;
       }
     });
+
+    // Load initial token balance
+    this.loadTokenBalance();
+  }
+
+  private loadTokenBalance() {
+    const savedBalance = localStorage.getItem('profileBalance');
+    if (savedBalance) {
+      this.tokenBalance = parseFloat(savedBalance);
+      window.walletState.tokenBalance = this.tokenBalance;
+    }
+  }
+
+  shouldShowBalance(): boolean {
+    return (
+      !['/mine', '/about'].includes(this.currentRoute) &&
+      window.walletState?.address !== null
+    );
   }
 
   private checkPremiumStatus(): void {

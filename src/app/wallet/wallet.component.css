@@ -70,3 +70,37 @@ h1 {
   color: #a6b1e1;
   margin-top: 32px;
 }
+
+.premium-section {
+  background: rgba(255, 255, 255, 0.15) !important;
+}
+
+.premium-section p {
+  color: #a6b1e1;
+  margin: 8px 0;
+}
+
+.upgrade-button {
+  background: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  margin-top: 16px;
+  width: 100%;
+}
+
+.upgrade-button:hover:not(:disabled) {
+  background: #003d82;
+}
+
+.upgrade-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.ton-logo {
+  width: 50px;
+}

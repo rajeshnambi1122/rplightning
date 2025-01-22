@@ -35,8 +35,32 @@
       </div>
 
       <div class="info-card">
-        <h2>Balance</h2>
+        <div class="balance-header">
+          <h2>Balance</h2>
+          <img src="assets/TON.jpg" alt="TON" class="ton-logo" />
+        </div>
         <p class="balance">{{ balance }} TON</p>
+      </div>
+
+      <!-- Premium Section -->
+      <div class="info-card premium-section">
+        <div *ngIf="!isPremiumUser">
+          <h2>Upgrade to Premium</h2>
+          <p>Get 24 tokens per day for only 0.5 TON</p>
+          <button
+            class="upgrade-button"
+            (click)="upgradeToPremium()"
+            [disabled]="!walletAddress"
+          >
+            Upgrade Now
+          </button>
+        </div>
+
+        <div *ngIf="isPremiumUser">
+          <h2>Premium Status Active</h2>
+          <p>Expires: {{ premiumExpiry | date }}</p>
+          <p>Maximum daily tokens: 24</p>
+        </div>
       </div>
     </div>
 

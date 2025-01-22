@@ -177,41 +177,6 @@ button.claim-button {
   cursor: pointer;
 } */
 
-.premium-section {
-  background: #e0e7ff;
-  border-radius: 12px;
-  padding: 20px;
-  margin: 20px 0;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.premium-section h3 {
-  margin-top: 0;
-}
-
-.premium-section button {
-  background: #0056b3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 12px 24px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-}
-
-.premium-section button:hover:not(:disabled) {
-  background: #003d82;
-  
-}
-
-.premium-section button:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
-}
-
 .mining-section {
   background: #e0e7ff;
   border-radius: 12px;
