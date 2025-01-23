@@ -6,6 +6,7 @@ import { MineComponent } from './mine/mine.component';
 import { TaskComponent } from './task/task.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
 import { WalletComponent } from './wallet/wallet.component';
+import { AdminLoginPageComponent } from './admin-login-page/admin-login-page.component';
 
 const routes: Routes = [
   { path: 'mine', component: MineComponent },
@@ -14,6 +15,11 @@ const routes: Routes = [
   { path: 'friends', component: FriendsComponent },
   { path: 'wallet', component: WalletComponent },
   { path: 'about', component: AboutComponent },
+  {path: 'admin-login-page', component: AdminLoginPageComponent},
+  {
+    path: 'admin-portal',
+    loadChildren: () => import('./admin-portal/admin-portal.module').then((ON) => ON.AdminPortalModule)
+  },
   { path: '', redirectTo: '/mine', pathMatch: 'full' },
 ];
 

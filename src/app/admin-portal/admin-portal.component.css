@@ -1,0 +1,100 @@
+/* Sidenav Styles */
+.sidenav {
+  width: 250px;
+  background-color: white; /* Set the background to white */
+  color: black; /* Default text color */
+}
+
+.sidenav-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background-color: #f1f1f1; /* Light grey background for the header */
+  color: black; /* Black text for the header */
+}
+
+/* Ensure proper alignment of icons and text in the sidenav */
+.sidenav-item {
+  display: flex;
+  align-items: center; /* Vertically align the icon and text */
+  padding: 10px 20px; /* Add padding for spacing */
+  color: black; /* Default text color */
+  text-decoration: none; /* Remove underline from links */
+  transition: all 0.3s ease;
+}
+
+/* Ensure the icons align with the text */
+.sidenav-item mat-icon {
+  margin-right: 16px; /* Add spacing between icon and text */
+  font-size: 24px; /* Set icon size for consistency */
+  color: inherit; /* Match the icon color with the text color */
+}
+
+/* Hover Effect */
+.sidenav-item:hover {
+  background-color: #f0f0f0; /* Light grey background on hover */
+}
+
+/* Selected/Active Item Styling */
+.sidenav-item.selected {
+  background-color: #1976d2; /* Blue background for active item */
+  color: white; /* White text for active item */
+}
+
+.sidenav-item.selected mat-icon {
+  color: white; /* White icon for active item */
+}
+
+.mat-icon {
+  margin-right: 10px;
+  color: inherit; /* Ensure the icon color matches the text color */
+}
+
+
+/* Toolbar Styling */
+.main-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  background-color: #1e1e2f; /* Dark background color */
+  color: white;
+  position: relative;
+}
+
+/* Menu Button (Icon) Styling */
+.menu-btn {
+  color: white; /* Make the icon white */
+  border: none; /* Remove any box around the icon */
+  background: transparent; /* Ensure no background */
+  outline: none;
+}
+
+/* Center the Title */
+.toolbar-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* .menu-btn {
+  color: #ffffff;
+} */
+
+.content {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.content h1 {
+  color: #1e1e2f;
+}
+
+.content p {
+  color: #666666;
+}

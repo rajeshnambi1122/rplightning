@@ -2,4 +2,4 @@
   <span class="balance-value">{{ tokenBalance }} Tokens</span>
 </div>
 <router-outlet></router-outlet>
-<app-bottom-navbar></app-bottom-navbar>
+<app-bottom-navbar *ngIf="showBottomNavbar"></app-bottom-navbar>

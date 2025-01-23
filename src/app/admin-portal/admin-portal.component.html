@@ -1,0 +1,49 @@
+<div style="height: 100vh;">
+    <mat-sidenav-container fxFlexFill class="sidenav-container">
+      <!-- Side Navigation -->
+      <mat-sidenav #sidenav mode="over" class="sidenav">
+        <div class="sidenav-header">
+          <!-- <mat-icon class="sidenav-logo">menu</mat-icon> -->
+          <span>Lighting</span>
+        </div>
+        <mat-nav-list>
+          <a  routerLink="user-details" mat-list-item class="sidenav-item" [ngClass]="{ selected: activeMenu === 'user' }" (click)="setActiveMenu('user')">
+            <mat-icon matListIcon>assignment_ind</mat-icon>
+            <span matLine>User Details</span>
+          </a>
+          <a  routerLink="task-admin" mat-list-item class="sidenav-item" [ngClass]="{ selected: activeMenu === 'task' }" (click)="setActiveMenu('task')">
+            <mat-icon matListIcon>work</mat-icon>
+            <span matLine>Task</span>
+          </a>
+          <a routerLink="ton-connected-user" mat-list-item class="sidenav-item" [ngClass]="{ selected: activeMenu === 'Ton' }" (click)="setActiveMenu('Ton')">
+            <mat-icon matListIcon>attach_money</mat-icon>
+            <span matLine>Ton Connected User's</span>
+          </a>
+          <a mat-list-item class="sidenav-item" [ngClass]="{ selected: activeMenu === 'logout' }" (click)="setActiveMenu('logout')">
+            <mat-icon matListIcon>logout</mat-icon>
+            <span matLine>Logout</span>
+          </a>
+        </mat-nav-list>
+        
+        
+      </mat-sidenav>
+  
+      <!-- Main Content -->
+      <mat-sidenav-content fxFlexFill class="main-content">
+        <mat-toolbar color="primary" class="main-toolbar">
+          <!-- Menu Icon -->
+          <button mat-icon-button (click)="toggleSidenav()" class="menu-btn">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        
+          <!-- Centered Title -->
+          <span class="toolbar-title">Admin Portal</span>
+        </mat-toolbar>
+        <div class="content">
+          <router-outlet></router-outlet>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+  
+  

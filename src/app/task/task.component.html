@@ -18,6 +18,13 @@
     >
       Daily Rewards
     </div>
+    <div
+      class="tab"
+      [class.active]="selectedTab === 'partners'"
+      (click)="selectTab('partners')"
+    >
+    Partners
+    </div>
   </div>
 
   <!-- Tab Content -->
@@ -110,6 +117,10 @@
         />
         <button class="coming-soon-button">Coming Soon...</button>
       </div>
+    </div>
+
+    <div *ngIf="selectedTab === 'partners'" class="tasks-tab">
+         <h2> Comming Soon...</h2>
     </div>
   </div>
 </div>

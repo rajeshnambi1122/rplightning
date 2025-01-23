@@ -1,11 +1,65 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-.center-text {
+.tasks-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  padding: 16px;
+  background-color: #0a1b44; /* Dark blue background */
+  color: white; /* White text color for better contrast */
   min-height: 100vh;
-  margin-bottom: 70px; /* To ensure content isn't hidden behind the bottom navbar */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tasks-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+mat-tree {
+  width: 100%; /* Take full width */
+  max-width: 600px; /* Limit width for larger screens */
+  background-color: white; /* White background for better visibility */
+  color: #0a1b44; /* Text color to match the theme */
+  border-radius: 8px;
+  padding: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+}
+
+mat-tree-node {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 4px 0;
+}
+
+button[mat-icon-button] {
+  margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+  /* Tablets and small devices */
+  .tasks-container {
+    padding: 8px;
+  }
+  .tasks-title {
+    font-size: 1.5rem;
+  }
+  mat-tree {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Small mobile devices */
+  .tasks-title {
+    font-size: 1.2rem;
+  }
+  mat-tree-node {
+    font-size: 0.9rem;
+  }
+  button[mat-icon-button] {
+    margin-right: 4px;
+  }
 }
