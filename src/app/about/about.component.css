@@ -9,7 +9,12 @@
   width: 100%;
   box-sizing: border-box;
 }
-
+.tasks-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  color: #a6b1e1;
+  text-align: center;
+}
 .tasks-title {
   font-size: 2rem;
   font-weight: bold;

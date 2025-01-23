@@ -22,7 +22,7 @@ declare global {
 })
 export class AppComponent implements OnInit {
   title = 'rplightning';
- showBottomNavbar: boolean = true;
+  showBottomNavbar: boolean = true;
   currentRoute: string = '';
   tokenBalance: number = 0;
 
@@ -32,15 +32,16 @@ export class AppComponent implements OnInit {
       // Set condition to hide navbar for specific routes
       const currentRoute = this.router.url;
       // this.showBottomNavbar = currentRoute !== '/admin-login-page || /user-details';
-      const excludedRoutes = ['/admin-login-page', '/admin-portal/user-details'];
+      const excludedRoutes = [
+        '/admin-login-page',
+        '/admin-portal/user-details',
+      ];
 
       this.showBottomNavbar = !excludedRoutes.includes(currentRoute);
     });
   }
 
   ngOnInit() {
-
-   
     // Initialize wallet state
     window.walletState = {
       address: null,
@@ -84,7 +85,7 @@ export class AppComponent implements OnInit {
 
   shouldShowBalance(): boolean {
     return (
-      !['/mine', '/about'].includes(this.currentRoute) &&
+      !['/mine', '/about'].includes(this.router.url) &&
       window.walletState?.address !== null
     );
   }
