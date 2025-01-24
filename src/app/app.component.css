@@ -4,57 +4,148 @@
   background-color: #0a1b44;
   margin: 0;
   padding: 0;
-  /* padding-top: 64px; */
 }
 
 /* .token-balance {
   position: fixed;
   top: 20px;
   right: 20px;
-  background: rgba(224, 231, 255, 0.9);
-  padding: 8px 16px;
-  border-radius: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
+  background: rgba(224, 231, 255, 0.9); 
+  padding: 8px 16px; 
+  border-radius: 20px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  z-index: 1000; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  margin-bottom: 60px; 
+}
+
+.balance-logo {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover; 
 }
 
 .balance-value {
-  color: #0056b3;
-  font-weight: 500;
-  font-size: 16px;
-}  */
+  color: #0056b3; 
+  font-weight: 500; 
+  font-size: 16px; 
+}
+
+.user-icon {
+  width: 24px; 
+  height: 24px; 
+  border-radius: 50%;
+  object-fit: cover; 
+} */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #0a1b44; /* Dark blue background */
+  margin: 0;
+  padding: 0;
+}
 
 .token-balance {
   position: fixed;
   top: 20px;
-  right: 20px;
-  background: rgba(224, 231, 255, 0.9); /* Light semi-transparent background */
-  padding: 8px 16px; /* Inner spacing */
-  border-radius: 20px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-  z-index: 1000; /* Ensure it stays on top */
-  display: flex; /* Align items horizontally */
-  align-items: center; /* Center items vertically */
-  gap: 8px; /* Space between logo and text */
-  margin-bottom: 60px; /* Add margin to create space below */
+  right: 80px;
+  background: rgba(0, 0, 0, 0.6); /* Darker semi-transparent background */
+  padding: 10px 20px; /* Adjusted spacing for balance display */
+  border-radius: 20px; /* Rounded corners for the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More pronounced shadow effect */
+  z-index: 1000; /* Ensure it stays above all elements */
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Increased gap between elements */
 }
 
-.balance-logo {
-  width: 24px; /* Set the width of the logo */
-  height: 24px; /* Set the height of the logo */
-  border-radius: 50%; /* Optional: Make the logo circular */
-  object-fit: cover; /* Ensure the logo maintains its aspect ratio */
+.balance-logo,
+.user-icon {
+  width: 28px; /* Slightly larger logo and user icon */
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .balance-value {
-  color: #0056b3; /* Blue text color */
-  font-weight: 500; /* Medium font weight */
-  font-size: 16px; /* Text size */
+  color: #28a7f0; /* Light blue text color for balance value */
+  font-weight: 600; /* Bolder font for better readability */
+  font-size: 16px; /* Slightly larger text size */
 }
 
+.notification-icon {
+  font-size: 28px; /* Adjust icon size */
+  color: white; /* Icon color */
+  margin-left: 12px; /* Space between balance and bell icon */
+  cursor: pointer; /* Change cursor to pointer for interactivity */
+  position: fixed;
+  top: 20px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.6); /* Darker semi-transparent background */
+  padding: 10px 20px; /* Adjusted spacing for balance display */
+  border-radius: 20px; /* Rounded corners for the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More pronounced shadow effect */
+  z-index: 1000; /* Ensure it stays above all elements */
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Increased gap between elements */
+}
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #0a1b44; /* Dark blue background */
+  margin: 0;
+  padding: 0;
+}
+
+.token-balance {
+  position: fixed;
+  top: 20px;
+  right: 80px;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.7
+  ); /* Darker semi-transparent pill-like background */
+  padding: 10px 20px; /* Spacing around the pill */
+  border-radius: 30px; /* Fully rounded edges for a pill shape */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow effect */
+  z-index: 1000; /* Keeps it on top */
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Space between elements */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between the user icon and logo */
+}
+
+.balance-logo,
 .user-icon {
-  width: 24px; /* Set the width of the user icon */
-  height: 24px; /* Set the height of the user icon */
-  border-radius: 50%; /* Optional: Make the icon circular */
-  object-fit: cover; /* Ensure the icon maintains its aspect ratio */
+  width: 32px; /* Uniform size for icons */
+  height: 32px;
+  border-radius: 50%; /* Circular icons */
+  object-fit: cover;
+}
+
+.balance-value {
+  color: #28a7f0; /* Light blue text color */
+  font-weight: 600; /* Bold font weight */
+  font-size: 16px; /* Text size */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Distinct background for the balance */
+  padding: 6px 12px; /* Padding for the text */
+  border-radius: 12px; /* Rounded corners */
 }
