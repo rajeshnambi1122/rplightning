@@ -43,30 +43,6 @@
       </div>
 
       <!-- Premium Section -->
-      <div class="info-card premium-section">
-        <div *ngIf="!isPremiumUser">
-          <h2>Upgrade to Premium</h2>
-          <p>Get 24 tokens per day for only 0.5 TON</p>
-          <button
-            class="upgrade-button"
-            (click)="upgradeToPremium()"
-            [disabled]="!walletAddress"
-          >
-            Upgrade Now
-          </button>
-        </div>
-
-        <div *ngIf="isPremiumUser">
-          <h2>Premium Status Active</h2>
-          <p>Expires: {{ premiumExpiry | date }}</p>
-          <p>Maximum daily tokens: 24</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Not Connected Message -->
-    <div class="not-connected" *ngIf="!walletAddress">
-      <p>Connect your wallet to view your balance and transaction history</p>
     </div>
   </div>
 </div>

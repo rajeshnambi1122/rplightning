@@ -195,10 +195,12 @@
           </p>
           <p>
             <i class="fas fa-signal"></i> Status
-            <span class="value" [style.color]="bandwidth.statusColor">{{ bandwidth.status }}</span>
+            <span class="value" [style.color]="bandwidth.statusColor">{{
+              bandwidth.status
+            }}</span>
           </p>
         </div>
-        
+
         <div class="button-container">
           <button
             class="button"
@@ -217,30 +219,6 @@
           >
             {{ isMining ? "Stop Mining" : "Start Mining" }}
           </button>
-        </div>
-      </div>
-
-      <div class="premium-section">
-        <!-- Add specific styling to ensure the button container is visible -->
-        <div
-          id="ton-connect-button"
-          style="min-height: 48px; display: block"
-        ></div>
-
-        <div *ngIf="walletAddress">
-          <div *ngIf="!isPremiumUser">
-            <h3>Upgrade to Premium</h3>
-            <p>Get 24 tokens per day for only 0.5 TON</p>
-            <button (click)="upgradeToPremium()" [disabled]="!walletAddress">
-              Upgrade Now
-            </button>
-          </div>
-
-          <div *ngIf="isPremiumUser">
-            <h3>Premium Status Active</h3>
-            <p>Expires: {{ profile.premiumExpiry | date }}</p>
-            <p>Maximum daily tokens: 24</p>
-          </div>
         </div>
       </div>
     </div>

@@ -1,3 +1,13 @@
-<div class="center-text">
-  <p style="color: white">upgrade works!</p>
+<div class="upgrade-container">
+  <div class="upgrade-card">
+    <h1>Upgrade to Premium</h1>
+    <p>Get 24 tokens per day for only 0.5 TON</p>
+    <button
+      class="upgrade-button"
+      (click)="upgradeToPremium()"
+      [disabled]="!walletAddress"
+    >
+      Upgrade Now
+    </button>
+  </div>
 </div>
