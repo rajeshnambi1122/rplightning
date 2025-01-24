@@ -73,6 +73,12 @@ export class AppComponent implements OnInit {
 
     // Load initial token balance
     this.loadTokenBalance();
+
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        window.scrollTo(0, 0); // Reset scroll position to the top
+      }
+    });
   }
 
   private loadTokenBalance() {
