@@ -1,5 +1,7 @@
 <div class="token-balance" *ngIf="shouldShowBalance()">
-  <span class="balance-value">{{ tokenBalance }} Tokens</span>
+  <img src="assets/user-icon.png" alt="User Icon" class="user-icon" />
+  <img src="assets/logo.jpeg" alt="Logo" class="balance-logo" />
+  <span class="balance-value">{{ tokenBalance }}</span>
 </div>
 <router-outlet></router-outlet>
 <app-bottom-navbar *ngIf="showBottomNavbar"></app-bottom-navbar>

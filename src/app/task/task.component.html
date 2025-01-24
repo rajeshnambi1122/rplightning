@@ -1,6 +1,8 @@
 <div class="tasks-container">
-  <h1 class="tasks-title">TASKS</h1>
-  <p class="tasks-subtitle">GET REWARDS FOR COMPLETING TASKS AND DAILY REWARDS</p>
+  <h1 style="margin-top: 80px" class="tasks-title">TASKS</h1>
+  <p class="tasks-subtitle">
+    GET REWARDS FOR COMPLETING TASKS AND DAILY REWARDS
+  </p>
 
   <!-- Tabs -->
   <div class="custom-tabs">
@@ -23,7 +25,7 @@
       [class.active]="selectedTab === 'partners'"
       (click)="selectTab('partners')"
     >
-    Partners
+      Partners
     </div>
   </div>
 
@@ -46,32 +48,32 @@
       <div class="card-container">
         <div class="card" *ngFor="let card of cardData; let i = index">
           <div class="card-content">
-            <img class="image" [src]="card.img" alt="image">
+            <img class="image" [src]="card.img" alt="image" />
             <div class="text">
               <h2>{{ card.name }}</h2>
             </div>
-            
+
             <!-- "Start" button -->
-            <button class="start-button" 
-              *ngIf="!card.isStarted" 
-              (click)="openLinkAndEnableClaimButton(i)">
+            <button
+              class="start-button"
+              *ngIf="!card.isStarted"
+              (click)="openLinkAndEnableClaimButton(i)"
+            >
               {{ card.button }}
             </button>
-      
+
             <!-- "Claim" button, which gets disabled after API call -->
-            <button class="claim-button" 
-              *ngIf="card.isStarted && !card.isClaimed" 
-              (click)="claimReward(i)" 
-              [disabled]="card.isClaimed">
+            <button
+              class="claim-button"
+              *ngIf="card.isStarted && !card.isClaimed"
+              (click)="claimReward(i)"
+              [disabled]="card.isClaimed"
+            >
               {{ card.button }}
             </button>
           </div>
         </div>
       </div>
-      
-      
-      
-      
     </div>
 
     <!-- Rewards Tab Content -->
@@ -95,16 +97,24 @@
         <div class="reward-info">
           <h2>DAILY REWARD</h2>
           <p class="availability">
-            <span *ngIf="isDayAvailable">Available In <span class="status">NOW ✔</span></span>
-            <span *ngIf="!isDayAvailable">Available In {{ remainingTime }}</span>
+            <span *ngIf="isDayAvailable"
+              >Available In <span class="status">NOW ✔</span></span
+            >
+            <span *ngIf="!isDayAvailable"
+              >Available In {{ remainingTime }}</span
+            >
           </p>
         </div>
         <img class="reward-image" src="assets/rewards.jpg" alt="Daily Reward" />
-        <button class="go-button" (click)="openRewardDialog()" [disabled]="!isDayAvailable">GO</button>
+        <button
+          class="go-button"
+          (click)="openRewardDialog()"
+          [disabled]="!isDayAvailable"
+        >
+          GO
+        </button>
       </div>
-      
-      
-      
+
       <div class="reward-card">
         <div class="reward-info">
           <h2>WHEEL OF FORTUNE</h2>
@@ -120,7 +130,7 @@
     </div>
 
     <div *ngIf="selectedTab === 'partners'" class="tasks-tab">
-         <h2> Comming Soon...</h2>
+      <h2>Comming Soon...</h2>
     </div>
   </div>
 </div>

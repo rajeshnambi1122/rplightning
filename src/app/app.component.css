@@ -7,7 +7,7 @@
   /* padding-top: 64px; */
 }
 
-.token-balance {
+/* .token-balance {
   position: fixed;
   top: 20px;
   right: 20px;
@@ -22,4 +22,39 @@
   color: #0056b3;
   font-weight: 500;
   font-size: 16px;
+}  */
+
+.token-balance {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(224, 231, 255, 0.9); /* Light semi-transparent background */
+  padding: 8px 16px; /* Inner spacing */
+  border-radius: 20px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+  z-index: 1000; /* Ensure it stays on top */
+  display: flex; /* Align items horizontally */
+  align-items: center; /* Center items vertically */
+  gap: 8px; /* Space between logo and text */
+  margin-bottom: 60px; /* Add margin to create space below */
+}
+
+.balance-logo {
+  width: 24px; /* Set the width of the logo */
+  height: 24px; /* Set the height of the logo */
+  border-radius: 50%; /* Optional: Make the logo circular */
+  object-fit: cover; /* Ensure the logo maintains its aspect ratio */
+}
+
+.balance-value {
+  color: #0056b3; /* Blue text color */
+  font-weight: 500; /* Medium font weight */
+  font-size: 16px; /* Text size */
+}
+
+.user-icon {
+  width: 24px; /* Set the width of the user icon */
+  height: 24px; /* Set the height of the user icon */
+  border-radius: 50%; /* Optional: Make the icon circular */
+  object-fit: cover; /* Ensure the icon maintains its aspect ratio */
 }
