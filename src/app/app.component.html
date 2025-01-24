@@ -9,11 +9,12 @@
 
 <div class="token-balance" *ngIf="shouldShowBalance()">
   <div class="logo-container">
-    <img src="assets/user-logo.jpg" alt="User Icon" class="user-icon" />
+    <mat-icon class="notification-icon"> account_circle </mat-icon>
+    <mat-icon class="notification-icon">notifications</mat-icon>
     <img src="assets/logo.jpeg" alt="Logo" class="balance-logo" />
   </div>
   <span class="balance-value">{{ tokenBalance }}</span>
 </div>
-<mat-icon class="notification-icon">notifications</mat-icon>
+
 <router-outlet></router-outlet>
 <app-bottom-navbar *ngIf="showBottomNavbar"></app-bottom-navbar>
