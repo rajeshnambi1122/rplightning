@@ -85,8 +85,10 @@ export class AppComponent implements OnInit {
 
   shouldShowBalance(): boolean {
     return (
-      !['/mine', '/about'].includes(this.router.url) &&
-      window.walletState?.address !== null
+      !(
+        this.router.url.startsWith('/admin-portal') ||
+        ['/mine', '/about', '/admin-login-page'].includes(this.router.url)
+      ) && window.walletState?.address !== null
     );
   }
 
