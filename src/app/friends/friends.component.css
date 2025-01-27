@@ -1,12 +1,154 @@
-* {
-  margin: 0;
-  padding: 0;
+/* General Container Styles */
+.tasks-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  background-color: #0a1b44; /* Dark blue background */
+  color: white;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-.center-text {
+/* Title Styling */
+.tasks-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Tabs Styling */
+.custom-tabs {
   display: flex;
   justify-content: center;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  padding: 8px 16px;
+  font-size: 1rem;
+  color: #a6b1e1;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease-in-out;
+}
+
+.tab.active {
+  color: white;
+  font-weight: bold;
+  border-bottom: 2px solid white;
+}
+
+/* Invite Tab Styles */
+.invite-tab p {
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+
+.referral-link-container {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  min-height: 100vh;
-  margin-bottom: 70px; /* To ensure content isn't hidden behind the bottom navbar */
+  gap: 12px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.referral-link {
+  flex: 1;
+  padding: 8px;
+  font-size: 1rem;
+  border: 2px solid #a6b1e1;
+  border-radius: 8px;
+  background-color: white;
+  color: #0a1b44;
+}
+
+button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Table Container */
+.user-table-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-x: auto; /* Enable horizontal scrolling on smaller screens */
+}
+
+/* Table Styling */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+/* Table Header */
+.user-table thead {
+  background-color: #0056b3;
+  color: white;
+  text-align: left;
+}
+
+.user-table th {
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid #ddd;
+}
+
+/* Table Rows */
+.user-table tbody tr {
+  transition: background-color 0.3s ease;
+}
+
+.user-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Light gray for alternating rows */
+}
+
+.user-table tbody tr:hover {
+  background-color: #eef4fc; /* Highlight row on hover */
+}
+
+/* Table Cells */
+.user-table td {
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  color: #333;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Responsive Table Styling */
+@media (max-width: 768px) {
+  .user-table th,
+  .user-table td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-table {
+    font-size: 0.8rem;
+  }
+
+  .user-table-container {
+    padding: 8px;
+  }
 }

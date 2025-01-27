@@ -4,7 +4,6 @@
     GET REWARDS FOR COMPLETING TASKS AND DAILY REWARDS
   </p>
 
-  <!-- Tabs -->
   <div class="custom-tabs">
     <div
       class="tab"
@@ -29,22 +28,8 @@
     </div>
   </div>
 
-  <!-- Tab Content -->
   <div class="tab-content">
-    <!-- Tasks Tab Content -->
     <div *ngIf="selectedTab === 'tasks'" class="tasks-tab">
-      <!-- <h1 class="rewards-title1">
-        Task <span>⭐</span>
-      </h1> -->
-      <!-- <div class="card">
-        <div class="card-content">
-          <img class="image" src="your-image-url.jpg" alt="image">
-          <div class="text">
-            <h2>Hello</h2>
-          </div>
-          <button class="start-button">Start</button>
-        </div>
-      </div> -->
       <div class="card-container">
         <div class="card" *ngFor="let card of cardData; let i = index">
           <div class="card-content">
@@ -52,8 +37,6 @@
             <div class="text">
               <h2>{{ card.name }}</h2>
             </div>
-
-            <!-- "Start" button -->
             <button
               class="start-button"
               *ngIf="!card.isStarted"
@@ -61,8 +44,6 @@
             >
               {{ card.button }}
             </button>
-
-            <!-- "Claim" button, which gets disabled after API call -->
             <button
               class="claim-button"
               *ngIf="card.isStarted && !card.isClaimed"
@@ -76,23 +57,8 @@
       </div>
     </div>
 
-    <!-- Rewards Tab Content -->
+  
     <div *ngIf="selectedTab === 'rewards'" class="rewards-container">
-      <!-- <h1 class="rewards-title">
-        REWARDS <span>🏆⭐</span>
-      </h1> -->
-
-      <!-- <div class="reward-card">
-        <div class="reward-info">
-          <h2>DAILY REWARD</h2>
-          <p class="availability">
-            <span *ngIf="isDayAvailable">Available In <span class="status">NOW ✔</span></span>
-            <span *ngIf="!isDayAvailable">Available In {{ remainingTime }}</span>
-          </p>
-        </div>
-        <img class="reward-image" src="assets/rewards.jpg" alt="Daily Reward" />
-        <button class="go-button" (click)="openRewardDialog()" [disabled]="!isDayAvailable">GO</button>
-      </div> -->
       <div class="reward-card">
         <div class="reward-info">
           <h2>DAILY REWARD</h2>

@@ -1,3 +1,56 @@
-<div class="center-text">
-  <p style="color: white">friends works!</p>
+<div class="tasks-container">
+  <h1 class="tasks-title">Invite Friends</h1>
+  <div class="custom-tabs">
+    <div
+      class="tab"
+      [class.active]="selectedTab === 'invite'"
+      (click)="selectTab('invite')"
+    >
+      Invite
+    </div>
+    <div
+      class="tab"
+      [class.active]="selectedTab === 'invited'"
+      (click)="selectTab('invited')"
+    >
+      Invited
+    </div>
+  </div>
+  <div class="tab-content">
+    <div *ngIf="selectedTab === 'invite'" class="invite-tab">
+      <p>Your referral link:</p>
+      <div class="referral-link-container">
+        <input
+          type="text"
+          value="https://t.me/@lightingLight_bot?start=12345"
+          readonly
+          class="referral-link"
+        />
+        <button mat-raised-button color="primary" (click)="copyLink()">
+          Copy Link
+        </button>
+      </div>
+    </div>
+    <div *ngIf="selectedTab === 'invited'" class="invited-tab">
+      <div class="user-table-container">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Date Referred</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of invitedUsers.data">
+              <td>{{ user.name }}</td>
+              <td>{{ user.dateReferred | date: 'MMM d, y' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      
+      
+    </div>
+  </div>
 </div>
