@@ -171,12 +171,6 @@
       <div class="card bandwidth">
         <h3>Bandwidth Sharing</h3>
         <p>
-          <i class="fas fa-signal"></i> Status
-          <span [class.working]="isMining" [class.inactive]="!isMining">
-            {{ bandwidth.status }}
-          </span>
-        </p>
-        <p>
           <i class="fas fa-coins"></i> Shares
           <span class="value">{{ bandwidth.shares.toFixed(2) }} MB</span>
         </p>
@@ -186,7 +180,7 @@
         </p>
       </div>
 
-      <div class="mining-section">
+      <div class="card mining-section">
         <h2>Mining Status</h2>
         <div class="stats">
           <p>
