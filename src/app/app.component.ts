@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
       // this.showBottomNavbar = currentRoute !== '/admin-login-page || /user-details';
       const excludedRoutes = [
         '/admin-login-page',
-        '/admin-portal/user-details',
+        '/admin-portal/user-details','/wallet-main-page'
       ];
 
       this.showBottomNavbar = !excludedRoutes.includes(currentRoute);

@@ -36,7 +36,7 @@ mat-tree {
 mat-tree-node {
   font-size: 1rem;
   font-weight: 500;
-  padding: 4px 0;
+  padding: 0px 2px;
 }
 
 button[mat-icon-button] {

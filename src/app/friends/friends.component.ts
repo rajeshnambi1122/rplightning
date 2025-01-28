@@ -14,8 +14,8 @@ export class FriendsComponent {
   }
 
   invitedUsers = new MatTableDataSource([
-    { name: 'Lighting', dateReferred: new Date() },
-    { name: 'Jane Smith', dateReferred: new Date('2025-01-01') },
+    { name: 'Lighting', dateReferred: new Date(), earned: 20 },
+    { name: 'Jane Smith', dateReferred: new Date('2025-01-01') , earned: 10},
   ]);
 
   copyLink() {

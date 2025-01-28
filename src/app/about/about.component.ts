@@ -18,7 +18,7 @@ interface FoodNode {
 const TREE_DATA: FoodNode[] = [
   {
     name: 'How The System Works',
-    children: [{name: 'Update Soon...'}],
+    children: [{name: '"Lighting" is a DePIN project on the Telegram mini-app. We will analyze your data speed, and token rewards will be based on your data speed. Once all the tokens are mined, they will be distributed to miners on the "TON Network" or other networks.'}],
   },
   {
     name: 'Modes Explained',

@@ -1,0 +1,35 @@
+<!-- Wallet Container -->
+<div class="wallet-container" *ngIf="!successScreenVisible" id="walletContainer">
+    <div class="wallet-header">
+      <span>Lighting Wallet</span>
+    </div>
+    <div class="wallet-image">
+      <img src="assets/Bot_Logo.jpg" alt="Wallet Icon" />
+    </div>
+    <div class="wallet-text">
+      <h1>Welcome to Lighting Wallet</h1>
+      <p>
+        Create multi-chain accounts in Telegram now, such as
+        <span class="highlight">Bitcoin, Ethereum, BNB Chain, etc.</span>
+      </p>
+    </div>
+    <p class="terms">
+      By tapping the button, you agree to the <a href="#">User Agreement</a>.
+    </p>
+    <button class="create-wallet-button" (click)="createWallet()">Create Lighting Wallet</button>
+  </div>
+  
+  <!-- Success Screen -->
+  <div class="success-screen" *ngIf="successScreenVisible">
+    <h1>Lighting Wallet created successfully!</h1>
+    <button class="lets-go-button" (click)="letsGo()">Let's Go</button>
+
+    <div *ngIf="uniqueWord.length">
+        <ol> <!-- Ordered list to display numbers automatically -->
+          <li *ngFor="let word of uniqueWord; let i = index">
+          {{ word }}
+          </li>
+        </ol>
+      </div>
+  </div>
+  

@@ -38,12 +38,14 @@
             <tr>
               <th>Name</th>
               <th>Date Referred</th>
+              <th>Earned</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let user of invitedUsers.data">
               <td>{{ user.name }}</td>
               <td>{{ user.dateReferred | date : "MMM d, y" }}</td>
+              <td>{{ user.earned }}</td>
             </tr>
           </tbody>
         </table>

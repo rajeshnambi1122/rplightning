@@ -7,6 +7,7 @@ import { TaskComponent } from './task/task.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { AdminLoginPageComponent } from './admin-login-page/admin-login-page.component';
+import { WalletMainPageComponent } from './wallet-main-page/wallet-main-page.component';
 
 const routes: Routes = [
   { path: 'mine', component: MineComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'friends', component: FriendsComponent },
   { path: 'wallet', component: WalletComponent },
   { path: 'about', component: AboutComponent },
+  {path: 'wallet-main-page', component: WalletMainPageComponent},
   {path: 'admin-login-page', component: AdminLoginPageComponent},
   {
     path: 'admin-portal',

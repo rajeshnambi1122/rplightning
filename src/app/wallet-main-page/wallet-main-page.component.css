@@ -1,0 +1,274 @@
+
+.wallet-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #000;
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.wallet-header {
+  width: 100%;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 1rem;
+}
+
+
+.wallet-image {
+  margin-top: 10px;
+  width: 150px;
+  height: 150px;
+  
+  img {
+    width: 50%;
+    height: 50%;
+    object-fit: contain;
+  }
+}
+
+
+.wallet-text {
+  margin-top: 20px;
+  padding: 0 15px;
+
+  h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+
+  p {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #bbb;
+
+    .highlight {
+      color: orange;
+      font-weight: bold;
+    }
+  }
+}
+
+
+.terms {
+  font-size: 12px;
+  color: #777;
+  margin-top: 15px;
+
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
+
+.create-wallet-button {
+  margin-top: 20px;
+  background: #149ac6;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 14px 22px;
+  border: none;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  cursor: pointer;
+  transition: 0.3s ease;
+
+  &:hover {
+    background: #ff8c00;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .wallet-container {
+    padding: 3rem;
+  }
+
+  .wallet-header {
+    font-size: 1.8rem;
+  }
+
+  .wallet-text h1 {
+    font-size: 2rem;
+  }
+
+  .create-wallet-button {
+    width: 50%;
+  }
+}
+
+
+/* Success Screen */
+.success-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #000;
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+    position: relative;
+  }
+  
+  .success-screen h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+  
+  .lets-go-button {
+    margin-top: 20px;
+    background: #ff8c00;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .lets-go-button:hover {
+    background: #149ac6;
+  }
+  
+  /* Confetti Effect */
+  .confetti {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+  }
+  
+  .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--confetti-color);
+    animation: confetti-fall 5s linear infinite, confetti-spin 5s linear infinite;
+  }
+  
+  @keyframes confetti-fall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+    }
+  }
+  
+  @keyframes confetti-spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  .confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+  }
+  
+  .confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 20px;
+    opacity: 0.8;
+    animation: fall 3s ease-in-out infinite, drift 5s linear infinite;
+  }
+  
+  @keyframes fall {
+    0% {
+      transform: translateY(-100vh) rotate(0deg);
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+    }
+  }
+  
+  @keyframes drift {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(20vw);
+    }
+    100% {
+      transform: translateX(-20vw);
+    }
+  }
+  .wallet-container {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .success-screen {
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  .wallet-header span {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .wallet-image img {
+    max-width: 150px;
+    margin: 1rem auto;
+  }
+  
+  .wallet-text h1 {
+    font-size: 2rem;
+    margin: 1rem 0;
+  }
+  
+  .wallet-text p {
+    font-size: 1rem;
+  }
+  
+  .create-wallet-button,
+  .lets-go-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .create-wallet-button:hover,
+  .lets-go-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .terms a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .terms a:hover {
+    text-decoration: underline;
+  }
+  
