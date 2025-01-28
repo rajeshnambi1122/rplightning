@@ -1,5 +1,5 @@
 <div class="tasks-container">
-  <h1 class="tasks-title">Invite Friends</h1>
+  <h1 style="margin-top: 80px" class="tasks-title">Invite Friends</h1>
   <div class="custom-tabs">
     <div
       class="tab"
@@ -43,14 +43,11 @@
           <tbody>
             <tr *ngFor="let user of invitedUsers.data">
               <td>{{ user.name }}</td>
-              <td>{{ user.dateReferred | date: 'MMM d, y' }}</td>
+              <td>{{ user.dateReferred | date : "MMM d, y" }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      
-      
-      
     </div>
   </div>
 </div>
