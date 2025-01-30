@@ -68,6 +68,12 @@ h1 {
   letter-spacing: -0.3px;
 }
 
+.address-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .address {
   word-break: break-all;
   font-family: "Inter", monospace;
@@ -78,6 +84,8 @@ h1 {
   border: 1px solid rgba(52, 152, 219, 0.2);
   font-size: 0.9rem;
   letter-spacing: 0.5px;
+  flex-grow: 1;
+  margin-right: 8px;
 }
 
 .balance-header {
@@ -179,4 +187,22 @@ h1 {
   .balance {
     font-size: 1.8rem;
   }
+}
+
+.copy-button {
+  background: transparent;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.copy-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.copy-button mat-icon {
+  font-size: 20px;
+  color: white;
 }

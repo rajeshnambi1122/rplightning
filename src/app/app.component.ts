@@ -34,7 +34,8 @@ export class AppComponent implements OnInit {
       // this.showBottomNavbar = currentRoute !== '/admin-login-page || /user-details';
       const excludedRoutes = [
         '/admin-login-page',
-        '/admin-portal/user-details','/wallet-main-page'
+        '/admin-portal/user-details',
+        '/wallet-main-page',
       ];
 
       this.showBottomNavbar = !excludedRoutes.includes(currentRoute);
@@ -93,7 +94,14 @@ export class AppComponent implements OnInit {
     return (
       !(
         this.router.url.startsWith('/admin-portal') ||
-        ['/mine', '/about', '/admin-login-page'].includes(this.router.url)
+        [
+          '/upgrade',
+          '/friends',
+          '/about',
+          '/wallet',
+          '/admin-login-page',
+          '/wallet-main-page',
+        ].includes(this.router.url)
       ) && window.walletState?.address !== null
     );
   }

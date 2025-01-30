@@ -107,4 +107,18 @@ export class WalletComponent implements OnInit, AfterViewInit {
       alert('Premium upgrade failed. Please try again.');
     }
   }
+
+  copyWalletAddress(): void {
+    if (this.walletAddress) {
+      navigator.clipboard
+        .writeText(this.walletAddress)
+        .then(() => {
+          alert('Wallet address copied to clipboard!');
+        })
+        .catch((err) => {
+          console.error('Failed to copy: ', err);
+          alert('Failed to copy wallet address. Please try again.');
+        });
+    }
+  }
 }

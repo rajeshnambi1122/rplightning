@@ -20,8 +20,10 @@
 .upgrade-card {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
-  border-radius: 24px;
-  padding: 32px;
+  border-radius: 20px;
+  padding: 24px;
+  max-width: 400px;
+  margin: 0 auto;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -33,9 +35,9 @@
 }
 
 .upgrade-card h1 {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   background: linear-gradient(90deg, #28a7f0, #1eb1fc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -43,7 +45,7 @@
 
 .upgrade-card p {
   color: #a8b9d0;
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 24px;
   font-weight: 500;
@@ -75,10 +77,10 @@
 }
 
 .price-tag {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   color: white;
-  margin: 24px 0;
+  margin: 16px 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -86,7 +88,7 @@
 }
 
 .price-tag span {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #a8b9d0;
 }
 
@@ -94,9 +96,9 @@
   background: linear-gradient(135deg, #28a7f0, #1eb1fc);
   color: white;
   border: none;
-  border-radius: 12px;
-  padding: 16px 32px;
-  font-size: 1.1rem;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -121,12 +123,12 @@
 .premium-badge {
   background: linear-gradient(135deg, #f1c40f, #f39c12);
   color: white;
-  padding: 6px 16px;
+  padding: 6px 12px;
   border-radius: 20px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   display: inline-block;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
 }
 
@@ -139,5 +141,35 @@
     rgba(255, 255, 255, 0.1) 50%,
     rgba(255, 255, 255, 0) 100%
   );
-  margin: 24px 0;
+  margin: 16px 0;
+}
+
+.compact-subtitle {
+  font-size: 1rem;
+  color: #a8b9d0;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.compact-features {
+  padding: 0;
+  margin: 16px 0;
+  list-style: none;
+}
+
+.compact-features li {
+  position: relative;
+  padding-left: 24px;
+  margin: 8px 0;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.compact-features li::before {
+  content: "•";
+  color: #28a7f0;
+  font-size: 1.2rem;
+  position: absolute;
+  left: 40px;
+  top: -2px;
 }

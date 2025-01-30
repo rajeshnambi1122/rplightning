@@ -1,6 +1,6 @@
 <div class="wallet-container">
   <div class="wallet-content">
-    <h1 style="margin-top: 40px">Wallet</h1>
+    <h1>Wallet</h1>
 
     <!-- TON Connect Button -->
     <div id="ton-connect-button" class="wallet-button-container">
@@ -31,18 +31,13 @@
     <div class="wallet-info" *ngIf="walletAddress">
       <div class="info-card">
         <h2>Wallet Address</h2>
-        <p class="address">{{ formatAddress(walletAddress) }}</p>
-      </div>
-
-      <div class="info-card">
-        <div class="balance-header">
-          <h2>Balance</h2>
-          <img src="assets/TON.jpg" alt="TON" class="ton-logo" />
+        <div class="address-container">
+          <p class="address">{{ formatAddress(walletAddress) }}</p>
+          <button class="copy-button" (click)="copyWalletAddress()">
+            <mat-icon>content_copy</mat-icon>
+          </button>
         </div>
-        <p class="balance">{{ balance }} TON</p>
       </div>
-
-      <!-- Premium Section -->
     </div>
   </div>
 </div>
