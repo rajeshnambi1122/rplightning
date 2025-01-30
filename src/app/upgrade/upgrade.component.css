@@ -1,65 +1,143 @@
-:host {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100vh; /* Full height of the viewport */
-  margin: 0; /* Remove default margin */
-}
+/* Modern Typography */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
-.center-text {
+:host {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  margin-bottom: 70px; /* To ensure content isn't hidden behind the bottom navbar */
+  background: linear-gradient(135deg, #0a1b44 0%, #1a3a8f 100%);
+  font-family: "Inter", sans-serif;
 }
 
 .upgrade-container {
-  padding: 20px;
-  text-align: center;
+  padding: 24px;
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: 70px;
 }
 
 .upgrade-card {
-  background: rgba(
-    255,
-    255,
-    255,
-    0.9
-  ); /* Increase opacity for better visibility */
-  border-radius: 12px;
-  padding: 20px;
-  max-width: 400px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.upgrade-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 .upgrade-card h1 {
-  color: #333; /* Dark color for the title */
-  font-size: 24px; /* Adjust font size as needed */
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  background: linear-gradient(90deg, #28a7f0, #1eb1fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .upgrade-card p {
-  color: #555; /* Medium color for the paragraph */
-  font-size: 16px; /* Adjust font size as needed */
+  color: #a8b9d0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.features-list {
+  text-align: left;
+  margin: 24px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.features-list li {
+  color: #a8b9d0;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.features-list li:before {
+  content: "✓";
+  color: #28a7f0;
+  font-weight: bold;
+  margin-right: 12px;
+  background: rgba(40, 167, 240, 0.1);
+  padding: 4px 8px;
+  border-radius: 50%;
+}
+
+.price-tag {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.price-tag span {
+  font-size: 1rem;
+  color: #a8b9d0;
 }
 
 .upgrade-button {
-  background: #0056b3;
-  color: white; /* Ensure button text is white */
+  background: linear-gradient(135deg, #28a7f0, #1eb1fc);
+  color: white;
   border: none;
-  border-radius: 6px;
-  padding: 12px 24px;
+  border-radius: 12px;
+  padding: 16px 32px;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  margin-top: 16px;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(40, 167, 240, 0.3);
 }
 
 .upgrade-button:hover:not(:disabled) {
-  background: #003d82;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 240, 0.4);
 }
 
 .upgrade-button:disabled {
-  opacity: 0.6;
+  background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+  opacity: 0.8;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Premium Badge */
+.premium-badge {
+  background: linear-gradient(135deg, #f1c40f, #f39c12);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  margin: 24px 0;
 }

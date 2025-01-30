@@ -1,12 +1,23 @@
 <div class="upgrade-container">
   <div class="upgrade-card">
+    <div class="premium-badge">Premium Plan</div>
     <h1>Upgrade to Premium</h1>
-    <p>Get 24 tokens per day for only 0.5 TON</p>
-    <button
-      class="upgrade-button"
-      (click)="upgradeToPremium()"
-      [disabled]="!walletAddress"
-    >
+    <p>Unlock exclusive features and maximize your earnings</p>
+
+    <div class="divider"></div>
+
+    <ul class="features-list">
+      <li>2x Mining Rewards</li>
+      <li>Priority Support</li>
+      <li>Exclusive Access to Special Events</li>
+      <li>No Ads Experience</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <div class="price-tag">0.5 TON <span>/month</span></div>
+
+    <button class="upgrade-button" (click)="upgradeToPremium()">
       Upgrade Now
     </button>
   </div>

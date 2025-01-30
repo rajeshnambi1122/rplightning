@@ -26,7 +26,6 @@
         background: #e0e7ff;
         border-radius: 12px;
         padding: 20px;
-        margin: 10px;
         width: 100%;
         max-width: 400px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -49,6 +48,7 @@
       p {
         font-size: 16px;
         margin: 10px 0;
+        color: black;
       }
 
       .value {
@@ -143,55 +143,70 @@
 
   <body>
     <div class="container">
-      <div class="card profile">
-        <h3>My Profile</h3>
-        <p>
-          <i class="fas fa-wallet"></i> Balance
-          <span class="value">{{ profile.balance.toFixed(2) }}</span>
-        </p>
-        <p>
-          <i class="fas fa-bolt"></i> Power
-          <span class="value">{{ profile.power.toFixed(2) }}</span>
-        </p>
-        <div class="power-dots">
-          <div *ngFor="let dot of powerDots" [ngClass]="dot"></div>
+      <div class="stats-grid">
+        <div class="card profile">
+          <h3>My Profile</h3>
+          <p>
+            <span><i class="fas fa-wallet"></i> Balance</span>
+            <span class="value">{{ profile.balance.toFixed(2) }}</span>
+          </p>
+          <p>
+            <span><i class="fas fa-bolt"></i> Power</span>
+            <span class="value">{{ profile.power.toFixed(2) }}</span>
+          </p>
+          <div class="power-dots">
+            <div
+              *ngFor="let dot of powerDots"
+              class="dot"
+              [ngClass]="dot"
+            ></div>
+          </div>
         </div>
-      </div>
-      <div class="card information">
-        <h3>Information</h3>
-        <p>
-          <i class="fas fa-mobile-alt"></i> Device
-          <span class="value">{{ deviceType }}</span>
-        </p>
-        <p>
-          <i class="fas fa-map-marker-alt"></i> IP
-          <span class="value">{{ ip }}</span>
-        </p>
-      </div>
-      <div class="card bandwidth">
-        <h3>Bandwidth Sharing</h3>
-        <p>
-          <i class="fas fa-coins"></i> Shares
-          <span class="value">{{ bandwidth.shares.toFixed(2) }} MB</span>
-        </p>
-        <p>
-          <i class="fas fa-gem"></i> Earned
-          <span class="value">{{ bandwidth.earned }} Tokens</span>
-        </p>
+
+        <div class="card information">
+          <h3>Information</h3>
+          <p>
+            <span><i class="fas fa-mobile-alt"></i> Device</span>
+            <span class="value">{{ deviceType }}</span>
+          </p>
+          <p>
+            <span><i class="fas fa-map-marker-alt"></i> IP</span>
+            <span class="value">{{ ip }}</span>
+          </p>
+        </div>
+
+        <div class="card bandwidth">
+          <h3>Bandwidth Sharing</h3>
+          <p>
+            <span><i class="fas fa-coins"></i> Shares</span>
+            <span class="value">{{ bandwidth.shares.toFixed(2) }} MB</span>
+          </p>
+          <p>
+            <span><i class="fas fa-gem"></i> Earned</span>
+            <span class="value">{{ bandwidth.earned }} Tokens</span>
+          </p>
+        </div>
       </div>
 
       <div class="mining-section">
         <h2>Mining Status</h2>
         <div class="stats">
           <p>
-            <i class="fas fa-clock"></i> Time Elapsed
+            <span><i class="fas fa-clock"></i> Time Elapsed</span>
             <span class="value">{{ elapsedSeconds }} seconds</span>
           </p>
           <p>
-            <i class="fas fa-signal"></i> Status
-            <span class="value" [style.color]="bandwidth.statusColor">{{
-              bandwidth.status
-            }}</span>
+            <span><i class="fas fa-signal"></i> Status</span>
+            <span
+              class="status"
+              [ngClass]="{
+                working: bandwidth.status === 'Active',
+                inactive: bandwidth.status === 'Inactive',
+                cooling: bandwidth.status === 'Cooling Down...'
+              }"
+            >
+              {{ bandwidth.status }}
+            </span>
           </p>
         </div>
 
