@@ -1,154 +1,180 @@
-/* General Container Styles */
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #050b1f 0%, #0a1b44 100%);
+  font-family: "Inter", sans-serif;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .tasks-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
-  background-color: #0a1b44; /* Dark blue background */
-  color: white;
-  min-height: 100vh;
+  padding: 24px 16px 80px;
+  max-width: 1000px;
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
-/* Title Styling */
 .tasks-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 16px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 32px;
   text-align: center;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.3px;
 }
 
-/* Tabs Styling */
+/* Modern Tabs */
 .custom-tabs {
   display: flex;
   justify-content: center;
   gap: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  background: rgba(13, 25, 48, 0.95);
+  backdrop-filter: blur(12px);
+  padding: 8px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .tab {
-  padding: 8px 16px;
-  font-size: 1rem;
-  color: #a6b1e1;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  color: #a8b9d0;
   cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease;
+  border-radius: 12px;
 }
 
 .tab.active {
   color: white;
-  font-weight: bold;
-  border-bottom: 2px solid white;
+  font-weight: 600;
+  background: rgba(52, 152, 219, 0.15);
+  border: 1px solid rgba(52, 152, 219, 0.2);
 }
 
-/* Invite Tab Styles */
+.tab:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* Invite Section */
+.invite-tab {
+  background: rgba(13, 25, 48, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 500px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
 .invite-tab p {
-  margin-bottom: 8px;
-  font-size: 1.2rem;
+  margin-bottom: 16px;
+  font-size: 1rem;
+  color: #d1d8e6;
 }
 
 .referral-link-container {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   width: 100%;
-  max-width: 500px;
 }
 
 .referral-link {
   flex: 1;
-  padding: 8px;
-  font-size: 1rem;
-  border: 2px solid #a6b1e1;
+  padding: 12px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
-  background-color: white;
-  color: #0a1b44;
+  color: #ffffff;
+  font-family: "Inter", monospace;
 }
 
 button {
-  padding: 8px 16px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
   border-radius: 8px;
-  font-size: 1rem;
+  padding: 12px 24px;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
 }
 
 button:hover {
-  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
 }
 
-/* Table Container */
+/* Table Styles */
 .user-table-container {
-  width: 100%;
   max-width: 800px;
-  margin: 0 auto;
-  padding: 16px;
-  box-sizing: border-box;
-  overflow-x: auto; /* Enable horizontal scrolling on smaller screens */
+  margin-top: 24px;
+  background: rgba(13, 25, 48, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Table Styling */
 .user-table {
   width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
-}
-
-/* Table Header */
-.user-table thead {
-  background-color: #0056b3;
-  color: white;
-  text-align: left;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .user-table th {
-  padding: 12px 16px;
-  font-size: 1rem;
-  font-weight: bold;
+  padding: 16px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #a8b9d0;
   text-transform: uppercase;
-  border-bottom: 2px solid #ddd;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Table Rows */
-.user-table tbody tr {
-  transition: background-color 0.3s ease;
-}
-
-.user-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9; /* Light gray for alternating rows */
+.user-table td {
+  padding: 16px;
+  font-size: 0.7rem;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .user-table tbody tr:hover {
-  background-color: #eef4fc; /* Highlight row on hover */
+  background: rgba(255, 255, 255, 0.05);
 }
 
-/* Table Cells */
-.user-table td {
-  padding: 12px 16px;
-  font-size: 0.95rem;
-  color: #333;
-  border-bottom: 1px solid #ddd;
-}
-
-/* Responsive Table Styling */
 @media (max-width: 768px) {
-  .user-table th,
-  .user-table td {
-    padding: 10px 8px;
+  .tasks-container {
+    padding: 16px 12px 80px;
+  }
+
+  .tasks-title {
+    font-size: 1.6rem;
+  }
+
+  .custom-tabs {
+    gap: 16px;
+    padding: 6px;
+  }
+
+  .tab {
+    padding: 10px 20px;
     font-size: 0.9rem;
   }
-}
 
-@media (max-width: 480px) {
-  .user-table {
-    font-size: 0.8rem;
-  }
-
-  .user-table-container {
-    padding: 8px;
+  .user-table th,
+  .user-table td {
+    padding: 12px;
+    font-size: 0.76rem;
   }
 }
