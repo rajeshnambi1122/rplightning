@@ -83,7 +83,8 @@
 }
 
 .bottom-navbar button.active {
-  background: rgba(46, 255, 46, 0.15);
+  background: rgba(52, 152, 219, 0.15);
+  border: 1px solid rgba(52, 152, 219, 0.2);
   color: white;
 }
 
