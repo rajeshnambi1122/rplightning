@@ -1,70 +1,102 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #050b1f 0%, #0a1b44 100%);
+  font-family: "Inter", sans-serif;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .tasks-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
-  background-color: #0a1b44; /* Dark blue background */
-  color: white; /* White text color for better contrast */
-  min-height: 100vh;
-  width: 100%;
+  padding: 24px 16px 80px;
+  max-width: 800px;
+  margin: 0 auto;
   box-sizing: border-box;
 }
-.tasks-subtitle {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
-  color: #a6b1e1;
-  text-align: center;
-}
+
 .tasks-title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 16px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 12px;
   text-align: center;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+
+.tasks-subtitle {
+  font-size: 0.9rem;
+  color: #ffffff;
+  margin-bottom: 32px;
+  text-align: center;
+  letter-spacing: 1px;
+  opacity: 0.8;
 }
 
 mat-tree {
-  width: 100%; /* Take full width */
-  max-width: 600px; /* Limit width for larger screens */
-  background-color: white; /* White background for better visibility */
-  color: #0a1b44; /* Text color to match the theme */
-  border-radius: 8px;
-  padding: 8px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
-  box-sizing: border-box;
+  width: 100%;
+  background: rgba(13, 25, 48, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
 }
 
 mat-tree-node {
-  font-size: 1rem;
-  font-weight: 500;
-  padding: 0px 2px;
+  min-height: 48px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  color: #ffffff !important;
+}
+
+mat-tree-node:last-child {
+  border-bottom: none;
+}
+
+mat-tree-node:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 button[mat-icon-button] {
-  margin-right: 8px;
+  color: #3498db;
+  transition: all 0.3s ease;
+}
+
+button[mat-icon-button]:hover:not([disabled]) {
+  background: rgba(52, 152, 219, 0.15);
+}
+
+.mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #3498db;
 }
 
 @media (max-width: 768px) {
-  /* Tablets and small devices */
   .tasks-container {
-    padding: 8px;
+    padding: 16px 12px 60px;
   }
-  .tasks-title {
-    font-size: 1.5rem;
-  }
-  mat-tree {
-    max-width: 100%;
-  }
-}
 
-@media (max-width: 480px) {
-  /* Small mobile devices */
   .tasks-title {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
   }
+
+  .tasks-subtitle {
+    font-size: 0.85rem;
+  }
+
+  mat-tree {
+    padding: 16px;
+  }
+
   mat-tree-node {
+    min-height: 40px;
     font-size: 0.9rem;
-  }
-  button[mat-icon-button] {
-    margin-right: 4px;
   }
 }
