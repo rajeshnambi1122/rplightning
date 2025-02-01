@@ -93,7 +93,7 @@
 }
 
 .upgrade-button {
-  background: linear-gradient(135deg, #28a7f0, #1eb1fc);
+  background: linear-gradient(135deg, #3498db, #2980b9);
   color: white;
   border: none;
   border-radius: 10px;
@@ -103,12 +103,18 @@
   cursor: pointer;
   transition: all 0.3s ease;
   width: 100%;
-  box-shadow: 0 4px 15px rgba(40, 167, 240, 0.3);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3),
+    0 0 20px rgba(52, 152, 219, 0.2), 0 0 40px rgba(52, 152, 219, 0.1);
+  animation: pulse 2s infinite;
 }
 
 .upgrade-button:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(40, 167, 240, 0.4);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4),
+    0 0 30px rgba(52, 152, 219, 0.3), 0 0 50px rgba(52, 152, 219, 0.2);
+  background: linear-gradient(135deg, #3498db, #2475a8);
 }
 
 .upgrade-button:disabled {
@@ -117,6 +123,22 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+  animation: none;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3),
+      0 0 20px rgba(52, 152, 219, 0.2), 0 0 40px rgba(52, 152, 219, 0.1);
+  }
+  50% {
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4),
+      0 0 30px rgba(52, 152, 219, 0.3), 0 0 50px rgba(52, 152, 219, 0.2);
+  }
+  100% {
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3),
+      0 0 20px rgba(52, 152, 219, 0.2), 0 0 40px rgba(52, 152, 219, 0.1);
+  }
 }
 
 /* Premium Badge */
