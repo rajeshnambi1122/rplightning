@@ -57,3 +57,16 @@
   padding: 6px 12px; /* Padding for the text */
   border-radius: 12px; /* Rounded corners */
 }
+
+.settings-icon {
+  position: fixed;
+  top: 20px;
+  left: 10px;
+  color: #28a7f0;
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
