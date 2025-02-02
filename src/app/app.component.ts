@@ -99,6 +99,7 @@ export class AppComponent implements OnInit {
           '/friends',
           '/about',
           '/wallet',
+          '/setting',
           '/admin-login-page',
           '/wallet-main-page',
         ].includes(this.router.url)
