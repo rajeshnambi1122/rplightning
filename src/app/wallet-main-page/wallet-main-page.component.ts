@@ -13,6 +13,7 @@ export class WalletMainPageComponent {
   successScreenVisible = false; // Toggle between wallet creation and success screen
   uniqueWord: string[] = [];
   Chat_ID: any;
+  isLoading = false;
   apiUrl1 = environment.apiurl;
   private apiUrl = 'https://random-word-api.herokuapp.com/word?number=12'; // Random word API
   constructor(private http: HttpClient, private router: ActivatedRoute, private router1: Router) { }
@@ -27,21 +28,45 @@ export class WalletMainPageComponent {
     this.startConfetti();
   }
 
+  // letsGo(): void {
+  //   console.log('Navigating to the next step!');
+  //   this.http.get<any>(this.apiUrl).subscribe(word => {
+  //     this.uniqueWord = word;
+  //     console.log('Unique word for user:', this.uniqueWord);
+  //     var headers_object = new HttpHeaders({
+  //       'Access-Control-Allow-Origin': '*',
+  //     });
+  //     const httpOptions = { headers: headers_object };
+  //     const result = this.uniqueWord.join(',');
+  //     this.http.post(this.apiUrl1 + `wallet-words/` + this.Chat_ID + "/" + result, {}, httpOptions)
+  //       .subscribe((result: any) => {
+  //         this.router1.navigate(['mine', this.Chat_ID]);
+
+  //       });
+  //   });
+  // }
   letsGo(): void {
     console.log('Navigating to the next step!');
-    // Add navigation logic here
+    this.isLoading = true; // Start loading
+  
     this.http.get<any>(this.apiUrl).subscribe(word => {
       this.uniqueWord = word;
       console.log('Unique word for user:', this.uniqueWord);
+      
       var headers_object = new HttpHeaders({
         'Access-Control-Allow-Origin': '*',
       });
+  
       const httpOptions = { headers: headers_object };
       const result = this.uniqueWord.join(',');
+  
       this.http.post(this.apiUrl1 + `wallet-words/` + this.Chat_ID + "/" + result, {}, httpOptions)
         .subscribe((result: any) => {
-          this.router1.navigate(['mine', this.Chat_ID]);  // Pass the chat ID dynamically
-
+          this.isLoading = false; // Stop loading
+          this.router1.navigate(['mine', this.Chat_ID]);  // Redirect after response
+        }, error => {
+          console.error("Error in API:", error);
+          this.isLoading = false; // Stop loading even if there's an error
         });
     });
   }

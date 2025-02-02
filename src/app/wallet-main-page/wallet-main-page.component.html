@@ -22,6 +22,12 @@
   <!-- Success Screen -->
   <div class="success-screen" *ngIf="successScreenVisible">
     <h1>Lighting Wallet created successfully!</h1>
-    <button class="lets-go-button" (click)="letsGo()">Let's Go</button>
+    <!-- <button class="lets-go-button" (click)="letsGo()">Let's Go</button> -->
+    <button class="lets-go-button" (click)="letsGo()" [disabled]="isLoading">
+      <span *ngIf="!isLoading">Let's Go</span>
+      <span *ngIf="isLoading" class="loading-spinner"></span>
+    </button>
+    
+     
   </div>
   

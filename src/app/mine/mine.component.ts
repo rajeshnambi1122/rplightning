@@ -52,7 +52,7 @@ export class MineComponent implements OnInit, OnDestroy {
   Chat_ID: any;
   private timerInterval: any; // Add this to track the interval
 
-  constructor(private http: HttpClient, private router: ActivatedRoute,) {
+  constructor(private http: HttpClient, private router: ActivatedRoute) {
     // Initialize profile balance from localStorage
     const savedBalance = localStorage.getItem('profileBalance');
     this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
@@ -63,6 +63,7 @@ export class MineComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Set initial state
     this.Chat_ID = this.router.snapshot.paramMap.get("id");
+    localStorage.setItem('Identification',this.Chat_ID)
     console.log("this.Chat_ID --->",this.Chat_ID)
     this.walletAddress = window.walletState.address;
     this.isPremiumUser = window.walletState.isPremium;
@@ -230,52 +231,38 @@ export class MineComponent implements OnInit, OnDestroy {
       // Add 3 second cooldown period
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      // Calculate tokens earned based on shares
-      const tokensEarned = this.bandwidth.earned;
+      const tokensEarned = this.isPremiumUser ? 24 : 12;
 
-      // Call the balance update API with PUT method
-      const response = await this.http
-        .put(
-          `https://9061-2405-201-e003-11db-f529-d303-dc61-8801.ngrok-free.app/webhook/balanceUpdate/1372233084/${tokensEarned}`,
-          {} // Empty body as parameters are in URL
-        )
-        .toPromise();
+      // Update profile balance
+      this.profile.balance += tokensEarned;
+      localStorage.setItem('profileBalance', this.profile.balance.toString());
 
-      // Check if API call was successful
-      if (response) {
-        // Update profile balance
-        this.profile.balance += tokensEarned;
-        localStorage.setItem('profileBalance', this.profile.balance.toString());
+      // Reset bandwidth sharing stats
+      this.bandwidth.shares = 0;
+      this.bandwidth.earned = 0;
+      this.accumulatedShares = 0;
 
-        // Reset bandwidth sharing stats
-        this.bandwidth.shares = 0;
-        this.bandwidth.earned = 0;
-        this.accumulatedShares = 0;
+      // Update status after claiming and cooldown
+      this.bandwidth.status = 'Inactive';
+      this.bandwidth.statusColor = 'red';
 
-        // Update status after claiming and cooldown
-        this.bandwidth.status = 'Inactive';
-        this.bandwidth.statusColor = 'red';
+      // Save reset progress to localStorage
+      localStorage.setItem(
+        'miningProgress',
+        JSON.stringify({
+          shares: 0,
+          earned: 0,
+          accumulatedShares: 0,
+        })
+      );
 
-        // Save reset progress to localStorage
-        localStorage.setItem(
-          'miningProgress',
-          JSON.stringify({
-            shares: 0,
-            earned: 0,
-            accumulatedShares: 0,
-          })
-        );
+      alert(
+        `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
+      );
 
-        alert(
-          `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
-        );
-
-        // Reset mining timer
-        this.profile.lastMiningTime = new Date().getTime();
-        this.elapsedSeconds = 0;
-      } else {
-        throw new Error('Failed to update balance');
-      }
+      // Reset mining timer
+      this.profile.lastMiningTime = new Date().getTime();
+      this.elapsedSeconds = 0;
     } catch (error) {
       console.error('Failed to claim tokens:', error);
       alert('Failed to claim tokens. Please try again.');
