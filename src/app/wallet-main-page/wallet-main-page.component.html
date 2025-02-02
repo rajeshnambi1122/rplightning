@@ -23,13 +23,5 @@
   <div class="success-screen" *ngIf="successScreenVisible">
     <h1>Lighting Wallet created successfully!</h1>
     <button class="lets-go-button" (click)="letsGo()">Let's Go</button>
-
-    <div *ngIf="uniqueWord.length">
-        <ol> <!-- Ordered list to display numbers automatically -->
-          <li *ngFor="let word of uniqueWord; let i = index">
-          {{ word }}
-          </li>
-        </ol>
-      </div>
   </div>
   

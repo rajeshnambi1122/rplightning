@@ -11,20 +11,20 @@ import { WalletMainPageComponent } from './wallet-main-page/wallet-main-page.com
 import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
-  { path: 'mine', component: MineComponent },
+  { path: 'mine/:id', component: MineComponent },
   { path: 'task', component: TaskComponent },
   { path: 'upgrade', component: UpgradeComponent },
   { path: 'friends', component: FriendsComponent },
   { path: 'wallet', component: WalletComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'wallet-main-page', component: WalletMainPageComponent },
+  { path: 'wallet-main-page/:id', component: WalletMainPageComponent },
   { path: 'admin-login-page', component: AdminLoginPageComponent },
   { path: 'setting', component: SettingComponent },
   {
     path: 'admin-portal',
     loadChildren: () => import('./admin-portal/admin-portal.module').then((ON) => ON.AdminPortalModule)
   },
-  { path: '', redirectTo: '/mine', pathMatch: 'full' },
+  { path: '', redirectTo: '/mine/:id', pathMatch: 'full' },
 ];
 
 @NgModule({
