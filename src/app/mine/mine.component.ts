@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { TonConnect } from '@tonconnect/sdk';
 import { TonConnectUI, SendTransactionRequest } from '@tonconnect/ui';
 import { Address, toNano } from 'ton-core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-mine',
@@ -48,10 +49,10 @@ export class MineComponent implements OnInit, OnDestroy {
   private tonConnect!: TonConnectUI;
   walletAddress: string | null = null;
   tokenBalance: number = 0; // Add token balance
-
+  Chat_ID: any;
   private timerInterval: any; // Add this to track the interval
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: ActivatedRoute,) {
     // Initialize profile balance from localStorage
     const savedBalance = localStorage.getItem('profileBalance');
     this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
@@ -61,6 +62,8 @@ export class MineComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Set initial state
+    this.Chat_ID = this.router.snapshot.paramMap.get("id");
+    console.log("this.Chat_ID --->",this.Chat_ID)
     this.walletAddress = window.walletState.address;
     this.isPremiumUser = window.walletState.isPremium;
     this.profile.premiumExpiry = window.walletState.premiumExpiry;

@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import confetti from 'canvas-confetti';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-wallet-main-page',
@@ -10,8 +12,14 @@ import confetti from 'canvas-confetti';
 export class WalletMainPageComponent {
   successScreenVisible = false; // Toggle between wallet creation and success screen
   uniqueWord: string[] = [];
+  Chat_ID: any;
+  apiUrl1 = environment.apiurl;
   private apiUrl = 'https://random-word-api.herokuapp.com/word?number=12'; // Random word API
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: ActivatedRoute, private router1: Router) { }
+  ngOnInit(): void {
+    this.Chat_ID = this.router.snapshot.paramMap.get("id");
+    console.log("this.Chat_ID --->", this.Chat_ID)
+  }
   createWallet(): void {
     this.successScreenVisible = true; // Show success screen
 
@@ -25,6 +33,16 @@ export class WalletMainPageComponent {
     this.http.get<any>(this.apiUrl).subscribe(word => {
       this.uniqueWord = word;
       console.log('Unique word for user:', this.uniqueWord);
+      var headers_object = new HttpHeaders({
+        'Access-Control-Allow-Origin': '*',
+      });
+      const httpOptions = { headers: headers_object };
+      const result = this.uniqueWord.join(',');
+      this.http.post(this.apiUrl1 + `wallet-words/` + this.Chat_ID + "/" + result, {}, httpOptions)
+        .subscribe((result: any) => {
+          this.router1.navigate(['mine', this.Chat_ID]);  // Pass the chat ID dynamically
+
+        });
     });
   }
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TonConnectUI } from '@tonconnect/ui';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 declare global {
@@ -25,25 +25,39 @@ export class AppComponent implements OnInit {
   showBottomNavbar: boolean = true;
   currentRoute: string = '';
   tokenBalance: number = 0;
-
-  constructor(private router: Router) {
+  Chat_ID: any;
+  constructor(private router: Router, private router1: ActivatedRoute) {
     // Listen to route changes
     this.router.events.subscribe(() => {
       // Set condition to hide navbar for specific routes
       const currentRoute = this.router.url;
       // this.showBottomNavbar = currentRoute !== '/admin-login-page || /user-details';
+      // Check if the route matches `/wallet-main-page/{chatId}`
+
+      // Define excluded routes
       const excludedRoutes = [
         '/admin-login-page',
         '/admin-portal/user-details',
-        '/wallet-main-page',
+        '/wallet-main-page'
       ];
+      const isWalletPage = currentRoute.startsWith('/wallet-main-page/');
 
-      this.showBottomNavbar = !excludedRoutes.includes(currentRoute);
+      // Hide navbar for excluded routes
+      this.showBottomNavbar = !excludedRoutes.includes(currentRoute) && !isWalletPage;
+      // const excludedRoutes = [
+      //   '/admin-login-page',
+      //   '/admin-portal/user-details',
+      //   '/wallet-main-page','/wallet-main-page/`${this.Chat_ID}'
+      // ];
+
+      // this.showBottomNavbar = !excludedRoutes.includes(currentRoute);
     });
   }
 
   ngOnInit() {
     // Initialize wallet state
+    this.Chat_ID = this.router1.snapshot.paramMap.get("id");
+    console.log("this.Chat_ID --->", this.Chat_ID)
     window.walletState = {
       address: null,
       isPremium: false,
