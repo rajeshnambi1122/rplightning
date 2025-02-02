@@ -1,0 +1,30 @@
+<div class="tasks-container">
+    <h1 class="tasks-title">Lighting Wallet</h1>
+    <div class="menu-container">
+      <mat-list>
+        <mat-list-item class="list-item">
+          <mat-icon class="menu-icon primary-icon">vpn_key</mat-icon>
+          <span class="menu-text">Password</span>
+          <span class="spacer"></span>
+          <button mat-flat-button color="primary" class="action-button" (click)="openPopup('Password')">
+            Modify
+          </button>
+        </mat-list-item>
+  
+        <mat-list-item class="list-item">
+          <mat-icon class="menu-icon accent-icon">calendar_today</mat-icon>
+          <span class="menu-text">View Mnemonic Phrases</span>
+          <span class="spacer"></span>
+          <mat-icon class="arrow-icon" (click)="openPopup('Mnemonic Phrases')">chevron_right</mat-icon>
+        </mat-list-item>
+  
+        <mat-list-item class="list-item">
+          <mat-icon class="menu-icon warn-icon">key</mat-icon>
+          <span class="menu-text">View Private Key</span>
+          <span class="spacer"></span>
+          <mat-icon class="arrow-icon" (click)="openPopup('Private Key')">chevron_right</mat-icon>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
+  

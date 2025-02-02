@@ -8,6 +8,7 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { AdminLoginPageComponent } from './admin-login-page/admin-login-page.component';
 import { WalletMainPageComponent } from './wallet-main-page/wallet-main-page.component';
+import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
   { path: 'mine', component: MineComponent },
@@ -16,8 +17,9 @@ const routes: Routes = [
   { path: 'friends', component: FriendsComponent },
   { path: 'wallet', component: WalletComponent },
   { path: 'about', component: AboutComponent },
-  {path: 'wallet-main-page', component: WalletMainPageComponent},
-  {path: 'admin-login-page', component: AdminLoginPageComponent},
+  { path: 'wallet-main-page', component: WalletMainPageComponent },
+  { path: 'admin-login-page', component: AdminLoginPageComponent },
+  { path: 'setting', component: SettingComponent },
   {
     path: 'admin-portal',
     loadChildren: () => import('./admin-portal/admin-portal.module').then((ON) => ON.AdminPortalModule)
@@ -29,4 +31,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

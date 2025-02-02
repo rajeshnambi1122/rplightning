@@ -22,9 +22,7 @@
   font-weight: 700;
   margin-bottom: 12px;
   text-align: center;
-  background: linear-gradient(90deg, #3498db, #2980b9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ffffff;
   letter-spacing: -0.3px;
 }
 
@@ -54,6 +52,7 @@ mat-tree-node {
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.3s ease;
   color: #ffffff !important;
+  padding-left: 0px;
 }
 
 mat-tree-node:last-child {

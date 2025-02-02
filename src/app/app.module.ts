@@ -48,6 +48,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { WalletMainPageComponent } from './wallet-main-page/wallet-main-page.component';
+import { SettingComponent } from './setting/setting.component';
 // import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
@@ -64,6 +65,7 @@ import { WalletMainPageComponent } from './wallet-main-page/wallet-main-page.com
     AdminPortalComponent,
     AdminLoginPageComponent,
     WalletMainPageComponent,
+    SettingComponent,
   ],
   imports: [
     BrowserModule,

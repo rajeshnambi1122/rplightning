@@ -1,7 +1,7 @@
 <div class="tasks-container">
   <h1 class="tasks-title">About</h1>
   <p class="tasks-subtitle">DISCOVER HOW IT ALL WORKS!</p>
-  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" style="padding-left: 0px">
     <!-- This is the tree node template for leaf nodes -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
       <!-- use a disabled button to provide padding for tree leaf -->
@@ -11,7 +11,7 @@
     <!-- This is the tree node template for expandable nodes -->
     <mat-tree-node
       *matTreeNodeDef="let node; when: hasChild"
-      matTreeNodePadding
+      matTreeNodePadding 
     >
       <button
         mat-icon-button

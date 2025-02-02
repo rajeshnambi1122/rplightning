@@ -18,7 +18,7 @@ interface FoodNode {
 const TREE_DATA: FoodNode[] = [
   {
     name: 'How The System Works',
-    children: [{name: '"Lighting" is a DePIN project on the Telegram mini-app. We will analyze your data speed, and token rewards will be based on your data speed. Once all the tokens are mined, they will be distributed to miners on the "TON Network" or other networks.'}],
+    children: [{name: 'A Decentralized Network. THATS WILL ANYLISE YOUR DATA SPEED..... TOKENS REWARDS ARE BASED ON THE USERS DATA SPEED. LIGHING revolutionizes token distribution by rewarding participants for sharing their Internet bandwidth. How it Works? //Simply put, you share your Internet bandwidth to power AI training and earn $LIGHT tokens in return. Rewards are distributed every 30 seconds, directly linked to your bandwidth speed, turning your idle resources into valuable ASSETS. //Total Supply:   50,000,000  $LIGHT //Reward Frequency: Every ~30 seconds, based on bandwidth speed. //Mining Duration: Until JUNE 2025 or until all tokens are mined //Once mining ends, all tokens will be distributed via the TON Blockchain, ensuring transparency and scalability. Join now and turn your bandwidth into LIGHT tokens before the opportunity runs out! Donations //Star and Ton purchased in-app will be allocated to cover expenses (Team, marketing, development, etc.).'}],
   },
   {
     name: 'Modes Explained',
@@ -36,7 +36,7 @@ const TREE_DATA: FoodNode[] = [
   },
   {
     name: 'Investment',
-    children: [{name: 'Update Soon...'}],
+    children: [{name: 'This investment will fuel our mission to revolutionize AI development through decentralized data-sharing and reward our community.'}],
   },
   {
     name: 'Policy',
