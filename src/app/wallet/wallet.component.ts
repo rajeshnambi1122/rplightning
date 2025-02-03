@@ -110,6 +110,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
   copyWalletAddress(): void {
     if (this.walletAddress) {
+      console.log("this.walletAddress --->",this.walletAddress)
       navigator.clipboard
         .writeText(this.walletAddress)
         .then(() => {

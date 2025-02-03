@@ -1,18 +1,10 @@
 <div class="tasks-container">
   <h1 style="margin-top: 40px" class="tasks-title">Invite Friends</h1>
   <div class="custom-tabs">
-    <div
-      class="tab"
-      [class.active]="selectedTab === 'invite'"
-      (click)="selectTab('invite')"
-    >
+    <div class="tab" [class.active]="selectedTab === 'invite'" (click)="selectTab('invite')">
       Invite
     </div>
-    <div
-      class="tab"
-      [class.active]="selectedTab === 'invited'"
-      (click)="selectTab('invited')"
-    >
+    <div class="tab" [class.active]="selectedTab === 'invited'" (click)="selectTab('invited')">
       Invited
     </div>
   </div>
@@ -20,34 +12,29 @@
     <div *ngIf="selectedTab === 'invite'" class="invite-tab">
       <p>Your referral link:</p>
       <div class="referral-link-container">
-        <input
-          #referralInput
-          type="text"
-          [value]="'https://t.me/Yugi_Lighting_bot?start=' + Chat_ID"
-          readonly
-          class="referral-link"
-        />
+        <input #referralInput type="text" [value]="'https://t.me/Yugi_Lighting_bot?start=' + this.ReferealData" readonly
+          class="referral-link" />
         <button mat-raised-button color="primary" (click)="copyLink()">
           Copy Link
         </button>
       </div>
-      
+
     </div>
     <div *ngIf="selectedTab === 'invited'" class="invited-tab">
       <div class="user-table-container">
         <table class="user-table">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Date Referred</th>
-              <th>Earned</th>
+              <th>Username</th>
+              <th>Balance</th>
+              <th>Created Date</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of invitedUsers.data">
-              <td>{{ user.name }}</td>
-              <td>{{ user.dateReferred | date : "MMM d, y" }}</td>
-              <td>{{ user.earned }}</td>
+            <tr *ngFor="let user of invitedUsers">
+              <td>{{ user.username }}</td>
+              <td>{{ user.balance }}</td>
+              <td>{{ user.createdAt | date: "dd MMM y" }}</td>
             </tr>
           </tbody>
         </table>
