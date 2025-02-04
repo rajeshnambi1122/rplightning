@@ -14,16 +14,18 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Set initial state
-    this.walletAddress = window.walletState.address;
+    this.walletAddress = window.walletState?.address;
+    console.log('Connected Wallet Address:', this.walletAddress); // Debug log
     this.isPremiumUser = window.walletState.isPremium;
     this.premiumExpiry = window.walletState.premiumExpiry;
 
     // Set up interval to check wallet state
     setInterval(() => {
-      if (this.walletAddress !== window.walletState.address) {
-        this.walletAddress = window.walletState.address;
-        this.isPremiumUser = window.walletState.isPremium;
-        this.premiumExpiry = window.walletState.premiumExpiry;
+      const currentAddress = window.walletState?.address;
+      if (this.walletAddress !== currentAddress) {
+        this.walletAddress = currentAddress;
+        console.log('Updated Wallet Address:', this.walletAddress); // Debug log
+
         if (this.walletAddress) {
           this.fetchBalance();
         } else {
@@ -44,10 +46,12 @@ export class WalletComponent implements OnInit, AfterViewInit {
   }
 
   formatAddress(address: string): string {
-    if (address.length > 20) {
-      return `${address.substring(0, 10)}...${address.substring(
-        address.length - 10
-      )}`;
+    if (!address) return '';
+
+    // Convert the raw address to TON format
+    if (address.startsWith('0:')) {
+      const cleanAddress = address.substring(2); // Remove '0:'
+      return `UQ${cleanAddress}`;
     }
     return address;
   }
@@ -110,7 +114,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
   copyWalletAddress(): void {
     if (this.walletAddress) {
-      console.log("this.walletAddress --->",this.walletAddress)
+      console.log('this.walletAddress --->', this.walletAddress);
       navigator.clipboard
         .writeText(this.walletAddress)
         .then(() => {
