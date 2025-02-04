@@ -1,17 +1,29 @@
+
+
 <div class="tasks-container">
   <h1 class="tasks-title">About</h1>
   <p class="tasks-subtitle">DISCOVER HOW IT ALL WORKS!</p>
-  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" style="padding-left: 0px">
-    <!-- This is the tree node template for leaf nodes -->
+
+  <!-- Display Mining Details Separately -->
+  <div *ngIf="miningDetails" class="mining-details">
+    <h3>Mining Details</h3>
+    <p><strong>Total Mined:</strong> {{ miningDetails.totalMined }}</p>
+    <p><strong>Total Supply:</strong> {{ miningDetails.totalSupply }}</p>
+    <p><strong>Total Holders:</strong> {{ miningDetails.totalHolders }}</p>
+    <p><strong>Mining Started:</strong> {{ miningDetails.miningStarted }}</p>
+  </div>
+
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <!-- Leaf node template -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-      <!-- use a disabled button to provide padding for tree leaf -->
       <button mat-icon-button disabled></button>
       {{ node.name }}
     </mat-tree-node>
-    <!-- This is the tree node template for expandable nodes -->
+
+    <!-- Expandable node template -->
     <mat-tree-node
       *matTreeNodeDef="let node; when: hasChild"
-      matTreeNodePadding 
+      matTreeNodePadding
     >
       <button
         mat-icon-button
@@ -19,10 +31,11 @@
         [attr.aria-label]="'Toggle ' + node.name"
       >
         <mat-icon class="mat-icon-rtl-mirror">
-          {{ treeControl.isExpanded(node) ? "expand_more" : "chevron_right" }}
+          {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
         </mat-icon>
       </button>
       {{ node.name }}
     </mat-tree-node>
   </mat-tree>
 </div>
+

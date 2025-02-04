@@ -1,80 +1,92 @@
-.tasks-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 24px 16px;
-    max-width: 600px;
-    margin: 0 auto;
-    background-color: #1e1e2f; /* Dark background */
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-  
-  .tasks-title {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-align: center;
-    color: #ffffff;
-    letter-spacing: 0.5px;
-  }
-  
-  .menu-container {
-    width: 100%;
-  }
-  
-  .list-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 0;
-    border-bottom: 1px solid #444;
-  }
-  
-  .menu-icon {
-    font-size: 1.8rem;
-    margin-right: 10px;
-  }
-  
-  .primary-icon {
-    color: #4caf50;
-  }
-  
-  .accent-icon {
-    color: #ff9800;
-  }
-  
-  .warn-icon {
-    color: #f44336;
-  }
-  
-  .menu-text {
-    font-size: 1.2rem;
-    color: #ffffff;
-  }
-  
-  .spacer {
-    flex: 1;
-  }
-  
-  .action-button {
-    font-size: 0.9rem;
-    text-transform: capitalize;
-  }
-  
-  .arrow-icon {
-    font-size: 1.5rem;
-    color: #2196f3;
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .arrow-icon:hover {
-    transform: scale(1.2);
-  }
-  
-  .list-item:hover {
-    background-color: #2e2e3e;
-    border-radius: 8px;
-  }
-  
+/* Container Styling */
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  gap: 20px;
+  background-color: #0a1b44; /* Background color */
+  min-height: 100vh; /* Full height */
+}
+
+/* Title Styling */
+.settings-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: white;
+}
+
+/* Card Styling */
+.settings-card {
+  width: 100%;
+  max-width: 600px;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: #13244d; /* Darker shade for contrast */
+  margin: 0 auto;
+}
+
+/* List Styling */
+mat-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* List Item Styling */
+.list-item {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #1c3664; /* Border color for separation */
+  transition: background-color 0.3s ease;
+}
+
+.list-item:hover {
+  background-color: #1c3664; /* Slight hover effect */
+  cursor: pointer;
+}
+
+/* Icon Styling */
+.menu-icon {
+  font-size: 20px;
+  margin-right: 15px;
+  color: white;
+}
+
+.arrow-icon {
+  font-size: 20px;
+  color: white;
+}
+
+/* Ensures consistent width for menu text */
+.menu-text {
+  font-size: 16px;
+  flex-grow: 1; /* Make text take equal space */
+  min-width: 180px;
+  max-width: 250px;
+  color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Spacer for alignment */
+.spacer {
+  flex-grow: 1;
+}
+
+/* FAQ, Community, and About Icons with Specific Colors */
+.faq-icon {
+  color: #4fa3ff; /* Light blue */
+}
+
+.community-icon {
+  color: #52c1a0; /* Greenish */
+}
+
+.about-icon {
+  color: #ffb74d; /* Orange */
+}

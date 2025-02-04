@@ -53,7 +53,9 @@ export class AppComponent implements OnInit {
       // this.showBottomNavbar = !excludedRoutes.includes(currentRoute);
     });
   }
-
+  routeSetting(){
+    this.router.navigate(["setting"]);
+  }
   ngOnInit() {
     // Initialize wallet state
     this.Chat_ID = this.router1.snapshot.paramMap.get("id");

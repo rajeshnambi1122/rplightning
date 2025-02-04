@@ -1,5 +1,4 @@
-/* Modern Typography */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 :host {
   display: flex;
@@ -141,7 +140,6 @@
   }
 }
 
-/* Premium Badge */
 .premium-badge {
   background: linear-gradient(135deg, #f1c40f, #f39c12);
   color: white;
@@ -154,7 +152,7 @@
   box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
 }
 
-/* Divider */
+
 .divider {
   height: 1px;
   background: linear-gradient(
@@ -194,4 +192,248 @@
   position: absolute;
   left: 40px;
   top: -2px;
+} */
+
+
+/* Modern Typography */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a1b44 0%, #1a3a8f 100%);
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.upgrade-container {
+  padding: 24px;
+  width: 100%;
+  max-width: 480px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.upgrade-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.upgrade-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.upgrade-card h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, #28a7f0, #1eb1fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.upgrade-card p {
+  color: #a8b9d0;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.compact-features {
+  padding: 0;
+  margin: 16px 0;
+  list-style: none;
+}
+
+.compact-features li {
+  position: relative;
+  padding-left: 24px;
+  margin: 8px 0;
+  color: white;
+  font-size: 0.95rem;
+}
+
+.compact-features li::before {
+  content: "•";
+  color: #28a7f0;
+  font-size: 1.2rem;
+  position: absolute;
+  left: 40px;
+  top: -2px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+  margin: 16px 0;
+}
+
+.price-tag {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.upgrade-button {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3), 0 0 20px rgba(52, 152, 219, 0.2), 0 0 40px rgba(52, 152, 219, 0.1);
+  animation: pulse 2s infinite;
+}
+
+.upgrade-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4), 0 0 30px rgba(52, 152, 219, 0.3), 0 0 50px rgba(52, 152, 219, 0.2);
+  background: linear-gradient(135deg, #3498db, #2475a8);
+}
+
+.upgrade-button:disabled {
+  background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+  opacity: 0.8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  animation: none;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3), 0 0 20px rgba(52, 152, 219, 0.2), 0 0 40px rgba(52, 152, 219, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4), 0 0 30px rgba(52, 152, 219, 0.3), 0 0 50px rgba(52, 152, 219, 0.2);
+  }
+
+  100% {
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3), 0 0 20px rgba(52, 152, 219, 0.2), 0 0 40px rgba(52, 152, 219, 0.1);
+  }
+}
+
+/* Premium Badge */
+.premium-badge {
+  background: linear-gradient(135deg, #f1c40f, #f39c12);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-block;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .upgrade-container {
+    padding: 16px;
+  }
+
+  .upgrade-card {
+    padding: 16px;
+    width: 100%;
+  }
+
+  .upgrade-card h1 {
+    font-size: 1.5rem;
+  }
+
+  .price-tag {
+    font-size: 1.5rem;
+  }
+
+  .upgrade-button {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .upgrade-container {
+    padding: 12px;
+  }
+
+  .upgrade-card {
+    padding: 12px;
+  }
+
+  .upgrade-card h1 {
+    font-size: 1.2rem;
+  }
+
+  .price-tag {
+    font-size: 1.2rem;
+  }
+
+  .upgrade-button {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+  }
+}
+
+/* Mobile screen adjustments */
+@media (max-width: 350px) {
+  .upgrade-container {
+    padding: 16px;  /* Reduced padding */
+    width: 100%;
+    max-width: 300px;  /* Adjust the width for small screens */
+    margin: 0 auto;   /* Center the container */
+    box-sizing: border-box; /* Prevent overflow */
+  }
+
+  .upgrade-card {
+    width: 100%;  /* Ensure the card takes up full width of its parent */
+    max-width: 100%;  /* No card should exceed container width */
+    margin: 10px 0;   /* Adds margin between cards */
+    padding: 16px;    /* Reduced padding for better fitting */
+    box-sizing: border-box; /* Prevent overflow */
+  }
+
+  .upgrade-card h1 {
+    font-size: 1.4rem;  /* Smaller font size for titles */
+  }
+
+  .compact-subtitle {
+    font-size: 0.9rem;  /* Adjust subtitle size */
+  }
+
+  .price-tag {
+    font-size: 1.5rem;  /* Adjust price size for better readability */
+  }
+
+  .upgrade-button {
+    font-size: 0.9rem;  /* Adjust button font size */
+    padding: 10px 18px; /* Reduced padding */
+  }
 }

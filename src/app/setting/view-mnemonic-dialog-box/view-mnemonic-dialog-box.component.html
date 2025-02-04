@@ -1,0 +1,24 @@
+<div class="mnemonic-dialog">
+  <button class="close-button" mat-icon-button (click)="closeDialog()">
+    <mat-icon>close</mat-icon>
+  </button>
+<br><br>
+  <div class="warning-banner">
+    <h3>DO NOT share your mnemonic phrases</h3>
+    <p>Your assets could be stolen if your mnemonic phrases are compromised.</p>
+  </div>
+
+  <div class="mnemonic-list">
+    <div class="mnemonic-item" *ngFor="let word of mnemonicWords; let i = index">
+      <div class="item-index">{{ i + 1 }}.</div>
+      <div class="item-word" [ngClass]="{ 'blurred': !showMnemonic }">
+        {{ showMnemonic ? word : '***' }}
+      </div>
+    </div>
+  </div>
+
+  <button mat-stroked-button color="primary" (click)="toggleMnemonicVisibility()">
+    <mat-icon>{{ showMnemonic ? 'visibility_off' : 'visibility' }}</mat-icon>
+    {{ showMnemonic ? 'Hide mnemonic phrases' : 'Show mnemonic phrases' }}
+  </button>
+</div>

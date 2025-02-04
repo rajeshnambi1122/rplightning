@@ -1,0 +1,89 @@
+.mnemonic-dialog {
+  position: relative;
+  padding: 24px;
+  background-color: #1e1e1e;
+  color: white;
+  border-radius: 10px;
+  font-family: 'Roboto', sans-serif;
+  max-width: 500px;
+  max-height: 90vh; /* Prevent the dialog from exceeding the viewport height */
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.mnemonic-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: 60vh; /* Limit the height of the list for scrolling */
+  padding-right: 4px;
+}
+
+.mnemonic-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #2e2e2e;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.item-index {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.item-word {
+  flex: 1;
+  text-align: left;
+  transition: all 0.3s ease;
+}
+
+.blurred {
+  filter: blur(5px);
+  color: transparent;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+button[mat-stroked-button] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: bold;
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: white;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .mnemonic-dialog {
+    padding: 16px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .mnemonic-list {
+    grid-template-columns: 1fr; /* Single-column grid for mobile */
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .mnemonic-dialog {
+    padding: 20px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .mnemonic-dialog {
+    max-width: 600px;
+  }
+}

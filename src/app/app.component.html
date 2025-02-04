@@ -1,7 +1,7 @@
 
 <div class="token-balance" *ngIf="shouldShowBalance()">
   <div class="logo-container">
-    <mat-icon class="settings-icon"> settings </mat-icon>
+    <mat-icon class="settings-icon" (click)="routeSetting()"> settings </mat-icon>
 
     <mat-icon class="notification-icon"> notifications </mat-icon>
     <img src="assets/logo.jpeg" alt="Logo" class="balance-logo" />

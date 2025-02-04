@@ -6,6 +6,18 @@
   width: 100%;
   overflow-x: hidden;
 }
+.mining-details {
+  margin: 20px 0;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #007bff;
+  border-radius: 5px;
+}
+
+.mining-details h3 {
+  color: #007bff;
+  margin-bottom: 10px;
+}
 
 .tasks-container {
   display: flex;

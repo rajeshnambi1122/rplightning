@@ -1,13 +1,13 @@
 <div class="upgrade-container">
-  <div class="upgrade-card">
-    <div class="premium-badge">Premium Plan</div>
-    <h1>Upgrade to Premium</h1>
+  <div class="upgrade-card" [class.disabled]="isUpgraded">
+    <div class="premium-badge">Hyper Mode</div>
+    <h1>Upgrade to Hyper Mode</h1>
     <p class="compact-subtitle">2x rewards · No ads · Priority support</p>
 
     <div class="divider"></div>
 
     <ul class="compact-features">
-      <li>Double mining rewards</li>
+      <li>Double mining rewards(2x rewards)</li>
       <li>Ad-free experience</li>
       <li>24/7 priority support</li>
       <li>Exclusive events access</li>
@@ -17,8 +17,31 @@
 
     <div class="price-tag">0.5 TON</div>
 
-    <button class="upgrade-button" (click)="upgradeToPremium()">
-      Upgrade Now
+    <button class="upgrade-button" (click)="upgradeToHyper()" [disabled]="isUpgraded">
+      {{ isUpgraded && upgradedMode === 'hyper' ? 'Upgraded' : 'Upgrade Now' }}
+    </button>
+  </div>
+
+  <div class="upgrade-card" [class.disabled]="isUpgraded">
+    <div class="premium-badge">Dynamic Mode</div>
+    <h1>Upgrade to Dynamic Mode</h1>
+    <p class="compact-subtitle">3x rewards · No ads · Priority support</p>
+
+    <div class="divider"></div>
+
+    <ul class="compact-features">
+      <li>Triple mining rewards (3x rewards)</li>
+      <li>Ad-free experience</li>
+      <li>24/7 priority support</li>
+      <li>Exclusive events access</li>
+    </ul>
+
+    <div class="divider"></div>
+
+    <div class="price-tag">2 TON</div>
+
+    <button class="upgrade-button" (click)="upgradeToDynamic()" [disabled]="isUpgraded">
+      {{ isUpgraded && upgradedMode === 'dynamic' ? 'Upgraded' : 'Upgrade Now' }}
     </button>
   </div>
 </div>

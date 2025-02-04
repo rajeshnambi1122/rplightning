@@ -4,24 +4,25 @@
     <div class="tab" [class.active]="selectedTab === 'invite'" (click)="selectTab('invite')">
       Invite
     </div>
-    <div class="tab" [class.active]="selectedTab === 'invited'" (click)="selectTab('invited')">
-      Invited
+    <div class="tab" [class.active]="selectedTab === 'leader'" (click)="selectTab('leader')">
+      Leader's Board
     </div>
   </div>
   <div class="tab-content">
     <div *ngIf="selectedTab === 'invite'" class="invite-tab">
-      <p>Your referral link:</p>
-      <div class="referral-link-container">
-        <input #referralInput type="text" [value]="'https://t.me/Yugi_Lighting_bot?start=' + this.ReferealData" readonly
-          class="referral-link" />
-        <button mat-raised-button color="primary" (click)="copyLink()">
-          Copy Link
-        </button>
+      <div>
+        <p>Your referral link:</p>
+        <div class="referral-link-container">
+          <input #referralInput type="text" [value]="'https://t.me/Yugi_Lighting_bot?start=' + this.ReferealData"
+            readonly class="referral-link" />
+          <button mat-raised-button color="primary" (click)="copyLink()">
+            Copy Link
+          </button>
+        </div>
       </div>
 
-    </div>
-    <div *ngIf="selectedTab === 'invited'" class="invited-tab">
       <div class="user-table-container">
+        <p>Refered Friends List</p>
         <table class="user-table">
           <thead>
             <tr>
@@ -35,6 +36,26 @@
               <td>{{ user.username }}</td>
               <td>{{ user.balance }}</td>
               <td>{{ user.createdAt | date: "dd MMM y" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div *ngIf="selectedTab === 'leader'" class="invited-tab">
+      <div class="user-table-container">
+        <table class="user-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Diamond's</th>
+              <!-- <th>Created Date</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of invitedUsers">
+              <td>{{ user.username }}</td>
+              <td>{{ user.balance }}</td>
+              <!-- <td>{{ user.createdAt | date: "dd MMM y" }}</td> -->
             </tr>
           </tbody>
         </table>

@@ -1,30 +1,53 @@
-<div class="tasks-container">
-    <h1 class="tasks-title">Lighting Wallet</h1>
-    <div class="menu-container">
-      <mat-list>
-        <mat-list-item class="list-item">
-          <mat-icon class="menu-icon primary-icon">vpn_key</mat-icon>
-          <span class="menu-text">Password</span>
-          <span class="spacer"></span>
-          <button mat-flat-button color="primary" class="action-button" (click)="openPopup('Password')">
-            Modify
-          </button>
-        </mat-list-item>
-  
-        <mat-list-item class="list-item">
-          <mat-icon class="menu-icon accent-icon">calendar_today</mat-icon>
+<div class="settings-container">
+  <h1 class="settings-title">Lighting Wallet</h1>
+
+  <!-- Wallet Settings Section -->
+  <mat-card class="settings-card">
+    <mat-list>
+      <mat-list-item class="list-item" (click)="openDialog('View Mnemonic Phrases')">
+        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+          <mat-icon class="menu-icon">text_snippet</mat-icon>
           <span class="menu-text">View Mnemonic Phrases</span>
           <span class="spacer"></span>
-          <mat-icon class="arrow-icon" (click)="openPopup('Mnemonic Phrases')">chevron_right</mat-icon>
-        </mat-list-item>
-  
-        <mat-list-item class="list-item">
-          <mat-icon class="menu-icon warn-icon">key</mat-icon>
-          <span class="menu-text">View Private Key</span>
-          <span class="spacer"></span>
-          <mat-icon class="arrow-icon" (click)="openPopup('Private Key')">chevron_right</mat-icon>
-        </mat-list-item>
-      </mat-list>
-    </div>
-  </div>
-  
+          <mat-icon class="arrow-icon">chevron_right</mat-icon>
+        </span>
+
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <!-- FAQ and About Section -->
+  <mat-card class="settings-card">
+    <mat-list>
+      <!-- FAQ -->
+      <mat-list-item class="list-item">
+        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+        <mat-icon class="menu-icon faq-icon">help_outline</mat-icon>
+        <span class="menu-text">FAQ</span>
+        <span class="spacer"></span>
+        <mat-icon class="arrow-icon">chevron_right</mat-icon>
+        </span>
+      </mat-list-item>
+
+      <!-- Community -->
+      <mat-list-item class="list-item" (click)="Community()">
+        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+        <mat-icon class="menu-icon community-icon">groups</mat-icon>
+        <span class="menu-text">Community</span>
+        <span class="spacer"></span>
+        <mat-icon class="arrow-icon">chevron_right</mat-icon>
+        </span>
+      </mat-list-item>
+
+      <!-- About -->
+      <mat-list-item class="list-item" (click)="About()">
+        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+        <mat-icon class="menu-icon about-icon">info</mat-icon>
+        <span class="menu-text">About Lighting</span>
+        <span class="spacer"></span>
+        <mat-icon class="arrow-icon">chevron_right</mat-icon>
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+</div>

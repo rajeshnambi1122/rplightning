@@ -49,6 +49,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { WalletMainPageComponent } from './wallet-main-page/wallet-main-page.component';
 import { SettingComponent } from './setting/setting.component';
+import { ViewMnemonicDialogBoxComponent } from './setting/view-mnemonic-dialog-box/view-mnemonic-dialog-box.component';
 // import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
@@ -66,6 +67,7 @@ import { SettingComponent } from './setting/setting.component';
     AdminLoginPageComponent,
     WalletMainPageComponent,
     SettingComponent,
+    ViewMnemonicDialogBoxComponent,
   ],
   imports: [
     BrowserModule,
