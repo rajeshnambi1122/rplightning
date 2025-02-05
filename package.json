@@ -23,6 +23,7 @@
     "@angular/router": "^16.2.0",
     "@tonconnect/sdk": "^3.0.6",
     "@tonconnect/ui": "^2.0.11",
+    "bip39": "^3.1.0",
     "buffer": "^6.0.3",
     "canvas-confetti": "^1.9.3",
     "process": "^0.11.10",
@@ -31,6 +32,7 @@
     "ton-core": "^0.53.0",
     "tslib": "^2.3.0",
     "util": "^0.12.5",
+    "web3": "^4.16.0",
     "zone.js": "~0.13.0"
   },
   "devDependencies": {

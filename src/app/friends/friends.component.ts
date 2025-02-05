@@ -3,7 +3,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
-
+import * as bip39 from 'bip39';
 @Component({
   selector: 'app-friends',
   templateUrl: './friends.component.html',
@@ -13,16 +13,16 @@ export class FriendsComponent {
   selectedTab: string = 'invite';
   Chat_ID: any;
   ReferealData: any;
-   apiUrl1 = environment.apiurl;
-   // Define the expected structure for invitedUsers
-invitedUsers: { username: string; balance: number; createdAt: Date }[] = [];
+  apiUrl1 = environment.apiurl;
+  // Define the expected structure for invitedUsers
+  invitedUsers: { username: string; balance: number; createdAt: Date }[] = [];
   res: any;
   //  @ViewChild('referralInput', { static: false }) referralInput!: ElementRef;
   selectTab(tab: string): void {
     this.selectedTab = tab;
   }
-  constructor(private http: HttpClient, private router: ActivatedRoute){
-    
+  constructor(private http: HttpClient, private router: ActivatedRoute) {
+
   }
 
 
@@ -36,20 +36,31 @@ invitedUsers: { username: string; balance: number; createdAt: Date }[] = [];
       console.error('Failed to copy:', err);
     });
   }
+  mnemonicWords: string[] = [];
+
   ngOnInit(): void {
     // Set initial state
     this.Chat_ID = localStorage.getItem('Identification');
-    console.log("this.Chat_ID --->",this.Chat_ID)
+    console.log("this.Chat_ID --->", this.Chat_ID)
     this.getUserDetails();
+    // this.getRandomWords()
     
   }
+  // getRandomWords(){
+  //   this.mnemonicWords = this.generateMnemonic();
+  //   console.log("this.mnemonicWords --->",this.mnemonicWords)
+  // }
+  // generateMnemonic(): string[] {
+  //   const mnemonic = bip39.generateMnemonic(128); // 128-bit entropy = 12 words
+  //   return mnemonic.split(' '); // Convert string to array of words
+  // }
   private getHeaders() {
     const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning':  '69420'
+      'ngrok-skip-browser-warning': '69420'
     });
-    return {headers};
+    return { headers };
   }
-  getUserDetails(){
+  getUserDetails() {
     const url = `${this.apiUrl1}webhook/getUserDetail/${this.Chat_ID}`;
 
 
@@ -65,7 +76,7 @@ invitedUsers: { username: string; balance: number; createdAt: Date }[] = [];
   }
 
 
-getReferedUserDetails(refferalId: string) {
+  getReferedUserDetails(refferalId: string) {
     const url = `${this.apiUrl1}webhook/getRefferal/${refferalId}`;
 
     this.http.get<any[]>(url, this.getHeaders()).subscribe((result) => {
@@ -82,8 +93,8 @@ getReferedUserDetails(refferalId: string) {
         console.error("No referred users found", result);
       }
     });
-}
+  }
 
-  
+
 
 }
