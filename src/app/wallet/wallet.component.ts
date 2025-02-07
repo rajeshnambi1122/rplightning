@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { toNano } from 'ton-core';
+import { toNano, Address } from 'ton-core';
 
 @Component({
   selector: 'app-wallet',
@@ -13,6 +13,17 @@ export class WalletComponent implements OnInit, AfterViewInit {
   premiumExpiry: number | null = null;
 
   ngOnInit() {
+    // Check for saved wallet state
+    const savedWalletState = localStorage.getItem('walletState');
+    if (savedWalletState) {
+      window.walletState = JSON.parse(savedWalletState);
+    }
+
+    // Only connect if not already connected
+    if (window.tonConnectUI && !window.tonConnectUI.connected) {
+      window.tonConnectUI.connectWallet();
+    }
+
     // Set initial state
     this.walletAddress = window.walletState.address;
     this.isPremiumUser = window.walletState.isPremium;
@@ -34,8 +45,8 @@ export class WalletComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Set the button root ID after the view is initialized
-    if (window.tonConnectUI) {
+    // Only initialize if not already initialized
+    if (window.tonConnectUI && !window.tonConnectUI.connected) {
       window.tonConnectUI.uiOptions = {
         ...window.tonConnectUI.uiOptions,
         buttonRootId: 'ton-connect-button',
@@ -44,12 +55,22 @@ export class WalletComponent implements OnInit, AfterViewInit {
   }
 
   formatAddress(address: string): string {
-    if (address.length > 20) {
-      return `${address.substring(0, 10)}...${address.substring(
-        address.length - 10
-      )}`;
+    if (!address) return '';
+
+    try {
+      if (address.startsWith('0:')) {
+        const rawAddress = address.substring(2); // Remove '0:' prefix
+        const friendlyAddress = Address.parseRaw('0:' + rawAddress).toString({
+          urlSafe: true,
+          bounceable: true,
+        });
+        return 'UQ' + friendlyAddress.substring(2); // Add 'UQ' prefix and remove 'EQ'
+      }
+      return address;
+    } catch (error) {
+      console.error('Error formatting address:', error);
+      return address;
     }
-    return address;
   }
 
   private async fetchBalance() {
@@ -110,9 +131,9 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
   copyWalletAddress(): void {
     if (this.walletAddress) {
-      console.log("this.walletAddress --->",this.walletAddress)
+      const formattedAddress = this.formatAddress(this.walletAddress);
       navigator.clipboard
-        .writeText(this.walletAddress)
+        .writeText(formattedAddress)
         .then(() => {
           alert('Wallet address copied to clipboard!');
         })

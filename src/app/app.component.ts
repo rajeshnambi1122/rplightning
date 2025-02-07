@@ -38,12 +38,13 @@ export class AppComponent implements OnInit {
       const excludedRoutes = [
         '/admin-login-page',
         '/admin-portal/user-details',
-        '/wallet-main-page'
+        '/wallet-main-page',
       ];
       const isWalletPage = currentRoute.startsWith('/wallet-main-page/');
 
       // Hide navbar for excluded routes
-      this.showBottomNavbar = !excludedRoutes.includes(currentRoute) && !isWalletPage;
+      this.showBottomNavbar =
+        !excludedRoutes.includes(currentRoute) && !isWalletPage;
       // const excludedRoutes = [
       //   '/admin-login-page',
       //   '/admin-portal/user-details',
@@ -53,13 +54,43 @@ export class AppComponent implements OnInit {
       // this.showBottomNavbar = !excludedRoutes.includes(currentRoute);
     });
   }
-  routeSetting(){
-    this.router.navigate(["setting"]);
+  routeSetting() {
+    this.router.navigate(['setting']);
   }
   ngOnInit() {
+    // Initialize TON Connect once at app startup
+    if (window.tonConnectUI) {
+      window.tonConnectUI.uiOptions = {
+        buttonRootId: 'ton-connect-button',
+      };
+
+      // Load saved wallet state
+      const savedWalletState = localStorage.getItem('walletState');
+      if (savedWalletState) {
+        window.walletState = JSON.parse(savedWalletState);
+        if (!window.tonConnectUI.connected) {
+          window.tonConnectUI.connectWallet();
+        }
+      }
+
+      // Listen for wallet changes
+      window.tonConnectUI.onStatusChange((wallet) => {
+        if (wallet) {
+          window.walletState = {
+            ...window.walletState,
+            address: wallet.account.address,
+          };
+          localStorage.setItem(
+            'walletState',
+            JSON.stringify(window.walletState)
+          );
+        }
+      });
+    }
+
     // Initialize wallet state
-    this.Chat_ID = this.router1.snapshot.paramMap.get("id");
-    console.log("this.Chat_ID --->", this.Chat_ID)
+    this.Chat_ID = this.router1.snapshot.paramMap.get('id');
+    console.log('this.Chat_ID --->', this.Chat_ID);
     window.walletState = {
       address: null,
       isPremium: false,

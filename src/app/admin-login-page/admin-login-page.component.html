@@ -1,47 +1,50 @@
 <div class="login-container">
-    <div class="login-card">
-      <h2>Welcome Back!</h2>
-      <p>Please login to your account</p>
-      <form (ngSubmit)="onSubmit()">
-        <!-- Username Input -->
-        <div class="form-group">
-          <label for="username">Username</label>
+  <div class="login-card">
+    <h2>Welcome Admin!</h2>
+    <p>Please login to your account</p>
+    <form (ngSubmit)="onSubmit()">
+      <!-- Username Input -->
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          type="text"
+          placeholder="Enter your username"
+          [(ngModel)]="username"
+          name="username"
+          required
+        />
+        <!-- Error Message for Username -->
+        <div *ngIf="usernameError" class="error-message">
+          {{ usernameError }}
+        </div>
+      </div>
+
+      <!-- Password Input -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="password-wrapper">
           <input
-            id="username"
-            type="text"
-            placeholder="Enter your username"
-            [(ngModel)]="username"
-            name="username"
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            placeholder="Enter your password"
+            [(ngModel)]="password"
+            name="password"
             required
           />
-          <!-- Error Message for Username -->
-          <div *ngIf="usernameError" class="error-message">{{ usernameError }}</div>
+          <i
+            class="toggle-password-icon"
+            [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+            (click)="togglePasswordVisibility()"
+          ></i>
         </div>
-  
-        <!-- Password Input -->
-        <div class="form-group">
-          <label for="password">Password</label>
-          <div class="password-wrapper">
-            <input
-              [type]="showPassword ? 'text' : 'password'"
-              id="password"
-              placeholder="Enter your password"
-              [(ngModel)]="password"
-              name="password"
-              required
-            />
-            <i
-              class="toggle-password-icon"
-              [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
-              (click)="togglePasswordVisibility()"
-            ></i>
-          </div>
-          <!-- Error Message for Password -->
-          <div *ngIf="passwordError" class="error-message">{{ passwordError }}</div>
+        <!-- Error Message for Password -->
+        <div *ngIf="passwordError" class="error-message">
+          {{ passwordError }}
         </div>
-  
-        <button type="submit" class="submit-btn">Login</button>
-      </form>
-    </div>
+      </div>
+
+      <button type="submit" class="submit-btn">Login</button>
+    </form>
   </div>
-  
+</div>

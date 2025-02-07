@@ -1,7 +1,7 @@
 <div class="upgrade-container">
   <div class="upgrade-card" [class.disabled]="isUpgraded">
     <div class="premium-badge">Hyper Mode</div>
-    <h1>Upgrade to Hyper Mode</h1>
+    <h1 style="color: white">Upgrade to Hyper Mode</h1>
     <p class="compact-subtitle">2x rewards · No ads · Priority support</p>
 
     <div class="divider"></div>
@@ -17,14 +17,18 @@
 
     <div class="price-tag">0.5 TON</div>
 
-    <button class="upgrade-button" (click)="upgradeToHyper()" [disabled]="isUpgraded">
-      {{ isUpgraded && upgradedMode === 'hyper' ? 'Upgraded' : 'Upgrade Now' }}
+    <button
+      class="upgrade-button"
+      (click)="upgradeToHyper()"
+      [disabled]="isUpgraded"
+    >
+      {{ isUpgraded && upgradedMode === "hyper" ? "Upgraded" : "Upgrade Now" }}
     </button>
   </div>
 
   <div class="upgrade-card" [class.disabled]="isUpgraded">
     <div class="premium-badge">Dynamic Mode</div>
-    <h1>Upgrade to Dynamic Mode</h1>
+    <h1 style="color: white">Upgrade to Dynamic Mode</h1>
     <p class="compact-subtitle">3x rewards · No ads · Priority support</p>
 
     <div class="divider"></div>
@@ -40,8 +44,14 @@
 
     <div class="price-tag">2 TON</div>
 
-    <button class="upgrade-button" (click)="upgradeToDynamic()" [disabled]="isUpgraded">
-      {{ isUpgraded && upgradedMode === 'dynamic' ? 'Upgraded' : 'Upgrade Now' }}
+    <button
+      class="upgrade-button"
+      (click)="upgradeToDynamic()"
+      [disabled]="isUpgraded"
+    >
+      {{
+        isUpgraded && upgradedMode === "dynamic" ? "Upgraded" : "Upgrade Now"
+      }}
     </button>
   </div>
 </div>
