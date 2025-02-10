@@ -1,0 +1,139 @@
+.wheel-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  background: #0a1b44;
+  border-radius: 15px;
+  perspective: 1000px;
+  position: relative;
+}
+
+.wheel-perspective {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.wheel {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #1a3a8f, #0d1f4d);
+  transform-style: preserve-3d;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+}
+
+.wheel-center {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at 30% 30%, #fff, #ccc);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateZ(10px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.segment {
+  position: absolute;
+  width: 50%;
+  height: 2px;
+  transform-origin: 100% 50%;
+  left: 0;
+  top: 50%;
+}
+
+.segment-content {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  transform-origin: 100% 50%;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.2)
+  );
+  transform: translateZ(5px);
+  transition: background 0.3s;
+}
+
+.segment-content:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.2),
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+.reward-text {
+  position: absolute;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.pointer {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(145deg, #ff4081, #c60055);
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  margin-top: -20px;
+  z-index: 3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.spin-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.spin-button:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+.spin-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background 0.3s;
+  z-index: 10;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+::ng-deep .mat-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+}

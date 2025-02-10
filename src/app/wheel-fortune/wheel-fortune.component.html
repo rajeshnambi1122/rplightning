@@ -1,0 +1,24 @@
+<div class="wheel-container">
+  <div class="close-button" (click)="close()">×</div>
+  <div class="wheel-perspective">
+    <div
+      class="wheel"
+      [@spinWheel]="{ value: spinState, params: { degrees: rotationDegrees } }"
+    >
+      <div class="wheel-center"></div>
+      <div
+        class="segment"
+        *ngFor="let reward of rewards; let i = index"
+        [style.transform]="'rotate(' + i * (360 / rewards.length) + 'deg)'"
+      >
+        <div class="segment-content">
+          <span class="reward-text">{{ reward }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pointer"></div>
+  <button class="spin-button" (click)="spinWheel()" [disabled]="spinning">
+    {{ spinning ? "Spinning..." : "SPIN" }}
+  </button>
+</div>

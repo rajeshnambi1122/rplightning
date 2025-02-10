@@ -10,3 +10,30 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.no-padding-dialog .mat-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 15px !important;
+  background: #0a1b44 !important;
+  margin: 0 !important;
+}
+
+.wheel-dialog {
+  max-height: 90vh !important;
+}
+
+.mat-dialog-content {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.cdk-overlay-pane {
+  max-height: 90vh !important;
+}
+
+.mat-dialog-container {
+  display: flex !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}

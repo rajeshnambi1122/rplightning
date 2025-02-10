@@ -80,17 +80,20 @@
         </button>
       </div>
 
-      <div class="reward-card">
+      <div class="reward-card" style="margin-bottom: 80px">
         <div class="reward-info">
           <h2>WHEEL OF FORTUNE</h2>
-          <p class="availability">Coming Soon...</p>
+          <p class="availability">Click to Spin!</p>
         </div>
         <img
           class="reward-image"
           src="assets/wheel.jpg"
           alt="Wheel of Fortune"
+          (click)="openWheelDialog()"
         />
-        <button class="coming-soon-button">Coming Soon...</button>
+        <button class="spin-button" (click)="openWheelDialog()">
+          SPIN NOW
+        </button>
       </div>
     </div>
 

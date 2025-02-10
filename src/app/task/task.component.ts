@@ -3,6 +3,7 @@ import { RewardDialogComponent } from './reward-dialog/reward-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { WheelFortuneComponent } from '../wheel-fortune/wheel-fortune.component';
 // import { RewardDialogComponentComponent } from './reward-dialog-component/reward-dialog-component.component';
 
 interface TaskCard {
@@ -361,5 +362,21 @@ export class TaskComponent {
     setInterval(() => {
       this.checkAvailability();
     }, 1000); // Update every second
+  }
+
+  openWheelDialog() {
+    const dialogRef = this.dialog.open(WheelFortuneComponent, {
+      width: '400px',
+      height: '500px',
+      panelClass: 'wheel-dialog',
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Won reward:', result);
+        // Handle the won reward
+      }
+    });
   }
 }
