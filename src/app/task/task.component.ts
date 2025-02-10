@@ -366,10 +366,13 @@ export class TaskComponent {
 
   openWheelDialog() {
     const dialogRef = this.dialog.open(WheelFortuneComponent, {
-      width: '400px',
-      height: '500px',
-      panelClass: 'wheel-dialog',
+      width: '350px',
+      height: '450px',
+      panelClass: ['wheel-dialog', 'no-padding-dialog'],
       disableClose: true,
+      backdropClass: 'wheel-backdrop',
+      maxHeight: '90vh',
+      autoFocus: false,
     });
 
     dialogRef.afterClosed().subscribe((result) => {
