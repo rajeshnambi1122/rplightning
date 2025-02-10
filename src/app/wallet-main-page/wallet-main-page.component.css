@@ -21,9 +21,9 @@
 
 
 .wallet-image {
-  margin-top: 10px;
-  width: 150px;
-  height: 150px;
+  margin-top: 5px;
+  width: 350px;
+  height: 350px;
   
   img {
     width: 50%;
@@ -235,7 +235,7 @@
   
   .wallet-image img {
     max-width: 150px;
-    margin: 1rem auto;
+    margin: 3rem auto;
   }
   
   .wallet-text h1 {

@@ -14,6 +14,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Check for saved wallet state
+    
     const savedWalletState = localStorage.getItem('walletState');
     if (savedWalletState) {
       window.walletState = JSON.parse(savedWalletState);
@@ -66,7 +67,9 @@ export class WalletComponent implements OnInit, AfterViewInit {
         });
         return 'UQ' + friendlyAddress.substring(2); // Add 'UQ' prefix and remove 'EQ'
       }
+      console.log("address --->",address)
       return address;
+      
     } catch (error) {
       console.error('Error formatting address:', error);
       return address;

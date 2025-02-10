@@ -12,6 +12,8 @@ import { SettingComponent } from './setting/setting.component';
 
 const routes: Routes = [
   { path: 'mine/:id', component: MineComponent },
+  { path: 'mine', component: MineComponent },
+
   { path: 'task', component: TaskComponent },
   { path: 'upgrade', component: UpgradeComponent },
   { path: 'friends', component: FriendsComponent },
@@ -24,7 +26,7 @@ const routes: Routes = [
     path: 'admin-portal',
     loadChildren: () => import('./admin-portal/admin-portal.module').then((ON) => ON.AdminPortalModule)
   },
-  { path: '', redirectTo: '/mine/:id', pathMatch: 'full' },
+  { path: '', redirectTo: '/mine', pathMatch: 'full' },
 ];
 
 @NgModule({
