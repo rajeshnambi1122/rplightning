@@ -137,3 +137,157 @@
   padding: 0 !important;
   overflow: hidden !important;
 }
+
+.hexagon-container {
+  background: linear-gradient(135deg, #000000, #1a1a1a);
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100%;
+  position: relative;
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5);
+}
+
+.hexagon-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  margin: 20px 0;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.hexagon-row {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  margin-top: -15px;
+}
+
+.hexagon-row:first-child {
+  margin-top: 0;
+}
+
+.hexagon-row:nth-child(2) {
+  margin-left: 0;
+}
+
+.hexagon-row:nth-child(3) {
+  margin-left: 0;
+}
+
+.hexagon-row:nth-child(4) {
+  margin-left: -31px;
+}
+
+.hexagon {
+  width: 65px;
+  height: 75px;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.hexagon:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.hexagon span {
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.white-text {
+  color: white !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 22px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 10;
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.spin-button {
+  margin-top: 25px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #ff4081, #c60055);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(255, 64, 129, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.spin-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: scale(0.95);
+}
+
+.spin-button:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 64, 129, 0.5);
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 15px rgba(255, 64, 129, 0.5);
+  }
+  to {
+    box-shadow: 0 0 25px rgba(255, 64, 129, 0.8);
+  }
+}
+
+/* Add smooth animation for hexagon selection */
+@keyframes selected {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.hexagon.selected {
+  animation: selected 0.5s ease;
+}

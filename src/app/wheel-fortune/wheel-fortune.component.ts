@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import {
   trigger,
   state,
@@ -13,63 +13,66 @@ import {
   templateUrl: './wheel-fortune.component.html',
   styleUrls: ['./wheel-fortune.component.css'],
   animations: [
-    trigger('spinWheel', [
+    trigger('hexagonAnimation', [
       state(
-        'spinning',
+        'active',
         style({
-          transform:
-            'rotate({{degrees}}deg) perspective(1000px) rotateX(25deg)',
-        }),
-        { params: { degrees: 0 } }
-      ),
-      state(
-        'idle',
-        style({
-          transform: 'rotate(0deg) perspective(1000px) rotateX(25deg)',
+          background: 'linear-gradient(145deg, #ff4081, #e91e63)',
+          transform: 'scale(1.1)',
         })
       ),
-      transition(
-        '* => spinning',
-        animate('5s cubic-bezier(0.17, 0.67, 0.12, 0.99)')
+      state(
+        'inactive',
+        style({
+          background: 'linear-gradient(145deg, #ffffff, #f0f0f0)',
+          transform: 'scale(1)',
+        })
       ),
+      transition('inactive => active', animate('200ms ease-in')),
+      transition('active => inactive', animate('200ms ease-out')),
     ]),
   ],
 })
 export class WheelFortuneComponent {
+  hexagons = Array(12)
+    .fill(0)
+    .map((_, i) => ({
+      id: i,
+      state: 'inactive',
+      value: (i + 1) * 100,
+    }));
   spinning = false;
-  selectedReward: number | null = null;
-  rewards = [100, 200, 300, 400, 500, 1000, 2000, 3000];
-  rotationDegrees = 0;
-  spinState = 'idle';
+  selectedHexagon: number | null = null;
 
-  constructor(
-    public dialogRef: MatDialogRef<WheelFortuneComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
-  ) {
-    // Remove dialog padding
-    this.dialogRef.addPanelClass('no-padding-dialog');
-  }
+  constructor(public dialogRef: MatDialogRef<WheelFortuneComponent>) {}
 
   spinWheel() {
     if (!this.spinning) {
       this.spinning = true;
-      const randomSpins = 5 + Math.floor(Math.random() * 5);
-      const randomDegree = Math.floor(Math.random() * 360);
-      this.rotationDegrees = randomSpins * 360 + randomDegree;
-      this.spinState = 'spinning';
+      let currentIndex = 0;
+
+      const interval = setInterval(() => {
+        this.hexagons.forEach((hex) => (hex.state = 'inactive'));
+        this.hexagons[currentIndex].state = 'active';
+        currentIndex = (currentIndex + 1) % this.hexagons.length;
+      }, 100);
 
       setTimeout(() => {
+        clearInterval(interval);
+        const winningIndex = Math.floor(Math.random() * this.hexagons.length);
+        this.hexagons.forEach((hex) => (hex.state = 'inactive'));
+        this.hexagons[winningIndex].state = 'active';
+        this.selectedHexagon = winningIndex;
         this.spinning = false;
-        const selectedIndex = Math.floor(
-          (360 - (this.rotationDegrees % 360)) / (360 / this.rewards.length)
-        );
-        this.selectedReward = this.rewards[selectedIndex];
-        this.spinState = 'idle'; // Reset state after spinning
-      }, 5000);
+      }, 3000);
     }
   }
 
   close() {
-    this.dialogRef.close(this.selectedReward);
+    this.dialogRef.close(
+      this.selectedHexagon !== null
+        ? this.hexagons[this.selectedHexagon].value
+        : null
+    );
   }
 }

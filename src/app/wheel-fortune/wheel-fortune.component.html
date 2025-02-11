@@ -1,23 +1,47 @@
-<div class="wheel-container">
+<div class="hexagon-container">
   <div class="close-button" (click)="close()">×</div>
-  <div class="wheel-perspective">
-    <div
-      class="wheel"
-      [@spinWheel]="{ value: spinState, params: { degrees: rotationDegrees } }"
-    >
-      <div class="wheel-center"></div>
+  <div class="hexagon-grid">
+    <!-- Top row - 3 hexagons -->
+    <div class="hexagon-row">
       <div
-        class="segment"
-        *ngFor="let reward of rewards; let i = index"
-        [style.transform]="'rotate(' + i * (360 / rewards.length) + 'deg)'"
+        *ngFor="let hex of hexagons.slice(0, 3)"
+        class="hexagon"
+        [@hexagonAnimation]="hex.state"
       >
-        <div class="segment-content">
-          <span class="reward-text">{{ reward }}</span>
-        </div>
+        <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
+      </div>
+    </div>
+    <!-- Second row - 4 hexagons -->
+    <div class="hexagon-row">
+      <div
+        *ngFor="let hex of hexagons.slice(3, 7)"
+        class="hexagon"
+        [@hexagonAnimation]="hex.state"
+      >
+        <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
+      </div>
+    </div>
+    <!-- Third row - 3 hexagons -->
+    <div class="hexagon-row">
+      <div
+        *ngFor="let hex of hexagons.slice(7, 10)"
+        class="hexagon"
+        [@hexagonAnimation]="hex.state"
+      >
+        <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
+      </div>
+    </div>
+    <!-- Bottom row - 2 hexagons -->
+    <div class="hexagon-row">
+      <div
+        *ngFor="let hex of hexagons.slice(10, 12)"
+        class="hexagon"
+        [@hexagonAnimation]="hex.state"
+      >
+        <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
       </div>
     </div>
   </div>
-  <div class="pointer"></div>
   <button class="spin-button" (click)="spinWheel()" [disabled]="spinning">
     {{ spinning ? "Spinning..." : "SPIN" }}
   </button>
