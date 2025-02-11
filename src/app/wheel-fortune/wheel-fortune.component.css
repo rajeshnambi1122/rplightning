@@ -178,8 +178,11 @@
   margin-left: 0;
 }
 
-.hexagon-row:nth-child(4) {
-  margin-left: -31px;
+/* Adjust the bottom row positioning */
+.hexagon-row.bottom-row {
+  margin-left: 0;
+  justify-content: center;
+  margin-top: -15px;
 }
 
 .hexagon {

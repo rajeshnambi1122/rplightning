@@ -31,8 +31,8 @@
         <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
       </div>
     </div>
-    <!-- Bottom row - 2 hexagons -->
-    <div class="hexagon-row">
+    <!-- Bottom row - 2 hexagons, with adjusted positioning -->
+    <div class="hexagon-row bottom-row">
       <div
         *ngFor="let hex of hexagons.slice(10, 12)"
         class="hexagon"
