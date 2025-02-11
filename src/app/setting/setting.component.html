@@ -1,7 +1,20 @@
 <div class="settings-container">
   <h1 class="settings-title">Lighting Wallet</h1>
 
-  <!-- Wallet Settings Section -->
+  <!-- Wallet Actions Section (Send & Receive) -->
+  <mat-card class="settings-card">
+    <mat-list>
+      <mat-list-item class="list-item">
+        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+          <button mat-raised-button color="primary" (click)="openSendDialog()">Send</button>
+          <span class="spacer"></span>
+          <button mat-raised-button color="accent">Receive</button>
+        </span>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <!-- Existing Wallet Settings Section -->
   <mat-card class="settings-card">
     <mat-list>
       <mat-list-item class="list-item" (click)="openDialog('View Mnemonic Phrases')">
@@ -11,7 +24,15 @@
           <span class="spacer"></span>
           <mat-icon class="arrow-icon">chevron_right</mat-icon>
         </span>
+      </mat-list-item>
 
+      <mat-list-item class="list-item" (click)="openHonorScoreDialog()">
+        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+          <mat-icon class="menu-icon">shield</mat-icon>
+          <span class="menu-text">Honor Score</span>
+          <span class="spacer"></span>
+          <mat-icon class="arrow-icon">chevron_right</mat-icon>
+        </span>
       </mat-list-item>
     </mat-list>
   </mat-card>
@@ -19,33 +40,30 @@
   <!-- FAQ and About Section -->
   <mat-card class="settings-card">
     <mat-list>
-      <!-- FAQ -->
       <mat-list-item class="list-item">
         <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
-        <mat-icon class="menu-icon faq-icon">help_outline</mat-icon>
-        <span class="menu-text">FAQ</span>
-        <span class="spacer"></span>
-        <mat-icon class="arrow-icon">chevron_right</mat-icon>
+          <mat-icon class="menu-icon faq-icon">help_outline</mat-icon>
+          <span class="menu-text">FAQ</span>
+          <span class="spacer"></span>
+          <mat-icon class="arrow-icon">chevron_right</mat-icon>
         </span>
       </mat-list-item>
 
-      <!-- Community -->
       <mat-list-item class="list-item" (click)="Community()">
         <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
-        <mat-icon class="menu-icon community-icon">groups</mat-icon>
-        <span class="menu-text">Community</span>
-        <span class="spacer"></span>
-        <mat-icon class="arrow-icon">chevron_right</mat-icon>
+          <mat-icon class="menu-icon community-icon">groups</mat-icon>
+          <span class="menu-text">Community</span>
+          <span class="spacer"></span>
+          <mat-icon class="arrow-icon">chevron_right</mat-icon>
         </span>
       </mat-list-item>
 
-      <!-- About -->
       <mat-list-item class="list-item" (click)="About()">
         <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
-        <mat-icon class="menu-icon about-icon">info</mat-icon>
-        <span class="menu-text">About Lighting</span>
-        <span class="spacer"></span>
-        <mat-icon class="arrow-icon">chevron_right</mat-icon>
+          <mat-icon class="menu-icon about-icon">info</mat-icon>
+          <span class="menu-text">About Lighting</span>
+          <span class="spacer"></span>
+          <mat-icon class="arrow-icon">chevron_right</mat-icon>
         </span>
       </mat-list-item>
     </mat-list>

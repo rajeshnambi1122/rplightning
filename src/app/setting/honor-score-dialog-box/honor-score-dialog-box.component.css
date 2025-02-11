@@ -1,0 +1,36 @@
+.shield-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .shield {
+    width: 150px;
+    height: 180px;
+    background: url('/assets/ancient-1297304_640.webp') no-repeat center center;
+    background-size: contain;
+    position: relative;
+  }
+  
+  .shield-text {
+    position: absolute;
+    top: 32%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    font-size: -0.5rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    z-index: 2;
+    pointer-events: none;
+  }
+  
+  .shield-message {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #0b0b0b;
+    text-align: center;
+  }
+  

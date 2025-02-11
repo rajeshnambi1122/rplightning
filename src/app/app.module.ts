@@ -51,6 +51,8 @@ import { WalletMainPageComponent } from './wallet-main-page/wallet-main-page.com
 import { SettingComponent } from './setting/setting.component';
 import { ViewMnemonicDialogBoxComponent } from './setting/view-mnemonic-dialog-box/view-mnemonic-dialog-box.component';
 import { WheelFortuneComponent } from './wheel-fortune/wheel-fortune.component';
+import { HonorScoreDialogBoxComponent } from './setting/honor-score-dialog-box/honor-score-dialog-box.component';
+import { SendDialogComponent } from './setting/send-dialog/send-dialog.component';
 // import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
@@ -70,6 +72,8 @@ import { WheelFortuneComponent } from './wheel-fortune/wheel-fortune.component';
     SettingComponent,
     ViewMnemonicDialogBoxComponent,
     WheelFortuneComponent,
+    HonorScoreDialogBoxComponent,
+    SendDialogComponent,
   ],
   imports: [
     BrowserModule,

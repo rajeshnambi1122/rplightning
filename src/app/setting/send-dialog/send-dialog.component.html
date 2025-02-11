@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Send Cryptocurrency</h2>
+<mat-dialog-content>
+  <form [formGroup]="sendForm">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Wallet Address</mat-label>
+      <input matInput formControlName="walletAddress" placeholder="Enter wallet address" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Amount</mat-label>
+      <input matInput formControlName="amount" type="number" placeholder="Enter amount" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Network</mat-label>
+      <mat-select formControlName="network" required>
+        <mat-option value="TON">TON</mat-option>
+        <!-- <mat-option value="Bitcoin">Bitcoin</mat-option>
+        <mat-option value="Ethereum">Ethereum</mat-option> -->
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Comment</mat-label>
+      <input matInput formControlName="comment" placeholder="Optional comment" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="sendForm.invalid" (click)="onSubmit()">Continue</button>
+</mat-dialog-actions>
