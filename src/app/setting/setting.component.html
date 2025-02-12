@@ -2,13 +2,21 @@
   <h1 class="settings-title">Lighting Wallet</h1>
 
   <!-- Wallet Actions Section (Send & Receive) -->
-  <mat-card class="settings-card">
+  <mat-card class="settings-card action-card">
     <mat-list>
       <mat-list-item class="list-item">
-        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
-          <button mat-raised-button color="primary" (click)="openSendDialog()">Send</button>
+        <span
+          class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text action-buttons"
+        >
+          <button class="action-button send-button" (click)="openSendDialog()">
+            <mat-icon>send</mat-icon>
+            <span>Send</span>
+          </button>
           <span class="spacer"></span>
-          <button mat-raised-button color="accent">Receive</button>
+          <button class="action-button receive-button">
+            <mat-icon>download</mat-icon>
+            <span>Receive</span>
+          </button>
         </span>
       </mat-list-item>
     </mat-list>
@@ -17,8 +25,14 @@
   <!-- Existing Wallet Settings Section -->
   <mat-card class="settings-card">
     <mat-list>
-      <mat-list-item class="list-item" (click)="openDialog('View Mnemonic Phrases')">
-        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+      <mat-list-item
+        class="list-item"
+        (click)="openDialog('View Mnemonic Phrases')"
+      >
+        <span
+          class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"
+          style="display: flex"
+        >
           <mat-icon class="menu-icon">text_snippet</mat-icon>
           <span class="menu-text">View Mnemonic Phrases</span>
           <span class="spacer"></span>
@@ -27,7 +41,10 @@
       </mat-list-item>
 
       <mat-list-item class="list-item" (click)="openHonorScoreDialog()">
-        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+        <span
+          class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"
+          style="display: flex"
+        >
           <mat-icon class="menu-icon">shield</mat-icon>
           <span class="menu-text">Honor Score</span>
           <span class="spacer"></span>
@@ -41,7 +58,10 @@
   <mat-card class="settings-card">
     <mat-list>
       <mat-list-item class="list-item">
-        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+        <span
+          class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"
+          style="display: flex"
+        >
           <mat-icon class="menu-icon faq-icon">help_outline</mat-icon>
           <span class="menu-text">FAQ</span>
           <span class="spacer"></span>
@@ -50,7 +70,10 @@
       </mat-list-item>
 
       <mat-list-item class="list-item" (click)="Community()">
-        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+        <span
+          class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"
+          style="display: flex"
+        >
           <mat-icon class="menu-icon community-icon">groups</mat-icon>
           <span class="menu-text">Community</span>
           <span class="spacer"></span>
@@ -59,7 +82,10 @@
       </mat-list-item>
 
       <mat-list-item class="list-item" (click)="About()">
-        <span class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text" style="display: flex;">
+        <span
+          class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"
+          style="display: flex"
+        >
           <mat-icon class="menu-icon about-icon">info</mat-icon>
           <span class="menu-text">About Lighting</span>
           <span class="spacer"></span>

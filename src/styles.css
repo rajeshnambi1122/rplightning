@@ -23,17 +23,36 @@ body {
   max-height: 90vh !important;
 }
 
+.mat-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.cdk-overlay-pane {
+  border: none !important;
+  box-shadow: none !important;
+}
+
 .mat-dialog-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.mat-dialog-actions {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.cdk-overlay-pane {
-  max-height: 90vh !important;
-}
-
-.mat-dialog-container {
-  display: flex !important;
-  padding: 0 !important;
-  overflow: hidden !important;
+/* Override any Material theme borders */
+.mat-dialog-container,
+.mat-dialog-content,
+.cdk-overlay-pane,
+.mat-dialog-actions {
+  border: 0 !important;
+  outline: none !important;
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TonConnectUI } from '@tonconnect/ui';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { BadgeService, BadgeLevel } from './shared/badge.service';
+import { MatDialog } from '@angular/material/dialog';
 
 declare global {
   interface Window {
@@ -26,7 +28,14 @@ export class AppComponent implements OnInit {
   currentRoute: string = '';
   tokenBalance: number = 0;
   Chat_ID: any;
-  constructor(private router: Router, private router1: ActivatedRoute) {
+  currentBadge!: BadgeLevel;
+
+  constructor(
+    private router: Router,
+    private router1: ActivatedRoute,
+    private badgeService: BadgeService,
+    private dialog: MatDialog
+  ) {
     // Listen to route changes
     this.router.events.subscribe(() => {
       // Set condition to hide navbar for specific routes
@@ -127,6 +136,8 @@ export class AppComponent implements OnInit {
         window.scrollTo(0, 0); // Reset scroll position to the top
       }
     });
+
+    this.updateBadge();
   }
 
   private loadTokenBalance() {
@@ -168,4 +179,17 @@ export class AppComponent implements OnInit {
       }
     }
   }
+
+  private updateBadge() {
+    const tokens = this.tokenBalance;
+    const diamonds = parseInt(localStorage.getItem('diamonds') || '0');
+    this.currentBadge = this.badgeService.getCurrentBadge(tokens, diamonds);
+  }
+
+  // showBadgeInfo() {
+  //   this.dialog.open(BadgeInfoDialogComponent, {
+  //     data: this.currentBadge,
+  //     width: '300px',
+  //   });
+  // }
 }

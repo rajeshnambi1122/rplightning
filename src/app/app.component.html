@@ -1,9 +1,25 @@
-
 <div class="token-balance" *ngIf="shouldShowBalance()">
   <div class="logo-container">
-    <mat-icon class="settings-icon" (click)="routeSetting()"> settings </mat-icon>
-
+    <mat-icon class="settings-icon" (click)="routeSetting()">
+      settings
+    </mat-icon>
     <mat-icon class="notification-icon"> notifications </mat-icon>
+    <div class="rank-container">
+      <mat-icon
+        class="shield-icon"
+        [class]="currentBadge.name.toLowerCase().split(' ')[0]"
+      >
+        security
+      </mat-icon>
+      <div class="rank-info">
+        <span
+          class="rank-name"
+          [class]="currentBadge.name.toLowerCase().split(' ')[0]"
+        >
+          {{ currentBadge.name }}
+        </span>
+      </div>
+    </div>
     <img src="assets/logo.jpeg" alt="Logo" class="balance-logo" />
   </div>
   <span class="balance-value">{{ tokenBalance }}</span>
