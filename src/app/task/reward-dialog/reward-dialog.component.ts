@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-reward-dialog',
@@ -8,21 +9,27 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./reward-dialog.component.css']
 })
 export class RewardDialogComponent {
+  apiUrl = environment.apiurl;
+  Chat_ID: any;
   days = [
-    { status: 'available', rewardAmount: '10', timer: null },  // Day 1
-    { status: 'locked', rewardAmount: '20', timer: null },     // Day 2
-    { status: 'locked', rewardAmount: '30', timer: null },     // Day 3
-    { status: 'locked', rewardAmount: '40', timer: null },     // Day 4
-    { status: 'locked', rewardAmount: '50', timer: null },     // Day 5
-    { status: 'locked', rewardAmount: '60', timer: null },     // Day 6
-    { status: 'locked', rewardAmount: '70', timer: null },     // Day 7
+    { status: 'available', rewardAmount: '2', timer: null },  // Day 1
+    { status: 'locked', rewardAmount: '4', timer: null },     // Day 2
+    { status: 'locked', rewardAmount: '6', timer: null },     // Day 3
+    { status: 'locked', rewardAmount: '8', timer: null },     // Day 4
+    { status: 'locked', rewardAmount: '10', timer: null },     // Day 5
+    { status: 'locked', rewardAmount: '12', timer: null },     // Day 6
+    { status: 'locked', rewardAmount: '14', timer: null },     // Day 7
   ];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<RewardDialogComponent>,
     private http: HttpClient
-  ) {}
+  ) { }
+
+  ngOnInit() {
+    this.Chat_ID = localStorage.getItem('Identification')
+  }
 
   // Called when a user clicks the claim button
   onClaim(day: any, index: number) {
@@ -37,8 +44,11 @@ export class RewardDialogComponent {
       day: index + 1,  // Day number (1-7)
       rewardAmount: day.rewardAmount,
     };
-
-    this.http.post('YOUR_API_URL_HERE', rewardData).subscribe(
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    const httpOptions = { headers: headers_object };
+    this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + day.rewardAmount, {}, httpOptions).subscribe(
       (response) => {
         console.log(`Reward claimed for Day ${index + 1}:`, response);
         day.status = 'done'; // Update the status after successful claim

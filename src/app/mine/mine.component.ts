@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TonConnect } from '@tonconnect/sdk';
 import { TonConnectUI, SendTransactionRequest } from '@tonconnect/ui';
 import { Address, toNano } from 'ton-core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-mine',
@@ -44,6 +46,7 @@ export class MineComponent implements OnInit, OnDestroy {
 
   deviceType: string = 'Unknown';
   ip: string = 'Fetching...';
+  apiUrl = environment.apiurl;
 
   // Add TON Connect properties
   private tonConnect!: TonConnectUI;
@@ -52,19 +55,20 @@ export class MineComponent implements OnInit, OnDestroy {
   Chat_ID: any;
   private timerInterval: any; // Add this to track the interval
 
-  constructor(private http: HttpClient, private router: ActivatedRoute) {
+  constructor(private snackBar: MatSnackBar, private http: HttpClient, private router: ActivatedRoute) {
     // Initialize profile balance from localStorage
-    const savedBalance = localStorage.getItem('profileBalance');
-    this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
-
+    // const savedBalance = localStorage.getItem('profileBalance');
+    // this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
+   
     // Move the wallet status subscription to ngOnInit
   }
-
+ 
   ngOnInit(): void {
     // Set initial state
     this.Chat_ID = this.router.snapshot.paramMap.get("id");
-    localStorage.setItem('Identification',this.Chat_ID)
-    console.log("this.Chat_ID --->",this.Chat_ID)
+    localStorage.setItem('Identification', this.Chat_ID)
+    console.log("this.Chat_ID --->", this.Chat_ID)
+    this.getUserDetails()
     this.walletAddress = window.walletState.address;
     this.isPremiumUser = window.walletState.isPremium;
     this.profile.premiumExpiry = window.walletState.premiumExpiry;
@@ -119,7 +123,25 @@ export class MineComponent implements OnInit, OnDestroy {
 
     this.checkPremiumStatus();
   }
+  private getHeaders() {
+    const headers = new HttpHeaders({
+      'ngrok-skip-browser-warning': '69420'
+    });
+    return { headers };
+  }
+  getUserDetails() {
+    const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
 
+
+    this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
+      if (result) {
+        console.log("GET API RESPONCE --->", result)
+        this.profile.balance = result.balance ? parseFloat(result.balance) : 0;
+      } else {
+        console.error("Refferal ID not found in response", result);
+      }
+    });
+  }
   fetchDeviceInformation(): void {
     this.http
       .get<{ ip: string }>('https://api.ipify.org?format=json')
@@ -233,36 +255,63 @@ export class MineComponent implements OnInit, OnDestroy {
 
       const tokensEarned = this.isPremiumUser ? 24 : 12;
 
-      // Update profile balance
-      this.profile.balance += tokensEarned;
-      localStorage.setItem('profileBalance', this.profile.balance.toString());
+      var headers_object = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+      const httpOptions = { headers: headers_object };
+      this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + tokensEarned, {}, httpOptions)
+        .subscribe(
+          (result) => {
 
-      // Reset bandwidth sharing stats
-      this.bandwidth.shares = 0;
-      this.bandwidth.earned = 0;
-      this.accumulatedShares = 0;
+            console.log("PUT API RESPONCE", result)
+            this.getUserDetails();
+            // Update profile balance
+            // this.profile.balance += tokensEarned;
+            // localStorage.setItem('profileBalance', this.profile.balance.toString());
 
-      // Update status after claiming and cooldown
-      this.bandwidth.status = 'Inactive';
-      this.bandwidth.statusColor = 'red';
+            // Reset bandwidth sharing stats
+            this.bandwidth.shares = 0;
+            this.bandwidth.earned = 0;
+            this.accumulatedShares = 0;
 
-      // Save reset progress to localStorage
-      localStorage.setItem(
-        'miningProgress',
-        JSON.stringify({
-          shares: 0,
-          earned: 0,
-          accumulatedShares: 0,
-        })
-      );
+            // Update status after claiming and cooldown
+            this.bandwidth.status = 'Inactive';
+            this.bandwidth.statusColor = 'red';
 
-      alert(
-        `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
-      );
+            // Save reset progress to localStorage
+            localStorage.setItem(
+              'miningProgress',
+              JSON.stringify({
+                shares: 0,
+                earned: 0,
+                accumulatedShares: 0,
+              })
+            );
 
-      // Reset mining timer
-      this.profile.lastMiningTime = new Date().getTime();
-      this.elapsedSeconds = 0;
+            // alert(
+            //   `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
+            // );
+
+            // Reset mining timer
+            this.profile.lastMiningTime = new Date().getTime();
+            this.elapsedSeconds = 0;
+          },
+          (error) => {
+
+
+            this.snackBar.open(error.error.messages.toString(), '', {
+              duration: 3000,
+              verticalPosition: 'bottom',
+              panelClass: 'Error',
+            });
+
+          })
+
+
+
+
+
+
     } catch (error) {
       console.error('Failed to claim tokens:', error);
       alert('Failed to claim tokens. Please try again.');

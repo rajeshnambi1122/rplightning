@@ -36,6 +36,7 @@ import {
   PageEvent,
   MatPaginator,
 } from '@angular/material/paginator';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCardModule } from '@angular/material/card';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -79,6 +80,7 @@ import { SendDialogComponent } from './setting/send-dialog/send-dialog.component
     BrowserModule,
     MatTreeModule,
     MatButtonModule,
+    MatSnackBarModule,
     AppRoutingModule,
     MatToolbarModule,
     MatIconModule,

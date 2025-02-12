@@ -83,6 +83,7 @@ export class WheelFortuneComponent {
         // Set winning hexagon to active
         this.hexagons[winningIndex].state = 'active';
         this.selectedHexagon = winningIndex;
+        console.log("this.selectedHexagon -->",this.selectedHexagon)
         this.spinning = false;
       }, 3000);
     }

@@ -34,12 +34,24 @@
 }
 
 .shield-text {
-  position: absolute;
+  /* position: absolute;
   top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 2rem;
   font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 64, 129, 0.5), 2px 2px 4px rgba(0, 0, 0, 0.7);
+  z-index: 2;
+  pointer-events: none;
+  font-family: "Roboto", sans-serif;
+  letter-spacing: 1px; */
+  position: absolute;
+  top: 35%;
+  left: 68%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  font-weight: 500;
   color: #fff;
   text-shadow: 0 0 10px rgba(255, 64, 129, 0.5), 2px 2px 4px rgba(0, 0, 0, 0.7);
   z-index: 2;

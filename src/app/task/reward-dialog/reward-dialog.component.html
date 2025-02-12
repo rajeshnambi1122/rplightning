@@ -16,12 +16,12 @@
     
     <!-- Display reward amount for every day -->
     <p *ngIf="day.status !== 'locked'">
-      {{ day.rewardAmount }}$
+      {{ day.rewardAmount }} Light's
     </p>
 
     <!-- Display the locked icon for locked days -->
     <div *ngIf="day.status === 'locked'" class="locked">
-      {{ day.rewardAmount }}$ <br>
+      <!-- {{ day.rewardAmount }}Light's <br> -->
       <span class="material-icons">lock</span>
     </div>
 
