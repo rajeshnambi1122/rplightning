@@ -26,14 +26,33 @@
       </style>
     </div>
 
-    <!-- Add the new action card here -->
+    <!-- Balance Card -->
+    <mat-card class="settings-card balance-card">
+      <div class="balance-container">
+        <div class="balance-info">
+          <div class="ton-logo">
+            <img src="assets/TON.jpg" alt="TON Logo" />
+          </div>
+          <span class="balance-label">Balance</span>
+          <span class="balance-amount"
+            >{{ tonBalance | number : "1.2-4" }} TON</span
+          >
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Actions Card -->
     <mat-card class="settings-card action-card">
       <div class="action-buttons">
-        <button class="action-button send-button" (click)="openSendDialog()">
+        <button
+          disabled
+          class="action-button send-button"
+          (click)="openSendDialog()"
+        >
           <mat-icon>send</mat-icon>
           <span>Send</span>
         </button>
-        <button class="action-button receive-button">
+        <button disabled class="action-button receive-button">
           <mat-icon>person</mat-icon>
           <span>Receive</span>
         </button>

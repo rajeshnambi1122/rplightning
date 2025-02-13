@@ -3,6 +3,10 @@ import { toNano, Address } from 'ton-core';
 import { MatDialog } from '@angular/material/dialog';
 import { SendDialogComponent } from '../setting/send-dialog/send-dialog.component';
 
+interface Wallet {
+  balance: number;
+}
+
 @Component({
   selector: 'app-wallet',
   templateUrl: './wallet.component.html',
@@ -13,6 +17,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
   balance: number = 0;
   isPremiumUser: boolean = false;
   premiumExpiry: number | null = null;
+  tonBalance: number = 0;
 
   constructor(private dialog: MatDialog) {}
 
@@ -45,6 +50,9 @@ export class WalletComponent implements OnInit, AfterViewInit {
         } else {
           this.balance = 0;
         }
+      }
+      if (window.walletState?.tokenBalance) {
+        this.tonBalance = window.walletState.tokenBalance / 1e9; // Convert from nanoTON to TON
       }
     }, 1000);
   }

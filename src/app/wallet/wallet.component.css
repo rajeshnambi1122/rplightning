@@ -96,8 +96,12 @@ h1 {
 }
 
 .ton-logo {
-  width: 32px;
-  height: 32px;
+  margin-bottom: 12px;
+}
+
+.ton-logo img {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
@@ -286,4 +290,39 @@ h1 {
     width: 14px;
     height: 14px;
   }
+}
+
+.balance-card {
+  margin: 12px;
+  background: rgba(19, 36, 77, 0.8) !important;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+.balance-container {
+  padding: 16px;
+  text-align: center;
+}
+
+.balance-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.balance-label {
+  color: #a8b9d0;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.balance-amount {
+  color: white;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
