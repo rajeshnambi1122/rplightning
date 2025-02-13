@@ -3,6 +3,7 @@ import { toNano, Address } from 'ton-core';
 import { MatDialog } from '@angular/material/dialog';
 import { SendDialogComponent } from '../setting/send-dialog/send-dialog.component';
 import { Wallet } from '@tonconnect/sdk';
+import { TonClient } from 'ton';
 
 interface WalletInfo {
   balance: number;
@@ -41,11 +42,23 @@ export class WalletComponent implements OnInit, AfterViewInit {
     this.premiumExpiry = window.walletState.premiumExpiry;
 
     // Set up interval to check wallet state
-    setInterval(() => {
-      if (window.walletState?.address) {
-        const balance = window.walletState.tokenBalance;
-        if (balance) {
-          this.tonBalance = Number(balance) / 1e9;
+    setInterval(async () => {
+      if (window.tonConnectUI?.connected) {
+        try {
+          const walletInfo = await window.tonConnectUI.wallet;
+          if (walletInfo?.account?.address) {
+            const provider = new TonClient({
+              endpoint: 'https://toncenter.com/api/v2/jsonRPC',
+            });
+            const balance = await provider.getBalance(
+              Address.parse(walletInfo.account.address)
+            );
+            if (balance) {
+              this.tonBalance = Number(balance) / 1e9;
+            }
+          }
+        } catch (error) {
+          console.error('Error fetching balance:', error);
         }
       }
     }, 1000);
