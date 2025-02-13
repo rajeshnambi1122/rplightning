@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { toNano, Address } from 'ton-core';
+import { MatDialog } from '@angular/material/dialog';
+import { SendDialogComponent } from '../setting/send-dialog/send-dialog.component';
 
 @Component({
   selector: 'app-wallet',
@@ -12,9 +14,11 @@ export class WalletComponent implements OnInit, AfterViewInit {
   isPremiumUser: boolean = false;
   premiumExpiry: number | null = null;
 
+  constructor(private dialog: MatDialog) {}
+
   ngOnInit() {
     // Check for saved wallet state
-    
+
     const savedWalletState = localStorage.getItem('walletState');
     if (savedWalletState) {
       window.walletState = JSON.parse(savedWalletState);
@@ -67,9 +71,8 @@ export class WalletComponent implements OnInit, AfterViewInit {
         });
         return 'UQ' + friendlyAddress.substring(2); // Add 'UQ' prefix and remove 'EQ'
       }
-      console.log("address --->",address)
+      console.log('address --->', address);
       return address;
-      
     } catch (error) {
       console.error('Error formatting address:', error);
       return address;
@@ -145,5 +148,14 @@ export class WalletComponent implements OnInit, AfterViewInit {
           alert('Failed to copy wallet address. Please try again.');
         });
     }
+  }
+
+  openSendDialog() {
+    const dialogRef = this.dialog.open(SendDialogComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Send Form Submitted:', result);
+      }
+    });
   }
 }

@@ -206,3 +206,84 @@ h1 {
   font-size: 20px;
   color: white;
 }
+
+.action-card {
+  background: rgba(19, 36, 77, 0.8) !important;
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 12px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 120px;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.send-button {
+  background: linear-gradient(135deg, #ff4081, #c60055);
+  box-shadow: 0 2px 8px rgba(255, 64, 129, 0.3);
+}
+
+.receive-button {
+  background: linear-gradient(135deg, #2196f3, #0960a5);
+  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.action-button:active {
+  transform: translateY(1px);
+}
+
+.action-button mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-right: 2px;
+}
+
+@media (max-width: 360px) {
+  .action-buttons {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .action-button {
+    width: 110px;
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .action-button mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+}

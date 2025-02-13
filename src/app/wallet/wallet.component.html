@@ -26,6 +26,20 @@
       </style>
     </div>
 
+    <!-- Add the new action card here -->
+    <mat-card class="settings-card action-card">
+      <div class="action-buttons">
+        <button class="action-button send-button" (click)="openSendDialog()">
+          <mat-icon>send</mat-icon>
+          <span>Send</span>
+        </button>
+        <button class="action-button receive-button">
+          <mat-icon>person</mat-icon>
+          <span>Receive</span>
+        </button>
+      </div>
+    </mat-card>
+
     <!-- Wallet Information (shown when connected) -->
     <div class="wallet-info" *ngIf="walletAddress">
       <div class="info-card">
