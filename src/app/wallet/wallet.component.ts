@@ -2,8 +2,9 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { toNano, Address } from 'ton-core';
 import { MatDialog } from '@angular/material/dialog';
 import { SendDialogComponent } from '../setting/send-dialog/send-dialog.component';
+import { Wallet } from '@tonconnect/sdk';
 
-interface Wallet {
+interface WalletInfo {
   balance: number;
 }
 
@@ -41,18 +42,11 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
     // Set up interval to check wallet state
     setInterval(() => {
-      if (this.walletAddress !== window.walletState.address) {
-        this.walletAddress = window.walletState.address;
-        this.isPremiumUser = window.walletState.isPremium;
-        this.premiumExpiry = window.walletState.premiumExpiry;
-        if (this.walletAddress) {
-          this.fetchBalance();
-        } else {
-          this.balance = 0;
+      if (window.walletState?.address) {
+        const balance = window.walletState.tokenBalance;
+        if (balance) {
+          this.tonBalance = Number(balance) / 1e9;
         }
-      }
-      if (window.walletState?.tokenBalance) {
-        this.tonBalance = window.walletState.tokenBalance / 1e9; // Convert from nanoTON to TON
       }
     }, 1000);
   }
