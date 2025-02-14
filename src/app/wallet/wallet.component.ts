@@ -41,27 +41,25 @@ export class WalletComponent implements OnInit, AfterViewInit {
     this.isPremiumUser = window.walletState.isPremium;
     this.premiumExpiry = window.walletState.premiumExpiry;
 
-    // Set up interval to check wallet state
+    // Check balance less frequently to avoid rate limits
     setInterval(async () => {
       if (window.tonConnectUI?.connected) {
         try {
           const walletInfo = await window.tonConnectUI.wallet;
           if (walletInfo?.account?.address) {
-            const provider = new TonClient({
-              endpoint: 'https://toncenter.com/api/v2/jsonRPC',
-            });
-            const balance = await provider.getBalance(
-              Address.parse(walletInfo.account.address)
-            );
-            if (balance) {
-              this.tonBalance = Number(balance) / 1e9;
+            // Update wallet address
+            this.walletAddress = walletInfo.account.address;
+
+            // Get balance from wallet state
+            if (window.walletState?.tokenBalance) {
+              this.tonBalance = Number(window.walletState.tokenBalance) / 1e9;
             }
           }
         } catch (error) {
-          console.error('Error fetching balance:', error);
+          console.error('Error fetching wallet info:', error);
         }
       }
-    }, 1000);
+    }, 10000); // Check every 10 seconds
   }
 
   ngAfterViewInit() {
