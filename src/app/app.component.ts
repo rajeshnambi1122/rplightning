@@ -4,6 +4,8 @@ import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { BadgeService, BadgeLevel } from './shared/badge.service';
 import { MatDialog } from '@angular/material/dialog';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 declare global {
   interface Window {
@@ -28,13 +30,15 @@ export class AppComponent implements OnInit {
   currentRoute: string = '';
   tokenBalance: number = 0;
   Chat_ID: any;
+  balance: any
   currentBadge!: BadgeLevel;
-
+apiUrl = environment.apiurl;
   constructor(
     private router: Router,
     private router1: ActivatedRoute,
     private badgeService: BadgeService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private http: HttpClient
   ) {
     // Listen to route changes
     this.router.events.subscribe(() => {
@@ -67,6 +71,9 @@ export class AppComponent implements OnInit {
     this.router.navigate(['setting']);
   }
   ngOnInit() {
+    this.Chat_ID = localStorage.getItem('Identification');
+    console.log("this.Chat_ID --->", this.Chat_ID)
+    this.getUserDetails();
     // Initialize TON Connect once at app startup
     if (window.tonConnectUI) {
       window.tonConnectUI.uiOptions = {
@@ -139,9 +146,26 @@ export class AppComponent implements OnInit {
 
     this.updateBadge();
   }
+private getHeaders() {
+    const headers = new HttpHeaders({
+      'ngrok-skip-browser-warning': '69420'
+    });
+    return { headers };
+  }
+  getUserDetails() {
+    const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
 
+
+    this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
+      if (result) {
+       this.balance = result.balance;
+      } else {
+        console.error("Refferal ID not found in response", result);
+      }
+    });
+  }
   private loadTokenBalance() {
-    const savedBalance = localStorage.getItem('profileBalance');
+    const savedBalance = this.balance;
     if (savedBalance) {
       this.tokenBalance = parseFloat(savedBalance);
       window.walletState.tokenBalance = this.tokenBalance;

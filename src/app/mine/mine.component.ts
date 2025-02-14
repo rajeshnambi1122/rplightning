@@ -53,22 +53,52 @@ export class MineComponent implements OnInit, OnDestroy {
   walletAddress: string | null = null;
   tokenBalance: number = 0; // Add token balance
   Chat_ID: any;
+  ChatIDDAta: any;
+  userDetails: any;
   private timerInterval: any; // Add this to track the interval
 
   constructor(private snackBar: MatSnackBar, private http: HttpClient, private router: ActivatedRoute) {
     // Initialize profile balance from localStorage
     // const savedBalance = localStorage.getItem('profileBalance');
     // this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
-   
+
     // Move the wallet status subscription to ngOnInit
   }
- 
+
   ngOnInit(): void {
     // Set initial state
-    this.Chat_ID = this.router.snapshot.paramMap.get("id");
-    localStorage.setItem('Identification', this.Chat_ID)
+    this.ChatIDDAta = this.router.snapshot.paramMap.get("id");
+    localStorage.setItem('Identification', this.ChatIDDAta);
+    this.Chat_ID = localStorage.getItem('Identification')
     console.log("this.Chat_ID --->", this.Chat_ID)
-    this.getUserDetails()
+    this.getUserDetails();
+    this.newFunction();
+
+  }
+  private getHeaders() {
+    const headers = new HttpHeaders({
+      'ngrok-skip-browser-warning': '69420'
+    });
+    return { headers };
+  }
+  getUserDetails() {
+    const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
+
+
+    this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
+      if (result) {
+        console.log("GET API RESPONCE --->", result)
+        this.userDetails = result
+        // console.log("BEFORE savedProgress --->", this.userDetails.miningProgress)
+        console.log("this.userDetails --->", this.userDetails)
+        this.profile.balance = result.balance ? parseFloat(result.balance) : 0;
+        
+      } else {
+        console.error("Refferal ID not found in response", result);
+      }
+    });
+  }
+  newFunction() {
     this.walletAddress = window.walletState.address;
     this.isPremiumUser = window.walletState.isPremium;
     this.profile.premiumExpiry = window.walletState.premiumExpiry;
@@ -83,13 +113,25 @@ export class MineComponent implements OnInit, OnDestroy {
     }, 1000);
 
     // Restore mining progress from localStorage
-    const savedProgress = localStorage.getItem('miningProgress');
+    // console.log("BEFORE savedProgress --->", this.userDetails.miningProgress)
+    const savedProgress = this.userDetails?.miningProgress;
     if (savedProgress) {
-      const progress = JSON.parse(savedProgress);
-      this.bandwidth.shares = progress.shares;
-      this.bandwidth.earned = progress.earned;
-      this.accumulatedShares = progress.accumulatedShares;
+      console.log('after savedProgress --->', savedProgress);
+
+      this.bandwidth.shares = savedProgress.shares || 0;
+      this.bandwidth.earned = savedProgress.earned || 0;
+      this.accumulatedShares = savedProgress.accumulatedShares || 0;
+    } else {
+      console.log('No mining progress found.');
     }
+    // const savedProgress = this.userDetails.miningProgress;
+    // console.log("after savedProgress --->", savedProgress)
+    // if (savedProgress) {
+    //   const progress = savedProgress;
+    //   this.bandwidth.shares = progress.shares;
+    //   this.bandwidth.earned = progress.earned;
+    //   this.accumulatedShares = progress.accumulatedShares;
+    // }
 
     this.fetchDeviceInformation();
     this.calculateElapsedTime();
@@ -122,25 +164,6 @@ export class MineComponent implements OnInit, OnDestroy {
     }
 
     this.checkPremiumStatus();
-  }
-  private getHeaders() {
-    const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': '69420'
-    });
-    return { headers };
-  }
-  getUserDetails() {
-    const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
-
-
-    this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
-      if (result) {
-        console.log("GET API RESPONCE --->", result)
-        this.profile.balance = result.balance ? parseFloat(result.balance) : 0;
-      } else {
-        console.error("Refferal ID not found in response", result);
-      }
-    });
   }
   fetchDeviceInformation(): void {
     this.http
@@ -279,14 +302,27 @@ export class MineComponent implements OnInit, OnDestroy {
             this.bandwidth.statusColor = 'red';
 
             // Save reset progress to localStorage
-            localStorage.setItem(
-              'miningProgress',
-              JSON.stringify({
-                shares: 0,
-                earned: 0,
-                accumulatedShares: 0,
-              })
-            );
+            // const requestBody = JSON.stringify(leadreason);
+            var headers_object = new HttpHeaders({
+              'Content-Type': 'application/json'
+            });
+            let param = {
+              shares: 0,
+              earned: 0,
+              accumulatedShares: 0
+            };
+            const httpOptions = { headers: headers_object };
+            this.http.put<any>(this.apiUrl + "webhook/mining-progress/" + this.Chat_ID, param, httpOptions)
+              .subscribe(
+                (result) => { })
+            // localStorage.setItem(
+            //   'miningProgress',
+            //   JSON.stringify({
+            //     shares: 0,
+            //     earned: 0,
+            //     accumulatedShares: 0,
+            //   })
+            // );
 
             // alert(
             //   `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
@@ -447,14 +483,26 @@ export class MineComponent implements OnInit, OnDestroy {
       }
 
       // Save progress to localStorage
-      localStorage.setItem(
-        'miningProgress',
-        JSON.stringify({
-          shares: this.bandwidth.shares,
-          earned: this.bandwidth.earned,
-          accumulatedShares: this.accumulatedShares,
-        })
-      );
+      // localStorage.setItem(
+      //   'miningProgress',
+      //   JSON.stringify({
+      //     shares: this.bandwidth.shares,
+      //     earned: this.bandwidth.earned,
+      //     accumulatedShares: this.accumulatedShares,
+      //   })
+      // );
+      var headers_object = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+      let param = {
+        shares: this.bandwidth.shares,
+        earned: this.bandwidth.earned,
+        accumulatedShares: this.accumulatedShares
+      };
+      const httpOptions = { headers: headers_object };
+      this.http.put<any>(this.apiUrl + "webhook/mining-progress/" + this.Chat_ID, param, httpOptions)
+        .subscribe(
+          (result) => { })
     } catch (error) {
       console.error('Error in speed check:', error);
     }

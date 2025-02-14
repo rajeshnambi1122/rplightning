@@ -4,6 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { SendDialogComponent } from '../setting/send-dialog/send-dialog.component';
 import { Wallet } from '@tonconnect/sdk';
 import { TonClient } from 'ton';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface WalletInfo {
   balance: number;
@@ -20,12 +22,13 @@ export class WalletComponent implements OnInit, AfterViewInit {
   isPremiumUser: boolean = false;
   premiumExpiry: number | null = null;
   tonBalance: number = 0;
-
-  constructor(private dialog: MatDialog) {}
+  Chat_ID: any;
+    apiUrl = environment.apiurl;
+  constructor(private dialog: MatDialog,private http: HttpClient) {}
 
   ngOnInit() {
     // Check for saved wallet state
-
+    this.Chat_ID = localStorage.getItem('Identification');
     const savedWalletState = localStorage.getItem('walletState');
     if (savedWalletState) {
       window.walletState = JSON.parse(savedWalletState);
@@ -171,4 +174,20 @@ export class WalletComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+
+
+  /**Address Store API  */
+
+
+  // StoreAddress(){
+  //   var headers_object = new HttpHeaders({
+  //     'Content-Type': 'application/json'
+  //   });
+  //   const httpOptions = { headers: headers_object };
+  //   this.http.put<any>(this.apiUrl + "webhook/update/" +'we need to pass Wallet Address' +"/"+ this.Chat_ID, {}, httpOptions).subscribe(
+  //     (response) => {})
+  // }
+
+
 }

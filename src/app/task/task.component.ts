@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { RewardDialogComponent } from './reward-dialog/reward-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { WheelFortuneComponent } from '../wheel-fortune/wheel-fortune.component';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 // import { RewardDialogComponentComponent } from './reward-dialog-component/reward-dialog-component.component';
 
 interface TaskCard {
@@ -25,7 +27,9 @@ interface TaskCard {
 })
 export class TaskComponent {
   selectedTab: string = 'tasks';
-
+  Chat_ID: any;
+  apiUrl = environment.apiurl;
+  userDetails: any;
   selectTab(tab: string): void {
     this.selectedTab = tab;
   }
@@ -91,7 +95,7 @@ export class TaskComponent {
   isDayAvailable = true; // Set true for initial availability
   remainingTime = '00:00:00'; // Countdown for the next reward
 
-  constructor(private dialog: MatDialog, private http: HttpClient) {}
+  constructor(private dialog: MatDialog,private http: HttpClient, private router: ActivatedRoute) {}
 
   // Simulate API call or logic to get availability
   // checkAvailability() {
@@ -140,9 +144,35 @@ export class TaskComponent {
   // constructor(private dialog: MatDialog, private rewardService: RewardService) {}
 
   ngOnInit(): void {
-    this.checkAvailability();
-    this.startTimer();
+    this.Chat_ID = localStorage.getItem('Identification')
+    this.getUserDetails();
+
   }
+    private getHeaders() {
+      const headers = new HttpHeaders({
+        'ngrok-skip-browser-warning': '69420'
+      });
+      return { headers };
+    }
+    getUserDetails() {
+      const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
+  
+  
+      this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
+        if (result) {
+          console.log("GET API RESPONCE --->", result)
+          this.userDetails = result
+          this.checkAvailability();
+          this.startTimer();
+          // console.log("BEFORE savedProgress --->", this.userDetails.miningProgress)
+          console.log("this.userDetails --->", this.userDetails)
+          // this.profile.balance = result.balance ? parseFloat(result.balance) : 0;
+          
+        } else {
+          console.error("Refferal ID not found in response", result);
+        }
+      });
+    }
   // }
   // checkAvailability() {
   //   const currentTime = new Date();
@@ -342,7 +372,7 @@ export class TaskComponent {
   // Method to check availability based on the current time
   checkAvailability() {
     const currentTime = new Date();
-    const lastClaimTime = localStorage.getItem('lastClaimTime');
+    const lastClaimTime = this.userDetails.dailyRewardsLastClaimTime;
     if (lastClaimTime) {
       const elapsedTime = Math.floor(
         (currentTime.getTime() - new Date(lastClaimTime).getTime()) / 1000
