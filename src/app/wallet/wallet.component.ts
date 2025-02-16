@@ -190,13 +190,18 @@ export class WalletComponent implements OnInit, AfterViewInit {
     });
     const httpOptions = { headers: headers_object };
 
-    // Use the connected wallet address from walletState
-    const walletAddress = this.walletAddress || window.walletState?.address;
+    // Get and format the wallet address
+    const rawAddress = this.walletAddress || window.walletState?.address || '';
+    const formattedAddress = this.formatAddress(rawAddress);
 
-    if (walletAddress && this.Chat_ID) {
+    if (formattedAddress && this.Chat_ID) {
       this.http
         .put<any>(
-          this.apiUrl + 'webhook/update/' + walletAddress + '/' + this.Chat_ID,
+          this.apiUrl +
+            'webhook/update/' +
+            formattedAddress +
+            '/' +
+            this.Chat_ID,
           {},
           httpOptions
         )
