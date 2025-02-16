@@ -6,7 +6,7 @@ import { toNano } from 'ton-core';
 @Component({
   selector: 'app-send-dialog',
   templateUrl: './send-dialog.component.html',
-  styleUrls: ['./send-dialog.component.css']
+  styleUrls: ['./send-dialog.component.css'],
 })
 export class SendDialogComponent {
   sendForm: FormGroup;
@@ -16,13 +16,13 @@ export class SendDialogComponent {
       walletAddress: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
       network: ['', Validators.required],
-      comment: ['']
+      comment: [''],
     });
   }
 
   openSendDialog() {
     const dialogRef = this.dialog.open(SendDialogComponent);
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         console.log('Send Form Submitted:', result);
       }
@@ -31,30 +31,29 @@ export class SendDialogComponent {
 
   async onSubmit() {
     if (this.sendForm.valid) {
-      console.log('Form Data:', this.sendForm.value);
       try {
-            const amount = toNano(this.sendForm.value.amount);
-            console.log('amount:',amount);
-            const receiverAddress =
-              'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI';
-      
-            const transaction = {
-              validUntil: Math.floor(Date.now() / 1000) + 600,
-              messages: [
-                {
-                  address: receiverAddress,
-                  amount: amount.toString(),
-                },
-              ],
-            };
-      
-            const result = await window.tonConnectUI.sendTransaction(transaction);
-      
-          } catch (error) {
-            console.error('Premium upgrade failed:', error);
-            alert('Premium upgrade failed. Please try again.');
-          }
-      // Add your submit logic here
+        const amount = toNano(this.sendForm.value.amount);
+        const receiverAddress = this.sendForm.value.walletAddress;
+
+        const transaction = {
+          validUntil: Math.floor(Date.now() / 1000) + 600,
+          messages: [
+            {
+              address: receiverAddress,
+              amount: amount.toString(),
+              comment: this.sendForm.value.comment || '',
+            },
+          ],
+        };
+
+        const result = await window.tonConnectUI.sendTransaction(transaction);
+        if (result) {
+          this.dialog.closeAll();
+        }
+      } catch (error) {
+        console.error('Transaction failed:', error);
+        alert('Transaction failed. Please try again.');
+      }
     }
   }
 }
