@@ -54,6 +54,7 @@ import { ViewMnemonicDialogBoxComponent } from './setting/view-mnemonic-dialog-b
 import { WheelFortuneComponent } from './wheel-fortune/wheel-fortune.component';
 import { HonorScoreDialogBoxComponent } from './setting/honor-score-dialog-box/honor-score-dialog-box.component';
 import { SendDialogComponent } from './setting/send-dialog/send-dialog.component';
+import { EmailVerificationDialogBoxComponent } from './setting/email-verification-dialog-box/email-verification-dialog-box.component';
 // import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
@@ -75,6 +76,7 @@ import { SendDialogComponent } from './setting/send-dialog/send-dialog.component
     WheelFortuneComponent,
     HonorScoreDialogBoxComponent,
     SendDialogComponent,
+    EmailVerificationDialogBoxComponent,
   ],
   imports: [
     BrowserModule,
