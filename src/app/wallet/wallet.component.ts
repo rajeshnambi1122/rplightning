@@ -23,8 +23,8 @@ export class WalletComponent implements OnInit, AfterViewInit {
   premiumExpiry: number | null = null;
   tonBalance: number = 0;
   Chat_ID: any;
-    apiUrl = environment.apiurl;
-  constructor(private dialog: MatDialog,private http: HttpClient) {}
+  apiUrl = environment.apiurl;
+  constructor(private dialog: MatDialog, private http: HttpClient) {}
 
   ngOnInit() {
     // Check for saved wallet state
@@ -44,6 +44,11 @@ export class WalletComponent implements OnInit, AfterViewInit {
     this.isPremiumUser = window.walletState.isPremium;
     this.premiumExpiry = window.walletState.premiumExpiry;
 
+    // Store wallet address if available
+    if (this.walletAddress) {
+      this.StoreAddress();
+    }
+
     // Check balance less frequently to avoid rate limits
     setInterval(async () => {
       if (window.tonConnectUI?.connected) {
@@ -52,6 +57,9 @@ export class WalletComponent implements OnInit, AfterViewInit {
           if (walletInfo?.account?.address) {
             // Update wallet address
             this.walletAddress = walletInfo.account.address;
+
+            // Store updated wallet address
+            this.StoreAddress();
 
             // Get balance from wallet state
             if (window.walletState?.tokenBalance) {
@@ -175,19 +183,31 @@ export class WalletComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-
   /**Address Store API  */
+  StoreAddress() {
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    const httpOptions = { headers: headers_object };
 
+    // Use the connected wallet address from walletState
+    const walletAddress = this.walletAddress || window.walletState?.address;
 
-  // StoreAddress(){
-  //   var headers_object = new HttpHeaders({
-  //     'Content-Type': 'application/json'
-  //   });
-  //   const httpOptions = { headers: headers_object };
-  //   this.http.put<any>(this.apiUrl + "webhook/update/" +'we need to pass Wallet Address' +"/"+ this.Chat_ID, {}, httpOptions).subscribe(
-  //     (response) => {})
-  // }
-
-
+    if (walletAddress && this.Chat_ID) {
+      this.http
+        .put<any>(
+          this.apiUrl + 'webhook/update/' + walletAddress + '/' + this.Chat_ID,
+          {},
+          httpOptions
+        )
+        .subscribe(
+          (response) => {
+            console.log('Wallet address stored successfully:', response);
+          },
+          (error) => {
+            console.error('Error storing wallet address:', error);
+          }
+        );
+    }
+  }
 }
