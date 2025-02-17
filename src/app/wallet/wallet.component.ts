@@ -2,10 +2,14 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { toNano, Address } from 'ton-core';
 import { MatDialog } from '@angular/material/dialog';
 import { SendDialogComponent } from '../setting/send-dialog/send-dialog.component';
-import { Wallet } from '@tonconnect/sdk';
-import { TonClient } from 'ton';
+import { TonClient } from '@ton/ton';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+
+// Initialize TON Client for mainnet
+const client = new TonClient({
+  endpoint: 'https://toncenter.com/api/v2/jsonRPC'
+});
 
 interface WalletInfo {
   balance: number;
@@ -14,7 +18,7 @@ interface WalletInfo {
 @Component({
   selector: 'app-wallet',
   templateUrl: './wallet.component.html',
-  styleUrls: ['./wallet.component.css'],
+  styleUrls: ['./wallet.component.css']
 })
 export class WalletComponent implements OnInit, AfterViewInit {
   walletAddress: string | null = null;
@@ -26,59 +30,59 @@ export class WalletComponent implements OnInit, AfterViewInit {
   apiUrl = environment.apiurl;
   constructor(private dialog: MatDialog, private http: HttpClient) {}
 
-  ngOnInit() {
-    // Check for saved wallet state
+  async ngOnInit() {
     this.Chat_ID = localStorage.getItem('Identification');
     const savedWalletState = localStorage.getItem('walletState');
     if (savedWalletState) {
       window.walletState = JSON.parse(savedWalletState);
     }
 
-    // Only connect if not already connected
-    if (window.tonConnectUI && !window.tonConnectUI.connected) {
-      window.tonConnectUI.connectWallet();
-    }
+    // Set up balance checking interval
+    this.checkWalletState();
+    setInterval(() => this.checkWalletState(), 10000);
+  }
 
-    // Set initial state
-    this.walletAddress = window.walletState.address;
-    this.isPremiumUser = window.walletState.isPremium;
-    this.premiumExpiry = window.walletState.premiumExpiry;
+  private async checkWalletState() {
+    if (window.tonConnectUI?.connected) {
+      try {
+        const walletInfo = await window.tonConnectUI.wallet;
+        if (walletInfo?.account?.address) {
+          this.walletAddress = walletInfo.account.address;
+          await this.fetchBalance(this.walletAddress);
 
-    // Store wallet address if available
-    if (this.walletAddress) {
-      this.StoreAddress();
-    }
+          // Update wallet state
+          window.walletState = {
+            ...window.walletState,
+            address: this.walletAddress,
+            tokenBalance: this.tonBalance * 1e9
+          };
 
-    // Check balance less frequently to avoid rate limits
-    setInterval(async () => {
-      if (window.tonConnectUI?.connected) {
-        try {
-          const walletInfo = await window.tonConnectUI.wallet;
-          if (walletInfo?.account?.address) {
-            // Update wallet address
-            this.walletAddress = walletInfo.account.address;
-
-            // Store updated wallet address
-            this.StoreAddress();
-
-            // Get balance from wallet state
-            if (window.walletState?.tokenBalance) {
-              this.tonBalance = Number(window.walletState.tokenBalance) / 1e9;
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching wallet info:', error);
+          localStorage.setItem(
+            'walletState',
+            JSON.stringify(window.walletState)
+          );
+          this.StoreAddress();
         }
+      } catch (error) {
+        console.error('Error checking wallet state:', error);
       }
-    }, 10000); // Check every 10 seconds
+    }
+  }
+
+  private async fetchBalance(address: string) {
+    try {
+      const balance = await client.getBalance(Address.parse(address));
+      this.tonBalance = Number(balance) / 1e9;
+    } catch (error) {
+      console.error('Error fetching balance:', error);
+    }
   }
 
   ngAfterViewInit() {
-    // Only initialize if not already initialized
     if (window.tonConnectUI && !window.tonConnectUI.connected) {
       window.tonConnectUI.uiOptions = {
         ...window.tonConnectUI.uiOptions,
-        buttonRootId: 'ton-connect-button',
+        buttonRootId: 'ton-connect-button'
       };
     }
   }
@@ -91,7 +95,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
         const rawAddress = address.substring(2); // Remove '0:' prefix
         const friendlyAddress = Address.parseRaw('0:' + rawAddress).toString({
           urlSafe: true,
-          bounceable: true,
+          bounceable: true
         });
         return 'UQ' + friendlyAddress.substring(2); // Add 'UQ' prefix and remove 'EQ'
       }
@@ -101,11 +105,6 @@ export class WalletComponent implements OnInit, AfterViewInit {
       console.error('Error formatting address:', error);
       return address;
     }
-  }
-
-  private async fetchBalance() {
-    // Implement balance fetching logic here
-    this.balance = 0;
   }
 
   async upgradeToPremium(): Promise<void> {
@@ -124,15 +123,15 @@ export class WalletComponent implements OnInit, AfterViewInit {
         messages: [
           {
             address: receiverAddress,
-            amount: amount.toString(),
-          },
-        ],
+            amount: amount.toString()
+          }
+        ]
       };
 
       const result = await window.tonConnectUI.sendTransaction(transaction);
 
       if (result) {
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
 
         window.walletState.isPremium = true;
         window.walletState.premiumExpiry =
@@ -142,7 +141,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
           'premiumStatus',
           JSON.stringify({
             isPremium: true,
-            expiry: window.walletState.premiumExpiry,
+            expiry: window.walletState.premiumExpiry
           })
         );
 
@@ -167,7 +166,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
         .then(() => {
           alert('Wallet address copied to clipboard!');
         })
-        .catch((err) => {
+        .catch(err => {
           console.error('Failed to copy: ', err);
           alert('Failed to copy wallet address. Please try again.');
         });
@@ -176,7 +175,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
 
   openSendDialog() {
     const dialogRef = this.dialog.open(SendDialogComponent);
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Send Form Submitted:', result);
       }
@@ -186,7 +185,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
   /**Address Store API  */
   StoreAddress() {
     var headers_object = new HttpHeaders({
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     });
     const httpOptions = { headers: headers_object };
 
@@ -206,10 +205,10 @@ export class WalletComponent implements OnInit, AfterViewInit {
           httpOptions
         )
         .subscribe(
-          (response) => {
+          response => {
             console.log('Wallet address stored successfully:', response);
           },
-          (error) => {
+          error => {
             console.error('Error storing wallet address:', error);
           }
         );
