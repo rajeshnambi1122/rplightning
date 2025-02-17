@@ -55,6 +55,8 @@ import { WheelFortuneComponent } from './wheel-fortune/wheel-fortune.component';
 import { HonorScoreDialogBoxComponent } from './setting/honor-score-dialog-box/honor-score-dialog-box.component';
 import { SendDialogComponent } from './setting/send-dialog/send-dialog.component';
 import { EmailVerificationDialogBoxComponent } from './setting/email-verification-dialog-box/email-verification-dialog-box.component';
+import { CommonModule } from '@angular/common';
+import { DiamondPurchaseComponent } from './diamond-purchase/diamond-purchase.component';
 // import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
@@ -77,6 +79,7 @@ import { EmailVerificationDialogBoxComponent } from './setting/email-verificatio
     HonorScoreDialogBoxComponent,
     SendDialogComponent,
     EmailVerificationDialogBoxComponent,
+    DiamondPurchaseComponent,
   ],
   imports: [
     BrowserModule,
@@ -116,6 +119,7 @@ import { EmailVerificationDialogBoxComponent } from './setting/email-verificatio
     BrowserAnimationsModule,
     FlexLayoutModule,
     RouterModule,
+    CommonModule,
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
