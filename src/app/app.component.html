@@ -1,28 +1,30 @@
 <div class="token-balance" *ngIf="shouldShowBalance()">
   <div class="logo-container">
-    <mat-icon class="settings-icon" (click)="routeSetting()">
-      settings
-    </mat-icon>
-    <mat-icon class="notification-icon"> notifications </mat-icon>
+    <mat-icon class="settings-icon" (click)="routeSetting()">settings</mat-icon>
+    <mat-icon class="notification-icon">notifications</mat-icon>
     <div class="rank-container">
       <mat-icon
         class="shield-icon"
         [class]="currentBadge.name.toLowerCase().split(' ')[0]"
+        >security</mat-icon
       >
-        security
-      </mat-icon>
       <div class="rank-info">
         <span
           class="rank-name"
           [class]="currentBadge.name.toLowerCase().split(' ')[0]"
+          >{{ currentBadge.name }}</span
         >
-          {{ currentBadge.name }}
-        </span>
       </div>
     </div>
     <img src="assets/logo.jpeg" alt="Logo" class="balance-logo" />
   </div>
   <span class="balance-value">{{ tokenBalance }}</span>
+  <div class="diamonds-container">
+    <span class="diamonds-value">💎 {{ getDiamonds() }}</span>
+    <button class="add-diamonds-btn" (click)="routeToDiamondPurchase()">
+      <mat-icon>add_circle</mat-icon>
+    </button>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

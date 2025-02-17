@@ -30,9 +30,9 @@ export class AppComponent implements OnInit {
   currentRoute: string = '';
   tokenBalance: number = 0;
   Chat_ID: any;
-  balance: any
+  balance: any;
   currentBadge!: BadgeLevel;
-apiUrl = environment.apiurl;
+  apiUrl = environment.apiurl;
   constructor(
     private router: Router,
     private router1: ActivatedRoute,
@@ -72,7 +72,7 @@ apiUrl = environment.apiurl;
   }
   ngOnInit() {
     this.Chat_ID = localStorage.getItem('Identification');
-    console.log("this.Chat_ID --->", this.Chat_ID)
+    console.log('this.Chat_ID --->', this.Chat_ID);
     this.getUserDetails();
     // Initialize TON Connect once at app startup
     if (window.tonConnectUI) {
@@ -146,21 +146,20 @@ apiUrl = environment.apiurl;
 
     this.updateBadge();
   }
-private getHeaders() {
+  private getHeaders() {
     const headers = new HttpHeaders({
-      'ngrok-skip-browser-warning': '69420'
+      'ngrok-skip-browser-warning': '69420',
     });
     return { headers };
   }
   getUserDetails() {
     const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
 
-
     this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
       if (result) {
-       this.balance = result.balance;
+        this.balance = result.balance;
       } else {
-        console.error("Refferal ID not found in response", result);
+        console.error('Refferal ID not found in response', result);
       }
     });
   }
@@ -216,4 +215,12 @@ private getHeaders() {
   //     width: '300px',
   //   });
   // }
+
+  getDiamonds(): number {
+    return Number(localStorage.getItem('diamonds')) || 0;
+  }
+
+  routeToDiamondPurchase() {
+    this.router.navigate(['/diamond-purchase']);
+  }
 }
