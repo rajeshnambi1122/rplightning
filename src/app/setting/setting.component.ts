@@ -4,6 +4,7 @@ import { ViewMnemonicDialogBoxComponent } from './view-mnemonic-dialog-box/view-
 import { Router } from '@angular/router';
 import { HonorScoreDialogBoxComponent } from './honor-score-dialog-box/honor-score-dialog-box.component';
 import { SendDialogComponent } from './send-dialog/send-dialog.component';
+import { EmailVerificationDialogBoxComponent } from './email-verification-dialog-box/email-verification-dialog-box.component';
 
 @Component({
   selector: 'app-setting',
@@ -38,6 +39,16 @@ export class SettingComponent {
 
   dialogRef.afterClosed().subscribe(result => {
     console.log('Honor Score Dialog closed:', result);
+  });
+}
+
+openEmailVerificationDialog(): void {
+  const dialogRef = this.dialog.open(EmailVerificationDialogBoxComponent, {
+    width: '600px',
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('Email Verification Dialog closed:', result);
   });
 }
   Community(){
