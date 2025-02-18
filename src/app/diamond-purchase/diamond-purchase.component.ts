@@ -182,10 +182,10 @@ export class DiamondPurchaseComponent {
   packages = [
     { name: 'Starter', diamonds: 100, ton: 0.13, iconCount: 1 },
     { name: 'Basic', diamonds: 310, ton: 0.6, iconCount: 2 },
-    { name: 'Popular', diamonds: 520, ton: 0.9, iconCount: 2 },
-    { name: 'Pro', diamonds: 1060, ton: 1.5, iconCount: 3 },
-    { name: 'Elite', diamonds: 2180, ton: 2.2, iconCount: 3 },
-    { name: 'Ultimate', diamonds: 5600, ton: 9, iconCount: 4 },
+    { name: 'Popular', diamonds: 520, ton: 0.9, iconCount: 3 },
+    { name: 'Pro', diamonds: 1060, ton: 1.5, iconCount: 4 },
+    { name: 'Elite', diamonds: 2180, ton: 2.2, iconCount: 5 },
+    { name: 'Ultimate', diamonds: 5600, ton: 9, iconCount: 6 },
   ];
 
   async purchaseDiamonds(amount: number, diamonds: number) {

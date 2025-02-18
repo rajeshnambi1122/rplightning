@@ -7,6 +7,8 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import { environment } from 'src/environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-wheel-fortune',
@@ -42,53 +44,138 @@ import {
   ],
 })
 export class WheelFortuneComponent {
-  hexagons = Array(12)
-    .fill(0)
-    .map((_, i) => ({
-      id: i,
-      state: 'inactive',
-      value: (i + 1) * 100,
-    }));
+  hexagons = [
+    { id: 0, value: 0.5, label: "Light's", state: 'inactive' },
+    { id: 1, value: 1.05, label: "$", state: 'inactive' },
+    { id: 2, value: 2, label: "Light's", state: 'inactive' },
+    { id: 3, value: 10, label: "$", state: 'inactive' },
+    { id: 4, value: 5, label: "Light's", state: 'inactive' },
+    { id: 5, value: 20, label: "$", state: 'inactive' },
+  
+    { id: 6, value: 0.5, label: "$", state: 'inactive' },
+    { id: 7, value: 10, label: "Light's", state: 'inactive' },
+  
+  
+   
+   
+    { id: 8, value: 2, label: "$", state: 'inactive' },
+  
+    { id: 9, value: 5, label: "$", state: 'inactive' } // Only 1 in the last row
+  ];
+   apiUrl = environment.apiurl;
+    Chat_ID: any;
   spinning = false;
   selectedHexagon: number | null = null;
+  claimAvailable = false;
+  gameOver = false;
+  lastSpinTimestamp: number | null = null;
+  remainingTime: string = '';
 
-  constructor(public dialogRef: MatDialogRef<WheelFortuneComponent>) {}
+  constructor(public dialogRef: MatDialogRef<WheelFortuneComponent>, private http: HttpClient) {}
+
+  ngOnInit() {
+    this.Chat_ID = localStorage.getItem('Identification');
+    this.checkCooldown();
+  }
+
+  checkCooldown() {
+    const storedTimestamp = localStorage.getItem('lastSpinTime');
+    if (storedTimestamp) {
+      this.lastSpinTimestamp = parseInt(storedTimestamp, 10);
+      const now = Date.now();
+      const diff = this.lastSpinTimestamp + 24 * 60 * 60 * 1000 - now;
+      
+      if (diff > 0) {
+        this.gameOver = true; // Disable spin
+        this.updateRemainingTime(diff);
+        setInterval(() => this.updateRemainingTime(diff), 1000);
+      } else {
+        this.gameOver = false;
+      }
+    }
+  }
+
+  updateRemainingTime(diff: number) {
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    this.remainingTime = `${hours}h ${minutes}m ${seconds}s`;
+  }
 
   spinWheel() {
     if (!this.spinning) {
       this.spinning = true;
-      let currentIndex = 0;
+      this.claimAvailable = false;
 
+      let currentIndex = 0;
       const interval = setInterval(() => {
-        // Reset previous hexagon
         if (currentIndex > 0) {
-          this.hexagons[(currentIndex - 1) % this.hexagons.length].state =
-            'inactive';
+          this.hexagons[(currentIndex - 1) % this.hexagons.length].state = 'inactive';
         } else {
           this.hexagons[this.hexagons.length - 1].state = 'inactive';
         }
 
-        // Set current hexagon to spinning state
         this.hexagons[currentIndex].state = 'spinning';
         currentIndex = (currentIndex + 1) % this.hexagons.length;
       }, 100);
 
       setTimeout(() => {
         clearInterval(interval);
-        const winningIndex = Math.floor(Math.random() * this.hexagons.length);
 
-        // Reset all hexagons
+        // Stop on a "Light's" value
+        const lightsOptions = this.hexagons.filter(h => h.label === "Light's");
+        const winningHexagon = lightsOptions[Math.floor(Math.random() * lightsOptions.length)];
+
         this.hexagons.forEach((hex) => (hex.state = 'inactive'));
+        winningHexagon.state = 'active';
+        this.selectedHexagon = winningHexagon.id;
 
-        // Set winning hexagon to active
-        this.hexagons[winningIndex].state = 'active';
-        this.selectedHexagon = winningIndex;
-        console.log("this.selectedHexagon -->",this.selectedHexagon)
+        // Enable claim button and set cooldown
+        this.claimAvailable = true;
+        this.gameOver = true;
         this.spinning = false;
+        this.lastSpinTimestamp = Date.now();
+        localStorage.setItem('lastSpinTime', this.lastSpinTimestamp.toString());
+        this.checkCooldown();
       }, 3000);
     }
   }
 
+  claimReward() {
+    if (this.claimAvailable) {
+      // alert(`You claimed: ${this.hexagons[this.selectedHexagon!].value} Light's`);
+      // this.claimAvailable = false;
+      // this.gameOver = true; // Prevent spinning again
+      
+          var headers_object = new HttpHeaders({
+            'Content-Type': 'application/json'
+          });
+          const httpOptions = { headers: headers_object };
+          this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + this.hexagons[this.selectedHexagon!].value, {}, httpOptions).subscribe(
+            (response) => {
+              
+              this.http.put<any>(this.apiUrl + "webhook/lastDateUpdate/" + this.Chat_ID + "/" + new Date().toISOString(), {}, httpOptions).subscribe(
+                (response) => {
+                  this.claimAvailable = false;
+                  this.gameOver = true; // Prevent spinning again
+                 
+                },
+                (error) => {
+                  console.error('Error claiming reward:', error);
+                  // Optionally show error message in the UI
+                }
+              )
+              // webhook/lastDateUpdate
+            
+            },
+            (error) => {
+              console.error('Error claiming reward:', error);
+              // Optionally show error message in the UI
+            }
+          );
+        }
+    }
+  
   close() {
     this.dialogRef.close(
       this.selectedHexagon !== null

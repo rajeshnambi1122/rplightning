@@ -1,48 +1,29 @@
 <div class="hexagon-container">
   <div class="close-button" (click)="close()">×</div>
   <div class="hexagon-grid">
-    <!-- Top row - 3 hexagons -->
-    <div class="hexagon-row">
-      <div
-        *ngFor="let hex of hexagons.slice(0, 3)"
-        class="hexagon"
-        [@hexagonAnimation]="hex.state"
-      >
+    <!-- Define rows dynamically -->
+    <div class="hexagon-row" *ngFor="let row of [0,4,7,9]">
+      <div *ngFor="let hex of hexagons.slice(row, row + (row === 9 ? 1 : row === 7 ? 2 : row === 4 ? 3 : 4))"
+           class="hexagon"
+           [@hexagonAnimation]="hex.state">
         <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
-      </div>
-    </div>
-    <!-- Second row - 4 hexagons -->
-    <div class="hexagon-row">
-      <div
-        *ngFor="let hex of hexagons.slice(3, 7)"
-        class="hexagon"
-        [@hexagonAnimation]="hex.state"
-      >
-        <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
-      </div>
-    </div>
-    <!-- Third row - 3 hexagons -->
-    <div class="hexagon-row">
-      <div
-        *ngFor="let hex of hexagons.slice(7, 10)"
-        class="hexagon"
-        [@hexagonAnimation]="hex.state"
-      >
-        <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
-      </div>
-    </div>
-    <!-- Bottom row - 2 hexagons, with adjusted positioning -->
-    <div class="hexagon-row bottom-row">
-      <div
-        *ngFor="let hex of hexagons.slice(10, 12)"
-        class="hexagon"
-        [@hexagonAnimation]="hex.state"
-      >
-        <span [class.white-text]="hex.state === 'active'">{{ hex.value }}</span>
+        <div class="hex-label">{{ hex.label }}</div>
       </div>
     </div>
   </div>
-  <button class="spin-button" (click)="spinWheel()" [disabled]="spinning">
+
+  <!-- Show remaining cooldown time -->
+  <p *ngIf="gameOver && remainingTime" style="color: ghostwhite;">
+    Next spin available in: {{ remainingTime }}
+  </p>
+
+  <!-- SPIN BUTTON (Disabled if gameOver) -->
+  <button *ngIf="!gameOver" class="spin-button" (click)="spinWheel()" [disabled]="spinning">
     {{ spinning ? "Spinning..." : "SPIN" }}
+  </button>
+
+  <!-- CLAIM BUTTON -->
+  <button class="claim-button" *ngIf="claimAvailable" (click)="claimReward()">
+    CLAIM
   </button>
 </div>
