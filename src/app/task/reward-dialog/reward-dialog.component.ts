@@ -111,7 +111,7 @@ export class RewardDialogComponent {
         console.log(`Reward claimed for Day ${index + 1}:`, response);
         day.status = 'done'; // Update the status after successful claim
         // localStorage.setItem('lastClaimTime', new Date().toISOString()); // Store the claim time
-        this.http.put<any>(this.apiUrl + "webhook/lastDateUpdate/" + this.Chat_ID + "/" + new Date().toISOString(), {}, httpOptions).subscribe(
+        this.http.put<any>(this.apiUrl + "webhook/lastDateUpdate/" + this.Chat_ID + "/" + new Date().toISOString()+'/1', {}, httpOptions).subscribe(
           (response) => {
             // console.log(`Reward claimed for Day ${index + 1}:`, response);
             // day.status = 'done'; // Update the status after successful claim

@@ -18,6 +18,7 @@
   </p>
 
   <!-- SPIN BUTTON (Disabled if gameOver) -->
+   <!-- {{gameOver}} -->
   <button *ngIf="!gameOver" class="spin-button" (click)="spinWheel()" [disabled]="spinning">
     {{ spinning ? "Spinning..." : "SPIN" }}
   </button>

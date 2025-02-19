@@ -64,6 +64,7 @@ export class WheelFortuneComponent {
   ];
    apiUrl = environment.apiurl;
     Chat_ID: any;
+    wheelFortune: any;
   spinning = false;
   selectedHexagon: number | null = null;
   claimAvailable = false;
@@ -75,32 +76,58 @@ export class WheelFortuneComponent {
 
   ngOnInit() {
     this.Chat_ID = localStorage.getItem('Identification');
+    this.getUserDetails();
     this.checkCooldown();
   }
+  private getHeaders() {
+    const headers = new HttpHeaders({
+      'ngrok-skip-browser-warning': '69420'
+    });
+    return { headers };
+  }
+  getUserDetails() {
+    const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
 
-  checkCooldown() {
-    const storedTimestamp = localStorage.getItem('lastSpinTime');
-    if (storedTimestamp) {
-      this.lastSpinTimestamp = parseInt(storedTimestamp, 10);
-      const now = Date.now();
-      const diff = this.lastSpinTimestamp + 24 * 60 * 60 * 1000 - now;
-      
-      if (diff > 0) {
-        this.gameOver = true; // Disable spin
-        this.updateRemainingTime(diff);
-        setInterval(() => this.updateRemainingTime(diff), 1000);
+
+    this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
+      if (result) {
+        console.log("Refferal ID:resultresultresult",result.dailyRewardsSpinLastClaimTime);
+        this.wheelFortune = result.dailyRewardsSpinLastClaimTime
+        this.checkCooldown();
+        console.log("Refferal ID:this.wheelFortune",this.wheelFortune);
       } else {
-        this.gameOver = false;
+        console.error("Refferal ID not found in response", result);
       }
+    });
+  }
+  checkCooldown() {
+    console.log("DATA this.wheelFortune211 -->",this.wheelFortune)
+    const storedTimestamp = this.wheelFortune;
+    if (storedTimestamp) {
+      console.log("DATA this.wheelFortune -->",this.wheelFortune)
+      this.remainingTime = this.wheelFortune
+      // this.spinning = true;
+      this.gameOver = true
+      // this.lastSpinTimestamp = parseInt(storedTimestamp, 10);
+      // const now = Date.now();
+      // const diff = this.lastSpinTimestamp + 24 * 60 * 60 * 1000 - now;
+      
+      // if (diff > 0) {
+      //   this.gameOver = true; // Disable spin
+      //   this.updateRemainingTime(diff);
+      //   setInterval(() => this.updateRemainingTime(diff), 1000);
+      // } else {
+      //   this.gameOver = false;
+      // }
     }
   }
 
-  updateRemainingTime(diff: number) {
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-    this.remainingTime = `${hours}h ${minutes}m ${seconds}s`;
-  }
+  // updateRemainingTime(diff: number) {
+  //   const hours = Math.floor(diff / (1000 * 60 * 60));
+  //   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  //   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  //   this.remainingTime = `${hours}h ${minutes}m ${seconds}s`;
+  // }
 
   spinWheel() {
     if (!this.spinning) {
@@ -133,9 +160,9 @@ export class WheelFortuneComponent {
         // Enable claim button and set cooldown
         this.claimAvailable = true;
         this.gameOver = true;
-        this.spinning = false;
-        this.lastSpinTimestamp = Date.now();
-        localStorage.setItem('lastSpinTime', this.lastSpinTimestamp.toString());
+        // this.spinning = false;
+        // this.lastSpinTimestamp = Date.now();
+        // localStorage.setItem('lastSpinTime', this.lastSpinTimestamp.toString());
         this.checkCooldown();
       }, 3000);
     }
@@ -154,11 +181,12 @@ export class WheelFortuneComponent {
           this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + this.hexagons[this.selectedHexagon!].value, {}, httpOptions).subscribe(
             (response) => {
               
-              this.http.put<any>(this.apiUrl + "webhook/lastDateUpdate/" + this.Chat_ID + "/" + new Date().toISOString(), {}, httpOptions).subscribe(
+              this.http.put<any>(this.apiUrl + "webhook/lastDateUpdate/" + this.Chat_ID + "/" + new Date().toISOString()+'/2', {}, httpOptions).subscribe(
                 (response) => {
                   this.claimAvailable = false;
+                  this.spinning = true;
                   this.gameOver = true; // Prevent spinning again
-                 
+                 this.getUserDetails()
                 },
                 (error) => {
                   console.error('Error claiming reward:', error);
