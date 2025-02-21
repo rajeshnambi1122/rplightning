@@ -10,27 +10,29 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-mine',
   templateUrl: './mine.component.html',
-  styleUrls: ['./mine.component.css'],
+  styleUrls: ['./mine.component.css']
 })
 export class MineComponent implements OnInit, OnDestroy {
   // Add premium user properties
   isPremiumUser: boolean = false;
-  readonly PREMIUM_MAX_TOKENS = 24; // Premium users can earn 24 tokens per day
+  readonly PREMIUM_MAX_TOKENS_HYPER = 24; // Premium users in hyper mode can earn 24 tokens per day
+  readonly PREMIUM_MAX_TOKENS_DYNAMIC = 36; // Premium users in dynamic mode can earn 36 tokens per day
   readonly REGULAR_MAX_TOKENS = 12; // Regular users stay at 12 tokens per day
+  PREMIUM_MAX_TOKENS: number = this.REGULAR_MAX_TOKENS; // Default to regular tokens
 
   // Update profile to include premium status
   profile = {
     balance: 0,
     power: 12200,
     premiumExpiry: null as number | null,
-    lastMiningTime: null as number | null,
+    lastMiningTime: null as number | null
   };
 
   bandwidth = {
     status: 'Inactive',
     shares: 0,
     earned: 0,
-    statusColor: 'red', // Add this line to define the statusColor property
+    statusColor: 'red' // Add this line to define the statusColor property
   };
   isMining: boolean = false;
   isClaiming: boolean = false;
@@ -57,23 +59,25 @@ export class MineComponent implements OnInit, OnDestroy {
   userDetails: any;
   private timerInterval: any; // Add this to track the interval
 
-  constructor(private snackBar: MatSnackBar, private http: HttpClient, private router: ActivatedRoute) {
+  constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private router: ActivatedRoute
+  ) {
     // Initialize profile balance from localStorage
     // const savedBalance = localStorage.getItem('profileBalance');
     // this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
-
     // Move the wallet status subscription to ngOnInit
   }
 
   ngOnInit(): void {
-    // Set initial state
-    this.ChatIDDAta = this.router.snapshot.paramMap.get("id");
+    this.ChatIDDAta = this.router.snapshot.paramMap.get('id');
     localStorage.setItem('Identification', this.ChatIDDAta);
-    this.Chat_ID = localStorage.getItem('Identification')
-    console.log("this.Chat_ID --->", this.Chat_ID)
+    this.Chat_ID = localStorage.getItem('Identification');
+    console.log('this.Chat_ID --->', this.Chat_ID);
     this.getUserDetails();
     this.newFunction();
-
+    this.checkPremiumStatus(); // Check premium status on init
   }
   private getHeaders() {
     const headers = new HttpHeaders({
@@ -84,17 +88,37 @@ export class MineComponent implements OnInit, OnDestroy {
   getUserDetails() {
     const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
 
-
-    this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
+    this.http.get<any>(url, this.getHeaders()).subscribe(result => {
       if (result) {
-        console.log("GET API RESPONCE --->", result)
-        this.userDetails = result
-        // console.log("BEFORE savedProgress --->", this.userDetails.miningProgress)
-        console.log("this.userDetails --->", this.userDetails)
+        console.log('GET API RESPONSE --->', result);
+        this.userDetails = result;
         this.profile.balance = result.balance ? parseFloat(result.balance) : 0;
-        
+
+        // Check premium status from the result
+        const premiumStatus = result.premiumStatus;
+        if (premiumStatus) {
+          this.isPremiumUser = premiumStatus.isPremium; // Set premium status
+
+          // Calculate premium expiry time (72 hours from levelUpdateAt)
+          const levelUpdateAt = new Date(result.levelUpdateAt).getTime();
+          const expiryTime = levelUpdateAt + 72 * 60 * 60 * 1000; // 72 hours in milliseconds
+          this.profile.premiumExpiry = expiryTime; // Set premium expiry
+
+          // Check if the premium is still valid
+          if (expiryTime < Date.now()) {
+            this.isPremiumUser = false; // Set to false if expired
+            this.profile.premiumExpiry = null; // Clear expiry
+          } else {
+            // Set maximum tokens based on mode
+            if (premiumStatus.mode === 'hyper') {
+              this.PREMIUM_MAX_TOKENS = this.PREMIUM_MAX_TOKENS_HYPER;
+            } else if (premiumStatus.mode === 'dynamic') {
+              this.PREMIUM_MAX_TOKENS = this.PREMIUM_MAX_TOKENS_DYNAMIC;
+            }
+          }
+        }
       } else {
-        console.error("Refferal ID not found in response", result);
+        console.error('Referral ID not found in response', result);
       }
     });
   }
@@ -169,10 +193,10 @@ export class MineComponent implements OnInit, OnDestroy {
     this.http
       .get<{ ip: string }>('https://api.ipify.org?format=json')
       .subscribe(
-        (response) => {
+        response => {
           this.ip = response.ip;
         },
-        (error) => {
+        error => {
           console.error('Error fetching IP:', error);
           this.ip = 'Error';
         }
@@ -240,7 +264,7 @@ export class MineComponent implements OnInit, OnDestroy {
         'miningState',
         JSON.stringify({
           isMining: true,
-          miningStartTime: this.profile.lastMiningTime,
+          miningStartTime: this.profile.lastMiningTime
         })
       );
 
@@ -274,7 +298,7 @@ export class MineComponent implements OnInit, OnDestroy {
       this.bandwidth.statusColor = 'orange';
 
       // Add 3 second cooldown period
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       const tokensEarned = this.isPremiumUser ? 24 : 12;
 
@@ -282,11 +306,19 @@ export class MineComponent implements OnInit, OnDestroy {
         'Content-Type': 'application/json'
       });
       const httpOptions = { headers: headers_object };
-      this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + tokensEarned, {}, httpOptions)
+      this.http
+        .put<any>(
+          this.apiUrl +
+            'webhook/balanceUpdate/' +
+            this.Chat_ID +
+            '/' +
+            tokensEarned,
+          {},
+          httpOptions
+        )
         .subscribe(
-          (result) => {
-
-            console.log("PUT API RESPONCE", result)
+          result => {
+            console.log('PUT API RESPONCE', result);
             this.getUserDetails();
             // Update profile balance
             // this.profile.balance += tokensEarned;
@@ -312,9 +344,13 @@ export class MineComponent implements OnInit, OnDestroy {
               accumulatedShares: 0
             };
             const httpOptions = { headers: headers_object };
-            this.http.put<any>(this.apiUrl + "webhook/mining-progress/" + this.Chat_ID, param, httpOptions)
-              .subscribe(
-                (result) => { })
+            this.http
+              .put<any>(
+                this.apiUrl + 'webhook/mining-progress/' + this.Chat_ID,
+                param,
+                httpOptions
+              )
+              .subscribe(result => {});
             // localStorage.setItem(
             //   'miningProgress',
             //   JSON.stringify({
@@ -332,22 +368,14 @@ export class MineComponent implements OnInit, OnDestroy {
             this.profile.lastMiningTime = new Date().getTime();
             this.elapsedSeconds = 0;
           },
-          (error) => {
-
-
+          error => {
             this.snackBar.open(error.error.messages.toString(), '', {
               duration: 3000,
               verticalPosition: 'bottom',
-              panelClass: 'Error',
+              panelClass: 'Error'
             });
-
-          })
-
-
-
-
-
-
+          }
+        );
     } catch (error) {
       console.error('Failed to claim tokens:', error);
       alert('Failed to claim tokens. Please try again.');
@@ -373,7 +401,7 @@ export class MineComponent implements OnInit, OnDestroy {
       'miningState',
       JSON.stringify({
         isMining: true,
-        miningStartTime: this.profile.lastMiningTime,
+        miningStartTime: this.profile.lastMiningTime
       })
     );
 
@@ -454,7 +482,7 @@ export class MineComponent implements OnInit, OnDestroy {
         process: `Process 0${index + 1}`,
         bps: res.bps,
         kbps: res.kbps,
-        mbps: res.mbps,
+        mbps: res.mbps
       }));
 
       // Update shares and earned based on time (1 token per second)
@@ -500,14 +528,17 @@ export class MineComponent implements OnInit, OnDestroy {
         accumulatedShares: this.accumulatedShares
       };
       const httpOptions = { headers: headers_object };
-      this.http.put<any>(this.apiUrl + "webhook/mining-progress/" + this.Chat_ID, param, httpOptions)
-        .subscribe(
-          (result) => { })
+      this.http
+        .put<any>(
+          this.apiUrl + 'webhook/mining-progress/' + this.Chat_ID,
+          param,
+          httpOptions
+        )
+        .subscribe(result => {});
     } catch (error) {
       console.error('Error in speed check:', error);
     }
   }
-
 
   // Add this method to check premium status on init
   private checkPremiumStatus(): void {
