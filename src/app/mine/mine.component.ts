@@ -314,9 +314,15 @@ export class MineComponent implements OnInit, OnDestroy {
         tokensEarned = 6; // Regular users earn 6 tokens per claim
       }
 
-      // Proceed with claiming tokens logic
-      // Example: Update user balance, etc.
-      this.profile.balance += tokensEarned; // Update balance
+      // Retrieve existing earned tokens from user details
+      const existingEarnedTokens = this.userDetails.miningProgress.earned || 0;
+      const newEarnedTokens = existingEarnedTokens + tokensEarned; // Update earned tokens
+
+      // Update the profile balance
+      const existingBalance = this.profile.balance;
+      const newBalance = existingBalance + tokensEarned; // Update balance
+      this.profile.balance = newBalance; // Update balance
+
       alert(
         `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
       );
@@ -330,23 +336,24 @@ export class MineComponent implements OnInit, OnDestroy {
       this.bandwidth.status = 'Inactive';
       this.bandwidth.statusColor = 'red';
 
-      // Save reset progress to localStorage
-      var headers_object = new HttpHeaders({
+      // Save updated earned tokens and balance to the server
+      const headers_object = new HttpHeaders({
         'Content-Type': 'application/json'
       });
-      let param = {
+      const param = {
         shares: 0,
-        earned: 0,
-        accumulatedShares: 0
+        earned: newEarnedTokens, // Pass the updated earned tokens
+        accumulatedShares: this.accumulatedShares,
+        newBalance: newBalance // Include the updated balance
       };
       const httpOptions = { headers: headers_object };
-      this.http
+      await this.http
         .put<any>(
-          this.apiUrl + 'webhook/mining-progress/' + this.Chat_ID,
+          `${this.apiUrl}webhook/mining-progress/${this.Chat_ID}`,
           param,
           httpOptions
         )
-        .subscribe(result => {});
+        .toPromise();
 
       // Reset mining timer
       this.profile.lastMiningTime = new Date().getTime();
