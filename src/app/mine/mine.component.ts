@@ -314,14 +314,8 @@ export class MineComponent implements OnInit, OnDestroy {
         tokensEarned = 6; // Regular users earn 6 tokens per claim
       }
 
-      // Retrieve existing earned tokens from user details
-      const existingEarnedTokens = this.userDetails.miningProgress.earned || 0;
-      const newEarnedTokens = existingEarnedTokens + tokensEarned; // Update earned tokens
-
       // Update the profile balance
-      const existingBalance = this.profile.balance;
-      const newBalance = existingBalance + tokensEarned; // Update balance
-      this.profile.balance = newBalance; // Update balance
+      this.profile.balance += tokensEarned; // Update balance
 
       alert(
         `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
@@ -336,15 +330,14 @@ export class MineComponent implements OnInit, OnDestroy {
       this.bandwidth.status = 'Inactive';
       this.bandwidth.statusColor = 'red';
 
-      // Save updated earned tokens and balance to the server
+      // Save the mined tokens to the server
       const headers_object = new HttpHeaders({
         'Content-Type': 'application/json'
       });
       const param = {
         shares: 0,
-        earned: newEarnedTokens, // Pass the updated earned tokens
-        accumulatedShares: this.accumulatedShares,
-        newBalance: newBalance // Include the updated balance
+        earned: tokensEarned, // Pass the currently mined tokens
+        accumulatedShares: this.accumulatedShares
       };
       const httpOptions = { headers: headers_object };
       await this.http
