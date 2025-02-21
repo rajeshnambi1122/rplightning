@@ -58,6 +58,7 @@ export class MineComponent implements OnInit, OnDestroy {
   ChatIDDAta: any;
   userDetails: any;
   private timerInterval: any; // Add this to track the interval
+  upgradedMode: string | null = null; // Declare upgradedMode property
 
   constructor(
     private snackBar: MatSnackBar,
@@ -98,6 +99,7 @@ export class MineComponent implements OnInit, OnDestroy {
         const premiumStatus = result.premiumStatus;
         if (premiumStatus) {
           this.isPremiumUser = premiumStatus.isPremium; // Set premium status
+          this.upgradedMode = premiumStatus.mode; // Set upgraded mode
 
           // Calculate premium expiry time (72 hours from levelUpdateAt)
           const levelUpdateAt = new Date(result.levelUpdateAt).getTime();
@@ -300,82 +302,55 @@ export class MineComponent implements OnInit, OnDestroy {
       // Add 3 second cooldown period
       await new Promise(resolve => setTimeout(resolve, 3000));
 
-      const tokensEarned = this.isPremiumUser ? 24 : 12;
+      // Determine tokens earned based on mode
+      let tokensEarned = 0;
+      if (this.isPremiumUser) {
+        if (this.upgradedMode === 'hyper') {
+          tokensEarned = 12; // Hyper mode earns 12 tokens per claim
+        } else if (this.upgradedMode === 'dynamic') {
+          tokensEarned = 18; // Dynamic mode earns 18 tokens per claim
+        }
+      } else {
+        tokensEarned = 6; // Regular users earn 6 tokens per claim
+      }
 
+      // Proceed with claiming tokens logic
+      // Example: Update user balance, etc.
+      this.profile.balance += tokensEarned; // Update balance
+      alert(
+        `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
+      );
+
+      // Reset bandwidth sharing stats
+      this.bandwidth.shares = 0;
+      this.bandwidth.earned = 0;
+      this.accumulatedShares = 0;
+
+      // Update status after claiming and cooldown
+      this.bandwidth.status = 'Inactive';
+      this.bandwidth.statusColor = 'red';
+
+      // Save reset progress to localStorage
       var headers_object = new HttpHeaders({
         'Content-Type': 'application/json'
       });
+      let param = {
+        shares: 0,
+        earned: 0,
+        accumulatedShares: 0
+      };
       const httpOptions = { headers: headers_object };
       this.http
         .put<any>(
-          this.apiUrl +
-            'webhook/balanceUpdate/' +
-            this.Chat_ID +
-            '/' +
-            tokensEarned,
-          {},
+          this.apiUrl + 'webhook/mining-progress/' + this.Chat_ID,
+          param,
           httpOptions
         )
-        .subscribe(
-          result => {
-            console.log('PUT API RESPONCE', result);
-            this.getUserDetails();
-            // Update profile balance
-            // this.profile.balance += tokensEarned;
-            // localStorage.setItem('profileBalance', this.profile.balance.toString());
+        .subscribe(result => {});
 
-            // Reset bandwidth sharing stats
-            this.bandwidth.shares = 0;
-            this.bandwidth.earned = 0;
-            this.accumulatedShares = 0;
-
-            // Update status after claiming and cooldown
-            this.bandwidth.status = 'Inactive';
-            this.bandwidth.statusColor = 'red';
-
-            // Save reset progress to localStorage
-            // const requestBody = JSON.stringify(leadreason);
-            var headers_object = new HttpHeaders({
-              'Content-Type': 'application/json'
-            });
-            let param = {
-              shares: 0,
-              earned: 0,
-              accumulatedShares: 0
-            };
-            const httpOptions = { headers: headers_object };
-            this.http
-              .put<any>(
-                this.apiUrl + 'webhook/mining-progress/' + this.Chat_ID,
-                param,
-                httpOptions
-              )
-              .subscribe(result => {});
-            // localStorage.setItem(
-            //   'miningProgress',
-            //   JSON.stringify({
-            //     shares: 0,
-            //     earned: 0,
-            //     accumulatedShares: 0,
-            //   })
-            // );
-
-            // alert(
-            //   `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
-            // );
-
-            // Reset mining timer
-            this.profile.lastMiningTime = new Date().getTime();
-            this.elapsedSeconds = 0;
-          },
-          error => {
-            this.snackBar.open(error.error.messages.toString(), '', {
-              duration: 3000,
-              verticalPosition: 'bottom',
-              panelClass: 'Error'
-            });
-          }
-        );
+      // Reset mining timer
+      this.profile.lastMiningTime = new Date().getTime();
+      this.elapsedSeconds = 0;
     } catch (error) {
       console.error('Failed to claim tokens:', error);
       alert('Failed to claim tokens. Please try again.');
