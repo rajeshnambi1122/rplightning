@@ -178,7 +178,7 @@ export class WheelFortuneComponent {
             'Content-Type': 'application/json'
           });
           const httpOptions = { headers: headers_object };
-          this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + this.hexagons[this.selectedHexagon!].value, {}, httpOptions).subscribe(
+          this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + this.hexagons[this.selectedHexagon!].value+ "/1", {}, httpOptions).subscribe(
             (response) => {
               
               this.http.put<any>(this.apiUrl + "webhook/lastDateUpdate/" + this.Chat_ID + "/" + new Date().toISOString()+'/2', {}, httpOptions).subscribe(

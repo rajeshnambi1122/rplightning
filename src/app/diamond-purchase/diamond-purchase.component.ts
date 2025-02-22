@@ -1,5 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { toNano } from 'ton-core';
+import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-diamond-purchase',
@@ -179,6 +184,9 @@ import { toNano } from 'ton-core';
   ],
 })
 export class DiamondPurchaseComponent {
+  Chat_ID: any;
+    apiUrl = environment.apiurl;
+  
   packages = [
     { name: 'Starter', diamonds: 100, ton: 0.13, iconCount: 1 },
     { name: 'Basic', diamonds: 310, ton: 0.6, iconCount: 2 },
@@ -187,35 +195,48 @@ export class DiamondPurchaseComponent {
     { name: 'Elite', diamonds: 2180, ton: 2.2, iconCount: 5 },
     { name: 'Ultimate', diamonds: 5600, ton: 9, iconCount: 6 },
   ];
-
+ constructor(
+    private snackBar: MatSnackBar,
+    private http: HttpClient,
+    private router: ActivatedRoute,
+      private refreshService: SharedService
+  ) {
+  }
+  ngOnInit(){
+    this.Chat_ID = localStorage.getItem('Identification');
+  }
   async purchaseDiamonds(amount: number, diamonds: number) {
-    try {
-      const tonAmount = toNano(amount.toString());
-      const receiverAddress =
-        'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI';
+    this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + diamonds + "/2", {}).subscribe(
+      (response) => {
+        this.refreshService.triggerRefresh();
+      })
+    // try {
+    //   const tonAmount = toNano(amount.toString());
+    //   const receiverAddress =
+    //     'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI';
 
-      const transaction = {
-        validUntil: Math.floor(Date.now() / 1000) + 600,
-        messages: [
-          {
-            address: receiverAddress,
-            amount: tonAmount.toString(),
-          },
-        ],
-      };
+    //   const transaction = {
+    //     validUntil: Math.floor(Date.now() / 1000) + 600,
+    //     messages: [
+    //       {
+    //         address: receiverAddress,
+    //         amount: tonAmount.toString(),
+    //       },
+    //     ],
+    //   };
 
-      const result = await window.tonConnectUI.sendTransaction(transaction);
-      if (result) {
-        const currentDiamonds = Number(localStorage.getItem('diamonds') || '0');
-        localStorage.setItem(
-          'diamonds',
-          (currentDiamonds + diamonds).toString()
-        );
-        alert(`Successfully purchased ${diamonds} diamonds!`);
-      }
-    } catch (error) {
-      console.error('Purchase failed:', error);
-      alert('Purchase failed. Please try again.');
-    }
+    //   const result = await window.tonConnectUI.sendTransaction(transaction);
+    //   if (result) {
+    //     const currentDiamonds = Number(localStorage.getItem('diamonds') || '0');
+    //     localStorage.setItem(
+    //       'diamonds',
+    //       (currentDiamonds + diamonds).toString()
+    //     );
+    //     alert(`Successfully purchased ${diamonds} diamonds!`);
+    //   }
+    // } catch (error) {
+    //   console.error('Purchase failed:', error);
+    //   alert('Purchase failed. Please try again.');
+    // }
   }
 }

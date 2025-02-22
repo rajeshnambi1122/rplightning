@@ -106,7 +106,7 @@ export class RewardDialogComponent {
       'Content-Type': 'application/json'
     });
     const httpOptions = { headers: headers_object };
-    this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + day.rewardAmount, {}, httpOptions).subscribe(
+    this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + day.rewardAmount+ "/1", {}, httpOptions).subscribe(
       (response) => {
         console.log(`Reward claimed for Day ${index + 1}:`, response);
         day.status = 'done'; // Update the status after successful claim

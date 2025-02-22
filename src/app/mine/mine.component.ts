@@ -6,6 +6,7 @@ import { Address, toNano } from 'ton-core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-mine',
@@ -59,22 +60,28 @@ export class MineComponent implements OnInit, OnDestroy {
   userDetails: any;
   private timerInterval: any; // Add this to track the interval
   upgradedMode: string | null = null; // Declare upgradedMode property
+  // refreshService: any;
 
   constructor(
     private snackBar: MatSnackBar,
     private http: HttpClient,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private refreshService: SharedService
   ) {
-    // Initialize profile balance from localStorage
-    // const savedBalance = localStorage.getItem('profileBalance');
-    // this.profile.balance = savedBalance ? parseFloat(savedBalance) : 0;
-    // Move the wallet status subscription to ngOnInit
   }
 
   ngOnInit(): void {
-    this.ChatIDDAta = this.router.snapshot.paramMap.get('id');
-    localStorage.setItem('Identification', this.ChatIDDAta);
-    this.Chat_ID = localStorage.getItem('Identification');
+    let tokenValidation = localStorage.getItem('Identification')
+    console.log("tokenValidation --->",tokenValidation == "null")
+    if(tokenValidation == "null"){
+      this.ChatIDDAta = this.router.snapshot.paramMap.get('id');
+      localStorage.setItem('Identification', this.ChatIDDAta);
+     
+    }
+    else{
+      this.Chat_ID = localStorage.getItem('Identification');
+    }
+    
     console.log('this.Chat_ID --->', this.Chat_ID);
     this.getUserDetails();
     this.newFunction();
@@ -87,12 +94,16 @@ export class MineComponent implements OnInit, OnDestroy {
     return { headers };
   }
   getUserDetails() {
+    console.log("this.Chat_ID 123*** -->",this.Chat_ID)
     const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
 
     this.http.get<any>(url, this.getHeaders()).subscribe(result => {
       if (result) {
         console.log('GET API RESPONSE --->', result);
         this.userDetails = result;
+        if(result.premiumStatus == null){
+          this.initialPlanUpgrade()
+        }
         this.profile.balance = result.balance ? parseFloat(result.balance) : 0;
 
         // Check premium status from the result
@@ -123,6 +134,24 @@ export class MineComponent implements OnInit, OnDestroy {
         console.error('Referral ID not found in response', result);
       }
     });
+  }
+   initialPlanUpgrade(){
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    const httpOptions = { headers: headers_object };
+    // let param = { mode: "hyper" }
+    let param = { isPremium: true,mode: "normal" }
+    this.http.put<any>(this.apiUrl + "webhook/upgrade/" + this.Chat_ID, param, httpOptions).subscribe(
+      (response) => {
+        this.getUserDetails()
+
+      },
+      (error) => {
+        console.error('Error claiming reward:', error);
+        // Optionally show error message in the UI
+      }
+    );
   }
   newFunction() {
     this.walletAddress = window.walletState.address;
@@ -260,7 +289,7 @@ export class MineComponent implements OnInit, OnDestroy {
       this.bandwidth.statusColor = 'green';
       this.profile.lastMiningTime = new Date().getTime();
       this.elapsedSeconds = 0;
-
+   
       // Save mining state
       localStorage.setItem(
         'miningState',
@@ -276,7 +305,7 @@ export class MineComponent implements OnInit, OnDestroy {
       this.isMining = false;
       this.bandwidth.status = 'Cooling Down...';
       this.bandwidth.statusColor = 'orange';
-
+      
       // Start 3-second cooldown
       setTimeout(() => {
         this.bandwidth.status = 'Inactive';
@@ -291,10 +320,10 @@ export class MineComponent implements OnInit, OnDestroy {
 
   async handleClaim(): Promise<void> {
     if (this.isClaiming) return;
-
+  
     try {
       this.isClaiming = true;
-
+      // const httpOptions = 
       // Show cooling down status
       this.bandwidth.status = 'Cooling Down...';
       this.bandwidth.statusColor = 'orange';
@@ -315,12 +344,14 @@ export class MineComponent implements OnInit, OnDestroy {
       }
 
       // Update the profile balance
-      this.profile.balance += tokensEarned; // Update balance
+      // this.profile.balance += tokensEarned; // Update balance
 
-      alert(
-        `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
-      );
-
+      // alert(
+      //   `Claimed ${tokensEarned} tokens successfully! New balance: ${this.profile.balance}`
+      // );
+     
+      this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + tokensEarned + "/1", {}).subscribe(
+        (response) => {})
       // Reset bandwidth sharing stats
       this.bandwidth.shares = 0;
       this.bandwidth.earned = 0;
@@ -347,7 +378,8 @@ export class MineComponent implements OnInit, OnDestroy {
           httpOptions
         )
         .toPromise();
-
+        this.refreshService.triggerRefresh();
+this.getUserDetails();
       // Reset mining timer
       this.profile.lastMiningTime = new Date().getTime();
       this.elapsedSeconds = 0;

@@ -68,7 +68,7 @@ export class TaskComponent {
       rewardAmount: 10, // Add reward amount for each task
     },
     {
-      img: 'assets/telegram.jpg',
+      img: 'assets/telegram1.jpg',
       name: 'Telegram',
       button: 'Start',
       link: 'https://t.me/lightning2010',

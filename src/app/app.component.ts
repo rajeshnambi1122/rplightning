@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { TonConnectUI } from '@tonconnect/ui';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { BadgeService, BadgeLevel } from './shared/badge.service';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SharedService } from './shared.service';
 
 declare global {
   interface Window {
@@ -31,15 +32,17 @@ export class AppComponent implements OnInit {
   tokenBalance: number = 0;
   Chat_ID: any;
   balance: any;
+  diamond: any;
   currentBadge!: BadgeLevel;
+  ChatIDDAta: any;
   apiUrl = environment.apiurl;
   constructor(
     private router: Router,
     private router1: ActivatedRoute,
     private badgeService: BadgeService,
     private dialog: MatDialog,
-    private http: HttpClient
-  ) {
+    private http: HttpClient,
+    private refreshService: SharedService  ) {
     // Listen to route changes
     this.router.events.subscribe(() => {
       // Set condition to hide navbar for specific routes
@@ -67,13 +70,40 @@ export class AppComponent implements OnInit {
       // this.showBottomNavbar = !excludedRoutes.includes(currentRoute);
     });
   }
+
+  @HostListener('wheel', ['$event'])
+  onWheel(event: WheelEvent): void {
+    if (event.ctrlKey) {
+      event.preventDefault();
+    }
+  }
+
+  @HostListener('gesturestart', ['$event'])
+  onGestureStart(event: Event): void {
+    event.preventDefault();
+  }
   routeSetting() {
     this.router.navigate(['setting']);
   }
   ngOnInit() {
-    this.Chat_ID = localStorage.getItem('Identification');
+    // this.Chat_ID = localStorage.getItem('Identification');
+    let tokenValidation = localStorage.getItem('Identification')
+    console.log("tokenValidation --->",tokenValidation == "null")
+    if(tokenValidation == "null"){
+      this.ChatIDDAta = this.router1.snapshot.paramMap.get('id');
+      localStorage.setItem('Identification', this.ChatIDDAta);
+     
+    }
+    else{
+      this.Chat_ID = localStorage.getItem('Identification');
+    }
     console.log('this.Chat_ID --->', this.Chat_ID);
     this.getUserDetails();
+    this.refreshService.refresh$.subscribe(() => {
+      // this.getUserDetails();
+      this.refreshComponent();
+    });
+    // this.initialPlanUpgrade();
     // Initialize TON Connect once at app startup
     if (window.tonConnectUI) {
       window.tonConnectUI.uiOptions = {
@@ -103,15 +133,15 @@ export class AppComponent implements OnInit {
         }
       });
     }
-
+    this.loadTokenBalance();
     // Initialize wallet state
-    this.Chat_ID = this.router1.snapshot.paramMap.get('id');
+    // this.Chat_ID = this.router1.snapshot.paramMap.get('id');
     console.log('this.Chat_ID --->', this.Chat_ID);
     window.walletState = {
       address: null,
       isPremium: false,
       premiumExpiry: null,
-      tokenBalance: 0,
+      tokenBalance: this.balance,
     };
 
     // Initialize TonConnect
@@ -130,8 +160,9 @@ export class AppComponent implements OnInit {
         window.walletState.address = null;
         window.walletState.isPremium = false;
         window.walletState.premiumExpiry = null;
-        window.walletState.tokenBalance = 0;
-        this.tokenBalance = 0;
+        window.walletState.tokenBalance = this.balance;
+        this.tokenBalance = this.balance;
+        this.loadTokenBalance();
       }
     });
 
@@ -153,20 +184,26 @@ export class AppComponent implements OnInit {
     return { headers };
   }
   getUserDetails() {
+    console.log("this.Chat_ID 123456*** -->",this.Chat_ID)
     const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
 
     this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
       if (result) {
         this.balance = result.balance;
+        this.diamond = result.diamond;
+        this.loadTokenBalance()
       } else {
         console.error('Refferal ID not found in response', result);
       }
     });
   }
+  refreshComponent(){
+    this.getUserDetails()
+  }
   private loadTokenBalance() {
     const savedBalance = this.balance;
     if (savedBalance) {
-      this.tokenBalance = parseFloat(savedBalance);
+      this.tokenBalance = savedBalance;
       window.walletState.tokenBalance = this.tokenBalance;
     }
   }
@@ -183,8 +220,9 @@ export class AppComponent implements OnInit {
           '/setting',
           '/admin-login-page',
           '/wallet-main-page',
-        ].includes(this.router.url)
-      ) && window.walletState?.address !== null
+        ].includes(this.router.url)  && window.walletState?.address !== null
+      )
+      // && window.walletState?.address !== null
     );
   }
 
@@ -205,7 +243,8 @@ export class AppComponent implements OnInit {
 
   private updateBadge() {
     const tokens = this.tokenBalance;
-    const diamonds = parseInt(localStorage.getItem('diamonds') || '0');
+    // const diamonds = parseInt(localStorage.getItem('diamonds') || '0');
+    const diamonds = this.diamond
     this.currentBadge = this.badgeService.getCurrentBadge(tokens, diamonds);
   }
 
@@ -217,7 +256,7 @@ export class AppComponent implements OnInit {
   // }
 
   getDiamonds(): number {
-    return Number(localStorage.getItem('diamonds')) || 0;
+    return this.diamond;
   }
 
   routeToDiamondPurchase() {

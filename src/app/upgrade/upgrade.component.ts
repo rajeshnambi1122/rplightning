@@ -43,6 +43,8 @@ export class UpgradeComponent implements OnInit {
           this.isUpgraded = premiumStatus.isPremium;
           this.upgradedMode = premiumStatus.mode;
         }
+        console.log("this.isUpgraded --->", this.isUpgraded);
+        console.log("this.upgradedMode --->", this.upgradedMode);
 
       } else {
         console.error("Refferal ID not found in response", result);
@@ -83,8 +85,9 @@ export class UpgradeComponent implements OnInit {
           'Content-Type': 'application/json'
         });
         const httpOptions = { headers: headers_object };
-        let param = { mode: "hyper" }
-        this.http.put<any>(this.apiUrl + "webhook/upgrade/" + this.Chat_ID + "/" + param.mode, {}, httpOptions).subscribe(
+        // let param = { mode: "hyper" }
+        let param = { isPremium: true, mode: "hyper" }
+        this.http.put<any>(this.apiUrl + "webhook/upgrade/" + this.Chat_ID, param, httpOptions).subscribe(
           (response) => {
             this.getUserDetails()
 
@@ -104,73 +107,72 @@ export class UpgradeComponent implements OnInit {
   }
 
   async upgradeToDynamic(): Promise<void> {
-    if (!this.walletAddress) {
-      alert('Please connect your wallet first');
-      return;
-    }
+    var headers_object = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+    const httpOptions = { headers: headers_object };
+    let param = { isPremium: true,mode: "dynamic" }
+    this.http.put<any>(this.apiUrl + "webhook/upgrade/" + this.Chat_ID, param, httpOptions).subscribe(
+      (response) => {
+        this.getUserDetails();
+      },
+      (error) => {
+        console.error('Error claiming reward:', error);
+      }
+    );
 
-    if (this.isUpgraded) {
-      alert('You have already upgraded to ' + this.upgradedMode);
-      return;
-    }
-    else {
-      var headers_object = new HttpHeaders({
-        'Content-Type': 'application/json'
-      });
-      const httpOptions = { headers: headers_object };
-      let param = { isPremium: true,mode: "dynamic" }
-      this.http.put<any>(this.apiUrl + "webhook/upgrade/" + this.Chat_ID, param, httpOptions).subscribe(
-        (response) => {
-          this.getUserDetails();
-        },
-        (error) => {
-          console.error('Error claiming reward:', error);
-        }
-      );
-
-      alert('Dynamic Mode upgrade successful! You can now earn up to 24 tokens per day.');
-    }
+    alert('Dynamic Mode upgrade successful! You can now earn up to 24 tokens per day.');
   }
-  // try {
-  // const amount = toNano('2');
-  // const receiverAddress =
-  //   'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI';
+    // if (!this.walletAddress) {
+    //   alert('Please connect your wallet first');
+    //   return;
+    // }
 
-  // const transaction = {
-  //   validUntil: Math.floor(Date.now() / 1000) + 600,
-  //   messages: [
-  //     {
-  //       address: receiverAddress,
-  //       amount: amount.toString(),
-  //     },
-  //   ],
-  // };
+    // if (this.isUpgraded) {
+    //   alert('You have already upgraded to ' + this.upgradedMode);
+    //   return;
+    // }
 
-  // const result = await window.tonConnectUI.sendTransaction(transaction);
+    // try {
+    //   const amount = toNano('2');
+    //   const receiverAddress =
+    //     'EQDrjaLahLkMB-hMCmkzOyBuHJ139ZUYmPHu6RRBKnbdLIYI';
 
-  // if (result) {
-  //   await new Promise((resolve) => setTimeout(resolve, 3000));
-  //   var headers_object = new HttpHeaders({
-  //     'Content-Type': 'application/json'
-  //   });
-  //   const httpOptions = { headers: headers_object };
-  //   let param = { mode: "dynamic" }
-  //   this.http.put<any>(this.apiUrl + "webhook/upgrade/" + this.Chat_ID + "/" + param.mode, {}, httpOptions).subscribe(
-  //     (response) => {
-  //       this.getUserDetails()
+    //   const transaction = {
+    //     validUntil: Math.floor(Date.now() / 1000) + 600,
+    //     messages: [
+    //       {
+    //         address: receiverAddress,
+    //         amount: amount.toString(),
+    //       },
+    //     ],
+    //   };
 
-  //     },
-  //     (error) => {
-  //       console.error('Error claiming reward:', error);
-  //     }
-  //   );
+    //   const result = await window.tonConnectUI.sendTransaction(transaction);
 
-  //   alert('Dynamic Mode upgrade successful! You can now earn up to 24 tokens per day.');
-  // }
-  // } 
-  // catch (error) {
-  //     console.error('Premium upgrade failed:', error);
-  //     alert('Premium upgrade failed. Please try again.');
-  //   }
-  // }
-}
+    //   if (result) {
+    //     await new Promise((resolve) => setTimeout(resolve, 3000));
+    //     var headers_object = new HttpHeaders({
+    //       'Content-Type': 'application/json'
+    //     });
+    //     const httpOptions = { headers: headers_object };
+    //     let param = { mode: "dynamic" }
+    //     this.http.put<any>(this.apiUrl + "webhook/upgrade/" + this.Chat_ID + "/" + param.mode, {}, httpOptions).subscribe(
+    //       (response) => {
+    //         this.getUserDetails()
+
+    //       },
+    //       (error) => {
+    //         console.error('Error claiming reward:', error);
+    //       }
+    //     );
+
+    //     alert('Dynamic Mode upgrade successful! You can now earn up to 24 tokens per day.');
+    //   }
+    // }
+    // catch (error) {
+    //   console.error('Premium upgrade failed:', error);
+    //   alert('Premium upgrade failed. Please try again.');
+    // }
+  }
+

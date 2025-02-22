@@ -20,7 +20,7 @@
     <button
       class="upgrade-button"
       (click)="upgradeToHyper()"
-      [disabled]="isUpgraded"
+      [disabled]="isUpgraded && upgradedMode !== 'normal'"
     >
       {{ isUpgraded && upgradedMode === "hyper" ? "Upgraded" : "Upgrade Now" }}
     </button>
@@ -47,7 +47,7 @@
     <button
       class="upgrade-button"
       (click)="upgradeToDynamic()"
-      [disabled]="isUpgraded"
+      [disabled]="isUpgraded && upgradedMode !== 'normal'"
     >
       {{
         isUpgraded && upgradedMode === "dynamic" ? "Upgraded" : "Upgrade Now"
