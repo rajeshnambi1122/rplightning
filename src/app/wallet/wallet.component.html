@@ -42,7 +42,7 @@
     </mat-card>
 
     <!-- Actions Card -->
-    <mat-card class="settings-card action-card">
+    <!-- <mat-card class="settings-card action-card">
       <div class="action-buttons">
         <button class="action-button send-button" (click)="openSendDialog()">
           <mat-icon>send</mat-icon>
@@ -53,7 +53,26 @@
           <span>Receive</span>
         </button>
       </div>
-    </mat-card>
+    </mat-card> -->
+  <!-- Actions Card -->
+<!-- Coming Soon Label -->
+<div class="coming-soon-container">
+  <span class="coming-soon-text">Coming Soon</span>
+</div>
+
+<!-- Actions Card -->
+<mat-card class="settings-card action-card disabled-card">
+  <div class="action-buttons">
+    <button class="action-button send-button" disabled>
+      <mat-icon>send</mat-icon>
+      <span>Send</span>
+    </button>
+    <button class="action-button receive-button" disabled>
+      <mat-icon>person</mat-icon>
+      <span>Receive</span>
+    </button>
+  </div>
+</mat-card>
 
     <!-- Wallet Information (shown when connected) -->
     <div class="wallet-info" *ngIf="walletAddress">
