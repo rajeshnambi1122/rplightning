@@ -6,7 +6,41 @@
   width: 100%;
   overflow-x: hidden;
 }
+/* Coming Soon Text Styling */
+.coming-soon-container {
+  text-align: center;
+  margin-bottom: -10px; /* Adjust spacing above the card */
+}
 
+.coming-soon-text {
+  background: #ff4757; /* Attractive red background */
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: inline-block;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Disable interactions and style the card */
+.disabled-card {
+  pointer-events: none; /* Disable clicks */
+  filter: grayscale(80%); /* Desaturate colors */
+  opacity: 0.7; /* Dim card */
+  border-radius: 12px;
+}
+
+/* Disabled Button Styling */
+.action-button {
+  opacity: 0.5; /* Dim buttons */
+  filter: grayscale(100%); /* Desaturate colors */
+  transition: all 0.3s ease;
+}
+
+.action-button:disabled {
+  cursor: not-allowed;
+}
 .wallet-container {
   padding: 24px 16px 80px;
   color: #ffffff;

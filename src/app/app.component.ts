@@ -219,13 +219,13 @@ export class AppComponent implements OnInit {
           '/wallet',
           '/setting',
           '/admin-login-page',
-          '/wallet-main-page',
-        ].includes(this.router.url)  && window.walletState?.address !== null
+          '/wallet-main-page/:id',
+        ].includes(this.router.url) ||
+        this.router.url.startsWith('/wallet-main-page')
       )
-      // && window.walletState?.address !== null
     );
   }
-
+  // && window.walletState?.address !== null
   private checkPremiumStatus(): void {
     const premiumStatus = localStorage.getItem('premiumStatus');
     if (premiumStatus) {
