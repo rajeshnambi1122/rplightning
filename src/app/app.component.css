@@ -23,15 +23,14 @@
   position: fixed;
   top: 10px;
   right: 10px;
-  height: 50px;
+  height: 40px;
   background: rgba(0, 0, 0, 0.8);
-  padding: 4px 12px;
+  padding: 2px 8px;
   border-radius: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   z-index: 1000;
   display: flex;
   align-items: center;
-  gap: 8px;
   backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -39,13 +38,13 @@
 .logo-container {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
 }
 
 .balance-logo,
 .user-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -53,9 +52,9 @@
 .balance-value {
   color: #28a7f0;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 12px;
   background: rgba(255, 255, 255, 0.1);
-  padding: 4px 8px;
+  padding: 2px 6px;
   border-radius: 10px;
 }
 
@@ -75,8 +74,8 @@
 .rank-container {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 4px 12px;
+  gap: 4px;
+  padding: 2px 8px;
   background: rgba(0, 0, 0, 0.4);
   border-radius: 20px;
   cursor: pointer;
@@ -94,7 +93,7 @@
 }
 
 .rank-name {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -146,9 +145,9 @@
 }
 
 .shield-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
   animation: shieldGlow 2s infinite ease-in-out;
 }
 
@@ -208,7 +207,7 @@
   margin-left: 6px;
   font-weight: bold;
   color: #1e88e5;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .diamonds-container {
@@ -234,7 +233,7 @@
 }
 
 .add-diamonds-btn mat-icon {
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
 }
