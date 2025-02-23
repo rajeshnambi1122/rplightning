@@ -9,6 +9,7 @@ import {
 } from '@angular/animations';
 import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-wheel-fortune',
@@ -72,7 +73,7 @@ export class WheelFortuneComponent {
   lastSpinTimestamp: number | null = null;
   remainingTime: string = '';
 
-  constructor(public dialogRef: MatDialogRef<WheelFortuneComponent>, private http: HttpClient) {}
+  constructor(private refreshService: SharedService,public dialogRef: MatDialogRef<WheelFortuneComponent>, private http: HttpClient) {}
 
   ngOnInit() {
     this.Chat_ID = localStorage.getItem('Identification');
@@ -101,39 +102,45 @@ export class WheelFortuneComponent {
     });
   }
   checkCooldown() {
-    console.log("DATA this.wheelFortune211 -->",this.wheelFortune)
-    const storedTimestamp = this.wheelFortune;
-    if (storedTimestamp) {
-      console.log("DATA this.wheelFortune -->",this.wheelFortune)
-      this.remainingTime = this.wheelFortune
-      // this.spinning = true;
-      this.gameOver = true
-      // this.lastSpinTimestamp = parseInt(storedTimestamp, 10);
-      // const now = Date.now();
-      // const diff = this.lastSpinTimestamp + 24 * 60 * 60 * 1000 - now;
-      
-      // if (diff > 0) {
-      //   this.gameOver = true; // Disable spin
-      //   this.updateRemainingTime(diff);
-      //   setInterval(() => this.updateRemainingTime(diff), 1000);
-      // } else {
-      //   this.gameOver = false;
-      // }
+    console.log("DATA this.wheelFortune -->", this.wheelFortune);
+  
+    if (!this.wheelFortune) {
+      // If there's no last spin timestamp, enable the spin button
+      this.gameOver = false;
+      this.remainingTime = '';
+      return;
+    }
+  
+    const lastClaimDate = new Date(this.wheelFortune).getTime();
+    const currentTime = new Date().getTime();
+    const timeDifference = currentTime - lastClaimDate;
+  
+    if (timeDifference >= 24 * 60 * 60 * 1000) {
+      // 24 hours passed, enable spin
+      this.gameOver = false;
+      this.remainingTime = '';
+    } else {
+      // Disable spin and show remaining cooldown time
+      this.gameOver = true;
+      this.updateRemainingTime(24 * 60 * 60 * 1000 - timeDifference);
     }
   }
-
-  // updateRemainingTime(diff: number) {
-  //   const hours = Math.floor(diff / (1000 * 60 * 60));
-  //   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  //   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-  //   this.remainingTime = `${hours}h ${minutes}m ${seconds}s`;
-  // }
+  updateRemainingTime(diff: number) {
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    this.remainingTime = `${hours}h ${minutes}m ${seconds}s`;
+  
+    setTimeout(() => this.updateRemainingTime(diff - 1000), 1000); // Update countdown every second
+  }
+  
+  
 
   spinWheel() {
     if (!this.spinning) {
       this.spinning = true;
       this.claimAvailable = false;
-
+  
       let currentIndex = 0;
       const interval = setInterval(() => {
         if (currentIndex > 0) {
@@ -141,68 +148,65 @@ export class WheelFortuneComponent {
         } else {
           this.hexagons[this.hexagons.length - 1].state = 'inactive';
         }
-
+  
         this.hexagons[currentIndex].state = 'spinning';
         currentIndex = (currentIndex + 1) % this.hexagons.length;
       }, 100);
-
+  
       setTimeout(() => {
         clearInterval(interval);
-
+  
         // Stop on a "Light's" value
         const lightsOptions = this.hexagons.filter(h => h.label === "Light's");
         const winningHexagon = lightsOptions[Math.floor(Math.random() * lightsOptions.length)];
-
+  
         this.hexagons.forEach((hex) => (hex.state = 'inactive'));
         winningHexagon.state = 'active';
         this.selectedHexagon = winningHexagon.id;
-
-        // Enable claim button and set cooldown
+  
+        // Enable claim button and disable spin
         this.claimAvailable = true;
-        this.gameOver = true;
-        // this.spinning = false;
-        // this.lastSpinTimestamp = Date.now();
-        // localStorage.setItem('lastSpinTime', this.lastSpinTimestamp.toString());
-        this.checkCooldown();
+        this.spinning = false; // Ensure spinning stops
+        this.gameOver = true; // Disable spin button after spin completes
+  
       }, 3000);
     }
   }
-
+  
   claimReward() {
     if (this.claimAvailable) {
-      // alert(`You claimed: ${this.hexagons[this.selectedHexagon!].value} Light's`);
-      // this.claimAvailable = false;
-      // this.gameOver = true; // Prevent spinning again
-      
-          var headers_object = new HttpHeaders({
-            'Content-Type': 'application/json'
-          });
-          const httpOptions = { headers: headers_object };
-          this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + this.hexagons[this.selectedHexagon!].value+ "/1", {}, httpOptions).subscribe(
+      var headers_object = new HttpHeaders({
+        'Content-Type': 'application/json'
+      });
+      const httpOptions = { headers: headers_object };
+  
+      this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + this.hexagons[this.selectedHexagon!].value + "/1", {}, httpOptions).subscribe(
+        (response) => {
+          this.refreshService.triggerRefresh();
+          this.http.put<any>(this.apiUrl + "webhook/lastDateUpdate/" + this.Chat_ID + "/" + new Date().toISOString() + '/2', {}, httpOptions).subscribe(
             (response) => {
-              
-              this.http.put<any>(this.apiUrl + "webhook/lastDateUpdate/" + this.Chat_ID + "/" + new Date().toISOString()+'/2', {}, httpOptions).subscribe(
-                (response) => {
-                  this.claimAvailable = false;
-                  this.spinning = true;
-                  this.gameOver = true; // Prevent spinning again
-                 this.getUserDetails()
-                },
-                (error) => {
-                  console.error('Error claiming reward:', error);
-                  // Optionally show error message in the UI
-                }
-              )
-              // webhook/lastDateUpdate
-            
+              this.claimAvailable = false;
+              this.spinning = false; // Keep it false to prevent re-spinning
+              this.gameOver = true;  // Maintain game-over state
+              this.getUserDetails(); // Fetch updated cooldown time
+  
+              setTimeout(() => {
+                this.dialogRef.close();
+              }, 1000);
             },
             (error) => {
-              console.error('Error claiming reward:', error);
-              // Optionally show error message in the UI
+              console.error('Error updating last claim date:', error);
             }
           );
+        },
+        (error) => {
+          console.error('Error claiming reward:', error);
         }
+      );
     }
+  }
+  
+  
   
   close() {
     this.dialogRef.close(

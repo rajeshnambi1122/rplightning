@@ -30,6 +30,37 @@
 
   <div class="tab-content">
     <div *ngIf="selectedTab === 'tasks'" class="tasks-tab">
+      <div class="referral-card">
+        <img src="assets/friends.jpg" alt="Friends Icon" class="icon" />
+        <div class="text-container">
+          <span class="title">Refer 25 Friends</span>
+          <small class="sub-text">100 Light's</small>
+        </div>
+        <span class="count">{{ referralCount }}/25</span>
+       <!-- For 25 Friends -->
+<button *ngIf="!claimed25" (click)="friendsClaim(25)" class="claim-btn">
+  Claim
+</button>
+<span *ngIf="claimed25" class="green-tick">✔️</span>
+      </div>
+      
+      <div class="referral-card">
+        <img src="assets/friends.jpg" alt="Friends Icon" class="icon" />
+        <div class="text-container">
+          <span class="title">Refer 50 Friends</span>
+          <small class="sub-text">200 Light's</small>
+        </div>
+        <span class="count">{{ referralCount }}/50</span>
+        <!-- For 50 Friends -->
+<button *ngIf="!claimed50" (click)="friendsClaim(50)" class="claim-btn">
+  Claim
+</button>
+<span *ngIf="claimed50" class="green-tick">✔️</span>
+      </div>
+      
+      
+      
+      
       <div class="card-container">
         <div class="card" *ngFor="let card of cardData; let i = index">
           <div class="card-content">

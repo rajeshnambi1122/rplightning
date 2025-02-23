@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { RewardDialogComponent } from './reward-dialog/reward-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { WheelFortuneComponent } from '../wheel-fortune/wheel-fortune.component';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { SharedService } from '../shared.service';
 // import { RewardDialogComponentComponent } from './reward-dialog-component/reward-dialog-component.component';
 
 interface TaskCard {
@@ -28,8 +29,11 @@ interface TaskCard {
 export class TaskComponent {
   selectedTab: string = 'tasks';
   Chat_ID: any;
+  ReferealData: any;
   apiUrl = environment.apiurl;
   userDetails: any;
+  // userDetails1: any;
+  referralCount: number = 0;
   selectTab(tab: string): void {
     this.selectedTab = tab;
   }
@@ -60,7 +64,7 @@ export class TaskComponent {
       img: 'assets/Instagram.jpg',
       name: 'Instagram',
       button: 'Start',
-      link: 'https://www.instagram.com/lightingapp2/profilecard/?igsh=cHc5dWFseGJjOThy',
+      link: 'https://t.me/lightingapp',
       isClaimed: false,
       isStarted: false,
       apiEndpoint: 'https://your-api-endpoint/claim-reward',
@@ -71,17 +75,18 @@ export class TaskComponent {
       img: 'assets/telegram1.jpg',
       name: 'Telegram',
       button: 'Start',
-      link: 'https://t.me/lightning2010',
+      link: 'https://t.me/lightingapp',
       isClaimed: false,
       isStarted: false,
       apiEndpoint: 'https://your-api-endpoint/claim-reward',
       verificationUrl: 'https://your-api-endpoint/verify-telegram',
       rewardAmount: 10, // Add reward amount for each task
     },
-    // https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg --> insta
-    // https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg -- Tele
   ];
-
+  claimed25: boolean = false;
+  claimed50: boolean = false;
+  canClaim25: boolean = false;
+  canClaim50: boolean = false;
   rewards = [
     { day: 1, amount: 10 },
     { day: 2, amount: 20 },
@@ -95,58 +100,13 @@ export class TaskComponent {
   isDayAvailable = true; // Set true for initial availability
   remainingTime = '00:00:00'; // Countdown for the next reward
 
-  constructor(private dialog: MatDialog,private http: HttpClient, private router: ActivatedRoute) {}
+  constructor(private refreshService: SharedService,private dialog: MatDialog,private http: HttpClient, private router: ActivatedRoute) {}
 
-  // Simulate API call or logic to get availability
-  // checkAvailability() {
-  //   const now = new Date();
-  //   const nextDayTime = new Date();
-  //   nextDayTime.setDate(now.getDate() + 1); // Add 24 hours for the next day
-  //   const timeDifference = nextDayTime.getTime() - now.getTime();
-
-  //   if (timeDifference > 0) {
-  //     this.isDayAvailable = false;
-  //     this.startCountdown(timeDifference);
-  //   } else {
-  //     this.isDayAvailable = true;
-  //   }
-  // }
-
-  // // Start countdown for next reward
-  // startCountdown(timeDifference: number) {
-  //   const interval = setInterval(() => {
-  //     const hours = Math.floor((timeDifference / (1000 * 60 * 60)) % 24);
-  //     const minutes = Math.floor((timeDifference / (1000 * 60)) % 60);
-  //     const seconds = Math.floor((timeDifference / 1000) % 60);
-
-  //     this.remainingTime = `${hours}:${minutes}:${seconds}`;
-  //     timeDifference -= 1000;
-
-  //     if (timeDifference <= 0) {
-  //       clearInterval(interval);
-  //       this.isDayAvailable = true;
-  //     }
-  //   }, 1000);
-  // }
-  // isDayAvailable: boolean = false;
-  // remainingTime: string = '00:00:00'; // Timer for the next reward
-  // currentDay: number = 1; // Track the current day
-  // rewards = [
-  //   { amount: 10 }, // Day 1
-  //   { amount: 20 }, // Day 2
-  //   { amount: 30 }, // Day 3
-  //   { amount: 40 }, // Day 4
-  //   { amount: 50 }, // Day 5
-  //   { amount: 60 }, // Day 6
-  //   { amount: 70 }, // Day 7
-  // ];
-
-  // constructor(private dialog: MatDialog, private rewardService: RewardService) {}
 
   ngOnInit(): void {
     this.Chat_ID = localStorage.getItem('Identification')
     this.getUserDetails();
-
+    // this.fetchReferralCount();
   }
     private getHeaders() {
       const headers = new HttpHeaders({
@@ -156,43 +116,43 @@ export class TaskComponent {
     }
     getUserDetails() {
       const url = `${this.apiUrl}webhook/getUserDetail/${this.Chat_ID}`;
-  
-  
+    
       this.http.get<any>(url, this.getHeaders()).subscribe((result) => {
         if (result) {
-          console.log("GET API RESPONCE --->", result)
-          this.userDetails = result
+          console.log("GET API RESPONSE --->", result);
+          
+          this.userDetails = result;
+          this.ReferealData = this.userDetails.refferalId;
+
+          // Retrieve claim status from API response
+          this.claimed25 = this.userDetails["twentyFiveFriends"] || false;
+          this.claimed50 = this.userDetails["fiftyFriends"] || false;
+    
+          this.getReferedUserDetails(this.ReferealData);
+    
           this.checkAvailability();
           this.startTimer();
-          // console.log("BEFORE savedProgress --->", this.userDetails.miningProgress)
-          console.log("this.userDetails --->", this.userDetails)
-          // this.profile.balance = result.balance ? parseFloat(result.balance) : 0;
-          
         } else {
-          console.error("Refferal ID not found in response", result);
+          console.error("Referral ID not found in response", result);
         }
       });
     }
-  // }
-  // checkAvailability() {
-  //   const currentTime = new Date();
-  //   const lastClaimTime = localStorage.getItem('lastClaimTime');
-  //   if (lastClaimTime) {
-  //     const elapsedTime = Math.floor((currentTime.getTime() - new Date(lastClaimTime).getTime()) / 1000);
-  //     const remainingTime = 86400 - elapsedTime; // 86400 seconds in a day
-  //     this.remainingTime = new Date(remainingTime * 1000).toISOString().substr(11, 8);
-  //     this.isDayAvailable = remainingTime <= 0;
-  //   } else {
-  //     this.isDayAvailable = true;
-  //   }
-  // }
+    
+    getReferedUserDetails(refferalId: string) {
+      const url = `${this.apiUrl}webhook/getRefferal/${refferalId}`;
 
-  // // Start the timer that checks availability every second
-  // startTimer() {
-  //   setInterval(() => {
-  //     this.checkAvailability();
-  //   }, 1000); // Update every second
-  // }
+      this.http.get<any[]>(url, this.getHeaders()).subscribe((result) => {
+        if (result && result.length > 0) {
+          // this.referralCount = result.length; // Set actual referral count
+          this.referralCount = 25;
+          // Enable claim button only if user reaches 25 or 50 friends and has NOT claimed before
+          this.canClaim25 = this.referralCount >= 25 && !this.claimed25;
+          this.canClaim50 = this.referralCount >= 50 && !this.claimed50;
+        } else {
+          console.error("No referred users found", result);
+        }
+      });
+    }
   // Method to open the link and start the task
   openLinkAndEnableClaimButton(index: number) {
     const card = this.cardData[index];
@@ -204,8 +164,96 @@ export class TaskComponent {
     card.isStarted = true;
     card.button = 'Verify'; // Change button text to 'Verify' instead of directly to 'Claim'
   }
-
+  // friendsClaim(level: number) {
+  //   if ((level === 25 && this.referralCount >= 25) || (level === 50 && this.referralCount >= 50)) {
+  //     const tokenAmount = level === 25 ? 100 : 200;
+  //     const claimKey = level === 25 ? "25friends" : "50friends";
+  
+  //     this.http.put<any>(`${this.apiUrl}webhook/balanceUpdate/${this.Chat_ID}/${tokenAmount}/1`, {}).subscribe(
+  //       (response) => {
+  //         // Update claim status locally
+  //         if (level === 25) {
+  //           this.claimed25 = true;
+  //             // Save claim status in the backend
+  //         this.http.put<any>(`${this.apiUrl}webhook/reffer-token/1/${this.Chat_ID}`, {
+  //         }).subscribe(
+  //           (res) => {
+  //             console.log("Claim status updated in backend", res);
+  //             this.getUserDetails(); // Refresh user data
+  //           },
+  //           (err) => {
+  //             console.error("Error updating claim status", err);
+  //           }
+  //         );
+  //         } else if (level === 50) {
+  //           this.claimed50 = true;
+  //             // Save claim status in the backend
+  //         this.http.put<any>(`${this.apiUrl}webhook/reffer-token/2/${this.Chat_ID}`, {
+  //         }).subscribe(
+  //           (res) => {
+  //             console.log("Claim status updated in backend", res);
+  //             this.getUserDetails(); // Refresh user data
+  //           },
+  //           (err) => {
+  //             console.error("Error updating claim status", err);
+  //           }
+  //         );
+  //         }
+  
+        
+  //       },
+  //       (error) => {
+  //         console.error("Error updating balance:", error);
+  //       }
+  //     );
+  //   } else {
+  //     console.warn("Not enough referrals to claim rewards.");
+  //   }
+  // }
+  
+  
   // Method to verify and claim the reward
+  friendsClaim(level: number) {
+    if ((level === 25 && this.canClaim25) || (level === 50 && this.canClaim50)) {
+      const tokenAmount = level === 25 ? 100 : 200;
+      const claimKey = level === 25 ? "25friends" : "50friends";
+  
+      this.http.put<any>(`${this.apiUrl}webhook/balanceUpdate/${this.Chat_ID}/${tokenAmount}/1`, {})
+        .subscribe(
+          (response) => {
+            this.refreshService.triggerRefresh();
+            console.log(`Balance updated successfully for ${claimKey}`, response);
+  
+            // Update the claimed status in UI
+            if (level === 25) {
+              this.claimed25 = true;
+            } else if (level === 50) {
+              this.claimed50 = true;
+            }
+  
+            // Call referral token API
+            const refferTokenUrl = `http://localhost:8080/webhook/reffer-token/${level === 25 ? 1 : 2}/${this.Chat_ID}`;
+  
+            this.http.put<any>(refferTokenUrl, {}).subscribe(
+              (refferRes) => {
+                console.log(`Referral token updated successfully for ${claimKey}`, refferRes);
+                this.getUserDetails(); // Refresh user data after claim
+              },
+              (refferErr) => {
+                console.error(`Error updating referral token for ${claimKey}`, refferErr);
+              }
+            );
+          },
+          (err) => {
+            console.error(`Error updating balance for ${claimKey}`, err);
+          }
+        );
+    } else {
+      console.log(`Cannot claim ${level} friends reward yet.`);
+    }
+  }
+  
+  
   claimReward(index: number) {
     const card = this.cardData[index];
 
@@ -223,8 +271,50 @@ export class TaskComponent {
         if (isVerified) {
           // Task verified successfully
           card.button = 'Claiming...';
+          if (card.name.toLowerCase() === "telegram") {
+            // Special case for Telegram - Check if user is a member
+            this.checkTelegramTask(this.Chat_ID).subscribe((isMember) => {
+              if (isMember) {
+                this.claimRewardAPI(card);
+              } else {
+                alert("Please join the Telegram channel before verifying.");
+                card.button = "Verify";
+              }
+            });
+          }else{
+            alert("OTHER TASKS")
+          }
+       
+        } else {
+          // Task not completed
+          card.button = 'Verify';
+          alert(`Please complete the ${card.name} task before verifying`);
+        }
+      },
+      error: (error) => {
+        console.error('Error verifying task:', error);
+        card.button = 'Verify';
+        alert('Verification failed. Please try again.');
+      },
+    });
+  }
+  checkTelegramTask(userId: string): Observable<boolean> {
+    const TELEGRAM_API_URL = `https://api.telegram.org/bot7375850453:AAGiO7fjit9QEj0k8BCa4DleAXywbsd-l9U/getChatMember?chat_id=${userId}&user_id=${userId}`;
+  
+    return this.http.get<any>(TELEGRAM_API_URL).pipe(
+      map((response) => {
+        const status = response.result?.status;
+        return status === "member" || status === "administrator" || status === "creator";
+      }),
+      catchError((error) => {
+        console.error("Error checking Telegram membership:", error);
+        return of(false); // Return false on error
+      })
+    );
+  }
 
-          // Call API to claim the reward
+  claimRewardAPI(card: TaskCard){
+   // Call API to claim the reward
           this.http
             .post(card.apiEndpoint, {
               taskType: card.name.toLowerCase(),
@@ -247,20 +337,7 @@ export class TaskComponent {
                 alert('Failed to claim reward. Please try again.');
               },
             });
-        } else {
-          // Task not completed
-          card.button = 'Verify';
-          alert(`Please complete the ${card.name} task before verifying`);
-        }
-      },
-      error: (error) => {
-        console.error('Error verifying task:', error);
-        card.button = 'Verify';
-        alert('Verification failed. Please try again.');
-      },
-    });
   }
-
   private verifyTaskCompletion(card: TaskCard): Observable<boolean> {
     // For development/testing, you can use this mock implementation
     return new Observable<boolean>((observer) => {
@@ -306,49 +383,6 @@ export class TaskComponent {
     }
   }
 
-  // Open dialog box for reward
-  // openRewardDialog() {
-  //   const dialogRef = this.dialog.open(RewardDialogComponent, {
-  //     width: '100%',
-  //     maxWidth: '320px', // Limit dialog width to match small box layout
-  //     height: 'auto',
-  //     panelClass: 'reward-dialog-container',
-  //     position: { top: '', bottom: '', left: '', right: '' },
-  //     data: {
-  //       currentDay: this.currentDay,
-  //       rewardAmount: this.rewards[this.currentDay - 1].amount,
-  //     },
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result === 'claimed') {
-  //       this.isDayAvailable = false;
-  //       this.currentDay = (this.currentDay % 7) + 1;
-  //       this.checkAvailability();
-  //     }
-  //   });
-  // }
-  // Method to open the reward dialog
-  // Method to open the reward dialog
-  // openRewardDialog() {
-  //   const dialogRef = this.dialog.open(RewardDialogComponent, {
-  //     width: '100%',
-  //     maxWidth: '320px', // Limit dialog width to match small box layout
-  //     height: 'auto',
-  //     data: {
-  //       currentDay: this.currentDay,
-  //       rewardAmount: this.rewards[this.currentDay - 1].amount,
-  //     },
-  //   });
-
-  //   dialogRef.afterClosed().subscribe((result) => {
-  //     if (result === 'claimed') {
-  //       this.isDayAvailable = false;
-  //       this.currentDay = (this.currentDay % 7) + 1; // Reset to Day 1 after 7th day
-  //       this.checkAvailability();
-  //     }
-  //   });
-  // }
   openRewardDialog() {
     const dialogRef = this.dialog.open(RewardDialogComponent, {
       width: '100%',

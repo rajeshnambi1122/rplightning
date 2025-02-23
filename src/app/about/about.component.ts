@@ -55,13 +55,37 @@ const TREE_DATA: FoodNode[] = [
   },
   {
     name: 'Roadmap',
-    children: [{ name: 'Update Soon...' }],
+    children: [
+      { name: 'Launch of Mining Operations' },
+      { name: 'Achieve 100,000 Registered Users' },
+      { name: 'Implement 2FA & Email Verification for Enhanced Security' },
+      { name: 'Upcoming Major Update with New Features' },
+      { name: 'Enable LIGHT Token Staking & Transfers' }
+    ]
   },
   {
     name: 'Tokenomic',
     children: [{ name: 'Airdrop for Miners: 70% (350,000,000)' }, { name: 'Team & Advisors: 10% (50,000,000)' },
     { name: 'Liquidity: 15% (75,000,000)' }, { name: 'Marketing: 5% (25,000,000)' }
     ],
+  },
+  {
+    name: 'Airdrop ⚠️ Criteria',
+    children: [
+      { name: 'NOTE: NOW YOU ARE MINING THE DIRECT TOKEN BY SHARING YOUR INTERNET BANDWIDTH. THE DIAMONDS WILL CONVERT INTO LIGHT TOKENS AT THE END OF MINING.' },
+      {
+        name: 'Main Requirements:',
+        children: [
+          { name: 'Number of Diamonds Top-Ups' },
+          { name: 'Minimum 200 Diamonds Required in Wallet' },
+          { name: 'Number of Referrals' },
+          { name: 'Number of Completed Tasks' },
+          { name: 'Honor Score Maintenance' },
+          { name: 'Total Hours Spent Until End of Mining (Minimum: 240 Hours)' }
+        ]
+      },
+      { name: 'Are Diamonds Important? Yes! They are a crucial factor in determining your mining rewards.' }
+    ]
   },
   {
     name: 'Investment',

@@ -50,7 +50,7 @@
     max-width: 600px;
 
     .tasks-tab {
-      text-align: center;
+      text-align: -webkit-center;
       color: #ccc;
       font-size: 1rem;
     }
@@ -548,4 +548,95 @@
   .reward-grid {
     grid-template-columns: 1fr; /* One column on very small screens */
   }
+}
+
+
+.referral-card {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  width: 306px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+  /* display: flex; */
+  flex-wrap: wrap;
+  /* gap: 16px; */
+  justify-content: center;
+}
+/* .referral-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+} */
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.text-container {
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.title {
+  font-weight: bold;
+  display: block;
+}
+
+.sub-text {
+  font-size: 12px;
+  color: gray;
+  display: block;
+  margin-top: 2px;
+}
+
+.count {
+  font-weight: bold;
+  color: #333;
+}
+
+.start-button {
+  background-color: #007bff;
+  color: white;
+  border-radius: 20px;
+  padding: 5px 15px;
+}
+
+.start-button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+
+.green-tick {
+  color: green;
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.claim-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.claim-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { SharedService } from 'src/app/shared.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -24,7 +25,8 @@ export class RewardDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<RewardDialogComponent>,
-    private http: HttpClient
+    private http: HttpClient,
+    private refreshService: SharedService,
   ) { }
 
   // ngOnInit() {
@@ -108,6 +110,7 @@ export class RewardDialogComponent {
     const httpOptions = { headers: headers_object };
     this.http.put<any>(this.apiUrl + "webhook/balanceUpdate/" + this.Chat_ID + "/" + day.rewardAmount+ "/1", {}, httpOptions).subscribe(
       (response) => {
+        this.refreshService.triggerRefresh();
         console.log(`Reward claimed for Day ${index + 1}:`, response);
         day.status = 'done'; // Update the status after successful claim
         // localStorage.setItem('lastClaimTime', new Date().toISOString()); // Store the claim time
