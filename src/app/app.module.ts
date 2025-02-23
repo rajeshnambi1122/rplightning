@@ -45,7 +45,6 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatTreeModule } from '@angular/material/tree';
-// import {MatIconModule} from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { WalletMainPageComponent } from './wallet-main-page/wallet-main-page.component';
@@ -57,7 +56,6 @@ import { SendDialogComponent } from './setting/send-dialog/send-dialog.component
 import { EmailVerificationDialogBoxComponent } from './setting/email-verification-dialog-box/email-verification-dialog-box.component';
 import { CommonModule } from '@angular/common';
 import { DiamondPurchaseComponent } from './diamond-purchase/diamond-purchase.component';
-// import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [
