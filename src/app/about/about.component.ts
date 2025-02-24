@@ -70,7 +70,7 @@ const TREE_DATA: FoodNode[] = [
     ],
   },
   {
-    name: 'Airdrop ⚠️ Criteria',
+    name: 'Airdrop Criteria ⚠️',
     children: [
       { name: 'NOTE: NOW YOU ARE MINING THE DIRECT TOKEN BY SHARING YOUR INTERNET BANDWIDTH. THE DIAMONDS WILL CONVERT INTO LIGHT TOKENS AT THE END OF MINING.' },
       {

@@ -8,6 +8,7 @@
   color: white;
   min-height: 100vh;
 
+
   .tasks-title {
     font-size: 2rem;
     font-weight: bold;
@@ -296,6 +297,7 @@
   flex-wrap: wrap;
   gap: 16px;
   justify-content: center;
+  margin-bottom: 100px;
 }
 
 .card {

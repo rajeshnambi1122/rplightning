@@ -19,8 +19,9 @@
     <img src="assets/logo.jpeg" alt="Logo" class="balance-logo" />
   </div>
   <span class="balance-value">{{ tokenBalance }}</span>
-  <div class="diamonds-container">
-    <span class="diamonds-value">💎 {{ getDiamonds() }}</span>
+  <div class="diamonds-container" >
+    <p style="margin-bottom: 5px;" class="balance-logo">💎</p>
+    <span class="balance-value"> {{ getDiamonds() }} </span>
     <button class="add-diamonds-btn" (click)="routeToDiamondPurchase()">
       <mat-icon>add_circle</mat-icon>
     </button>

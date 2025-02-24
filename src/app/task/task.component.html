@@ -30,7 +30,8 @@
 
   <div class="tab-content">
     <div *ngIf="selectedTab === 'tasks'" class="tasks-tab">
-      <div class="referral-card">
+      <div class="card-container">
+      <div class="card">
         <img src="assets/friends.jpg" alt="Friends Icon" class="icon" />
         <div class="text-container">
           <span class="title">Refer 25 Friends</span>
@@ -44,7 +45,7 @@
 <span *ngIf="claimed25" class="green-tick">✔️</span>
       </div>
       
-      <div class="referral-card">
+      <div class="card">
         <img src="assets/friends.jpg" alt="Friends Icon" class="icon" />
         <div class="text-container">
           <span class="title">Refer 50 Friends</span>
@@ -61,7 +62,7 @@
       
       
       
-      <div class="card-container">
+
         <div class="card" *ngFor="let card of cardData; let i = index">
           <div class="card-content">
             <img class="image" [src]="card.img" alt="image" />
