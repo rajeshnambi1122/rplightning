@@ -12,7 +12,33 @@ interface FoodNode {
 const TREE_DATA: FoodNode[] = [
   {
     name: 'How The System Works',
-    children: [{ name: 'A Decentralized Network.// LIGHTING is an  dePIN Project on TELEGRAM MINI-APP. THATS WILL ANYLISE YOUR DATA SPEED..... TOKENS REWARDS ARE BASED ON THE USERS DATA SPEED. LIGHING revolutionizes token distribution by rewarding participants for sharing their Internet bandwidth. How it Works? //Simply put, you share your Internet bandwidth to power AI training and earn $LIGHT tokens in return. Rewards are distributed every 30 seconds, directly linked to your bandwidth speed, turning your idle resources into valuable ASSETS. //Total Supply:   50,000,000  $LIGHT //Reward Frequency: Every ~30 seconds, based on bandwidth speed. //Mining Duration: Until JUNE 2025 or until all tokens are mined //Once mining ends, all tokens will be distributed via the TON Blockchain, ensuring transparency and scalability. Join now and turn your bandwidth into LIGHT tokens before the opportunity runs out! Donations //Star and Ton purchased in-app will be allocated to cover expenses (Team, marketing, development, etc.).' }],
+    children: [
+      {
+        name: 'Earn Diamonds & Rewards',
+        children: [
+          { name: 'Based on your claims, you earn diamonds.' },
+          { name: 'Earn diamonds by watching ads or clicking on them.' },
+          { name: 'Clicking ads gives higher rewards than watching ads.' },
+          { name: 'Your earnings depend on ad interactions and engagement.' },
+          { name: 'We monitor ad views and clicks to ensure fair distribution.' }
+        ]
+      },
+      {
+        name: 'Final Rewards Distribution',
+        children: [
+          { name: 'Users with higher ad engagement earn more rewards.' },
+          { name: 'Diamonds are converted into USDT directly in your wallet address.' }
+        ]
+      },
+      {
+        name: 'Important Notes',
+        children: [
+          { name: 'More ad interactions = More rewards.' },
+          { name: 'Fraudulent or automated clicks will result in penalties.' },
+          { name: 'Ensure active participation to maximize your earnings.' }
+        ]
+      }
+    ]
   },
   {
     name: 'Modes Explained',
@@ -20,35 +46,32 @@ const TREE_DATA: FoodNode[] = [
       {
         name: 'Normal Mode',
         children: [
-          { name: 'Capacity: 12,000 Tokens' },
-          { name: 'Daily Mining Rate: 12 Tokens' },
-          { name: 'Mining Speed: 0.5 Tokens per Hour' },
-          { name: 'Claim Requirement: Every 6 hours, claim 4 tokens' },
-          { name: 'Claim Limit: Up to 3 claims per day' }
+          { name: 'Earnings: 10 Diamonds per Hour' },
+          { name: 'Daily Earnings: 240 Diamonds' },
+          { name: 'Claim Requirement: Every 3 hours, claim 30 Diamonds' },
+          { name: 'Ad Watching and Click Bonus: More rewards for clicks compared to ad watching' }
         ]
       },
       {
-        name: 'Hyper Mode',
+        name: 'Hybrid Mode',
         children: [
-          { name: 'Capacity: 36,000 Tokens' },
-          { name: 'Daily Mining Rate: 36 Tokens' },
-          { name: 'Mining Speed: 1.5 Tokens per Hour' },
-          { name: 'Claim Requirement: Every 6 hours, claim 12 tokens' },
-          { name: 'Claim Limit: Up to 3 claims per day' },
-          { name: 'Activation Cost: 0.5 TON' },
-          { name: 'Note: Activating Hyper Mode grants enhanced mining for 3 days, tripling both capacity and mining speed.' }
+          { name: 'Activation Cost: 0.25 TON' },
+          { name: 'Earnings: 25 Diamonds per Hour' },
+          { name: 'Daily Earnings: 600 Diamonds' },
+          { name: 'Claim Requirement: Every 3 hours, claim 75 Diamonds' },
+          { name: 'Ad Watching and Click Bonus: More rewards for clicks compared to ad watching' },
+          { name: 'Note: Hybrid Mode grants higher diamond earnings in exchange for TON payment.' }
         ]
       },
       {
         name: 'Dynamic Mode',
         children: [
-          { name: 'Capacity: 72,000 Tokens' },
-          { name: 'Daily Mining Rate: 72 Tokens' },
-          { name: 'Mining Speed: 3 Tokens per Hour' },
-          { name: 'Claim Requirement: Every 6 hours, claim 24 tokens' },
-          { name: 'Claim Limit: Up to 3 claims per day' },
-          { name: 'Activation Cost: 2 TON' },
-          { name: 'Note: Activating Dynamic Mode grants enhanced mining for 6 days, increasing capacity and mining speed by 6 times.' }
+          { name: 'Activation Cost: 0.5 TON' },
+          { name: 'Earnings: 50 Diamonds per Hour' },
+          { name: 'Daily Earnings: 1200 Diamonds' },
+          { name: 'Claim Requirement: Every 3 hours, claim 150 Diamonds' },
+          { name: 'Ad Watching and Click Bonus: More rewards for clicks compared to ad watching' },
+          { name: 'Note: Dynamic Mode provides maximum diamond earnings in exchange for a higher TON payment.' }
         ]
       }
     ]
@@ -56,119 +79,65 @@ const TREE_DATA: FoodNode[] = [
   {
     name: 'Roadmap',
     children: [
-      { name: 'Launch of Mining Operations' },
-      { name: 'Achieve 100,000 Registered Users' },
-      { name: 'Implement 2FA & Email Verification for Enhanced Security' },
-      { name: 'Upcoming Major Update with New Features' },
-      { name: 'Enable LIGHT Token Staking & Transfers' }
+      { name: 'Launch of Diamond Mining System' },
+      { name: 'Achieve 100,000+ Registered Users' },
+      { name: 'Introduce Hybrid & Dynamic Mining Modes for Optimized Earnings' },
+      { name: 'Implement Secure Wallet Creation with 12-Word Seed Phrase & Email Verification' },
+      { name: 'Integrate Ad-Based Revenue Model with Enhanced Click & Engagement Rewards' },
+      { name: 'Roll Out Major Feature Update to Enhance User Experience' },
+      { name: 'Enable Seamless Diamond-to-USDT Conversion Mechanism' }
     ]
   },
   {
-    name: 'Tokenomic',
-    children: [{ name: 'Airdrop for Miners: 70% (350,000,000)' }, { name: 'Team & Advisors: 10% (50,000,000)' },
-    { name: 'Liquidity: 15% (75,000,000)' }, { name: 'Marketing: 5% (25,000,000)' }
+    name: 'Diamond Economy',
+    children: [
+      { name: 'Total Diamonds in Circulation: Dynamic Supply' },
+      { name: 'Normal Mode Earnings: 10 Diamonds per Hour (240 Daily)' },
+      { name: 'Hybrid Mode Earnings: 25 Diamonds per Hour (600 Daily)' },
+      { name: 'Dynamic Mode Earnings: 50 Diamonds per Hour (1200 Daily)' },
+      { name: 'Diamond-to-USDT Conversion: Conversion rate is dynamic based on claiming diamonds, spending time in our bot, watching ads, and clicking ads. The exact rate will be revealed at the time of exchange.' }
     ],
   },
   {
     name: 'Airdrop Criteria ⚠️',
     children: [
-      { name: 'NOTE: NOW YOU ARE MINING THE DIRECT TOKEN BY SHARING YOUR INTERNET BANDWIDTH. THE DIAMONDS WILL CONVERT INTO LIGHT TOKENS AT THE END OF MINING.' },
+      { name: 'NOTE: YOU ARE MINING DIAMONDS, WHICH CAN BE CONVERTED INTO USDT BASED ON THE EXCHANGE RATE.' },
       {
         name: 'Main Requirements:',
         children: [
-          { name: 'Number of Diamonds Top-Ups' },
-          { name: 'Minimum 200 Diamonds Required in Wallet' },
+          { name: 'Total Diamonds Earned' },
+          { name: 'Minimum 200 Diamonds Required in Wallet for Conversion' },
           { name: 'Number of Referrals' },
-          { name: 'Number of Completed Tasks' },
-          { name: 'Honor Score Maintenance' },
-          { name: 'Total Hours Spent Until End of Mining (Minimum: 240 Hours)' }
+          { name: 'Ad Click & Engagement Bonus' },
+          { name: 'Honor Score Maintenance' }
         ]
       },
-      { name: 'Are Diamonds Important? Yes! They are a crucial factor in determining your mining rewards.' }
+      { name: 'Are Diamonds Important? Yes! They determine your final USDT rewards.' }
     ]
   },
   {
     name: 'Investment',
-    children: [{ name: 'This investment will fuel our mission to revolutionize AI development through decentralized data-sharing and reward our community.' }],
+    children: [
+      { name: 'This investment will accelerate the expansion of our diamond-based mining ecosystem, enhancing user rewards and ad revenue.' }
+    ],
   },
   {
-    name: 'Policy',
+    name: 'Privacy Policy',
     children: [
-      {
-        name: '1. General Overview',
-        children: [
-          { name: 'This mining system provides users with structured token earning opportunities through three distinct mining modes: Normal, Hyper, and Dynamic.' }
-        ]
-      },
-      {
-        name: '2. Mining Modes & Token Distribution',
-        children: [
-          {
-            name: 'a) Normal User Mode',
-            children: [
-              { name: 'Capacity: 12,000 Tokens' },
-              { name: 'Daily Mining Rate: 12 Tokens' },
-              { name: 'Mining Speed: 0.5 Tokens per Hour' },
-              { name: 'Claiming: 4 Tokens every 6 hours (3 times per day)' },
-              { name: 'Access: Free for all registered users' }
-            ]
-          },
-          {
-            name: 'b) Hyper Mode',
-            children: [
-              { name: 'Capacity: 36,000 Tokens' },
-              { name: 'Daily Mining Rate: 36 Tokens' },
-              { name: 'Mining Speed: 1.5 Tokens per Hour' },
-              { name: 'Claiming: 12 Tokens every 6 hours (3 times per day)' },
-              { name: 'Activation Cost: 0.5 TON' },
-              { name: 'Duration: 3 Days' },
-              { name: 'Benefits: 3× Capacity & Mining Speed' }
-            ]
-          },
-          {
-            name: 'c) Dynamic Mode',
-            children: [
-              { name: 'Capacity: 72,000 Tokens' },
-              { name: 'Daily Mining Rate: 72 Tokens' },
-              { name: 'Mining Speed: 3 Tokens per Hour' },
-              { name: 'Claiming: 24 Tokens every 6 hours (3 times per day)' },
-              { name: 'Activation Cost: 2 TON' },
-              { name: 'Duration: 6 Days' },
-              { name: 'Benefits: 6× Capacity & Mining Speed' }
-            ]
-          }
-        ]
-      },
-      {
-        name: '3. Claiming Mechanism',
-        children: [
-          { name: 'Tokens must be manually claimed at set intervals.' },
-          { name: 'Claim window opens every 6 hours.' },
-          { name: 'Users can claim up to 3 times per day.' }
-        ]
-      },
-      {
-        name: '4. Upgrade & Activation',
-        children: [
-          { name: 'Users can upgrade from Normal Mode to Hyper or Dynamic Mode by paying the required TON amount.' },
-          { name: 'Upgraded modes activate immediately and last for the specified duration.' }
-        ]
-      },
-      {
-        name: '5. Fair Usage & Restrictions',
-        children: [
-          { name: 'Only one mining mode can be active at a time.' },
-          { name: 'Unclaimed tokens do not roll over to the next claim period.' },
-          { name: 'Automated mining or manipulation will result in account suspension.' }
-        ]
-      },
-      {
-        name: '6. Disclaimer',
-        children: [
-          { name: 'Mining speeds may vary due to network conditions.' },
-          { name: 'Project reserves the right to modify policies to maintain ecosystem balance.' }
-        ]
-      }
+      { name: 'We collect user IDs, transactions, and interactions to enhance services.' },
+      { name: 'Data is secured and not shared with third parties except as required by law.' },
+      { name: 'Users can request data deletion via [Support Email].' },
+      { name: 'By using this bot, you agree to our Privacy Policy.' }
+    ]
+  },
+  {
+    name: 'Terms & Conditions',
+    children: [
+      { name: 'Users must be 18+ to access this service.' },
+      { name: 'Engaging in illegal activities or misuse leads to account termination.' },
+      { name: 'Transactions are final, and we are not liable for financial losses.' },
+      { name: 'We reserve the right to modify terms as necessary.' },
+      { name: 'By using this bot, you accept these Terms & Conditions.' }
     ]
   }
 ];

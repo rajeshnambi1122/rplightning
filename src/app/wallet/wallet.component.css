@@ -6,35 +6,71 @@
   width: 100%;
   overflow-x: hidden;
 }
-/* Coming Soon Text Styling */
-.coming-soon-container {
+.settings-card {
+  position: relative;
+  padding: 20px;
   text-align: center;
-  margin-bottom: -10px; /* Adjust spacing above the card */
+  border-radius: 10px;
+  background-color: #ffffff; /* White background */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  margin: auto;
 }
 
-.coming-soon-text {
-  background: grey;
-  color: white;
-  font-size: 18px;
+.coming-soon-container {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 0, 0, 0.1); /* Light Red Background */
+  color: red; /* Red Text */
   font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 20px;
-  display: inline-block;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  padding: 5px 15px;
+  border-radius: 5px;
 }
 
-/* Disable interactions and style the card */
+.withdrawal-content {
+  margin-top: 40px;
+  color: #000; /* Black text */
+}
+
+.withdraw-button {
+  background-color: #007bff; /* Blue button */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 16px;
+}
+.withdraw-button:disabled {
+  cursor: not-allowed !important;
+  opacity: 0.6; /* Reduce visibility */
+}
+
+.withdraw-button[disabled] {
+  cursor: not-allowed !important;
+}
+
+.withdraw-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+
 .disabled-card {
-  pointer-events: none; /* Disable clicks */
-  filter: grayscale(80%); /* Desaturate colors */
-  opacity: 0.7; /* Dim card */
+  pointer-events: none;
+  filter: grayscale(80%);
+  opacity: 0.7; 
   border-radius: 12px;
 }
 
-/* Disabled Button Styling */
+
 .action-button {
-  opacity: 0.5; /* Dim buttons */
-  filter: grayscale(100%); /* Desaturate colors */
+  opacity: 0.5;
+  filter: grayscale(100%); 
   transition: all 0.3s ease;
 }
 
@@ -360,3 +396,5 @@ h1 {
   letter-spacing: 0.5px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
+
+
