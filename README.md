@@ -28,6 +28,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## bulid
 
-1. ng build --configuration production --base-href "https://rajeshnambi1122.github.io/rplightning/"
+1. ng build --configuration production --base-href "https://rajeshnambi1122.github.io/sparklite/"
 
-2. npx angular-cli-ghpages --dir=dist/rplightning
+2. npx angular-cli-ghpages --dir=dist/sparklite
